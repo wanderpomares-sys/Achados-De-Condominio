@@ -64,9 +64,15 @@
     try {
       let url = p.imageUrl || null;
       if (url && url.startsWith('data:')) {
-        const ref = st.ref(`posts/${uid}/${p.id}.jpg`);
-        await ref.putString(url, 'data_url');
-        url = await ref.getDownloadURL();
+        try {
+          const ref = st.ref(`posts/${uid}/${p.id}.jpg`);
+          await ref.putString(url, 'data_url');
+          url = await ref.getDownloadURL();
+        } catch (e) { // Storage ainda não ativado (plano grátis): publica sem foto
+          console.warn('[Cloud] foto não enviada', e);
+          url = null;
+          if (window.toast) toast('Anúncio publicado sem foto (armazenamento de fotos ainda não ativado)');
+        }
       }
       const d = clean({
         id: p.id, title: p.title, price: p.price, originalPrice: p.originalPrice, type: p.type,

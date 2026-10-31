@@ -1,12 +1,10 @@
-/* Cole aqui a configuração do seu app web do Firebase
- * (Console do Firebase > Configurações do projeto > Seus apps > Web > "firebaseConfig").
- * Enquanto estiver vazio, o app funciona só no aparelho (localStorage).
+/* Configuração do app web do Firebase (projeto achados-de-condominios).
  * Esses valores NÃO são segredo: a segurança vem das regras em firestore.rules e storage.rules. */
 window.FIREBASE_CONFIG = {
-  // apiKey: "...",
-  // authDomain: "SEU-PROJETO.firebaseapp.com",
-  // projectId: "SEU-PROJETO",
-  // storageBucket: "SEU-PROJETO.firebasestorage.app",
-  // messagingSenderId: "...",
-  // appId: "..."
+  apiKey: "AIzaSyB4Y44vZLdJyaMRYdgszNmEJ_Yzdqyo9c8",
+  authDomain: "achados-de-condominios.firebaseapp.com",
+  projectId: "achados-de-condominios",
+  storageBucket: "achados-de-condominios.firebasestorage.app",
+  messagingSenderId: "490345201426",
+  appId: "1:490345201426:web:473ed54080db4c3efdfdcb"
 };

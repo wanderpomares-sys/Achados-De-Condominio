@@ -504,6 +504,8 @@ body:before{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;back
 .onb img{height:120px!important}
 .onb img{margin:0 auto 10px!important}.onbname{margin-top:6px!important}
 </style>
+<script src="firebase-config.js"></script>
+<script>window.CLOUD_ON=!!(window.FIREBASE_CONFIG&&window.FIREBASE_CONFIG.apiKey)</script>
 </head>
 <body>
 <div id="root"></div>
@@ -663,7 +665,7 @@ const mem={};
 CONDOS.push(...store.get('condos',[]));
 let S={
  user:store.get('user',null),
- posts:store.get('posts',null)||SEED.map(p=>({...p,ts:now()-p.ago,boostedUntil:0})),
+ posts:(window.CLOUD_ON?[]:store.get('posts',null))||SEED.map(p=>({...p,ts:now()-p.ago,boostedUntil:0})),
  interests:store.get('interests',[]),
  favs:store.get('favs',[]),
  tab:'feed',scope:'viz',filter:'all',q:'',
@@ -764,7 +766,7 @@ function perfil(){
  const u=S.user;const mine=S.posts.filter(p=>p.mine).length;
  return `<header class="hdr"><div class="brand"><img src="${LOGO}" alt=""><b>Perfil</b></div></header><div class="pad">
  <div class="row2" style="margin-bottom:12px"><div class="av" style="width:48px;height:48px;font-size:18px">${esc(u.name[0]||'?')}</div><div><b style="font-size:16px">${esc(u.name)}</b><small>Apto ${esc(u.apt)} • ${esc(u.condo)}</small></div></div>
- <div class="row2" style="display:block"><div class="kv"><span>Meus anúncios</span><b>${mine}</b></div><div class="kv"><span>Favoritos</span><b>${S.favs.length}</b></div><div class="kv"><span>Interesses enviados</span><b>${S.interests.length}</b></div></div>
+ <div class="row2" style="display:block"><div class="kv"><span>Dados</span><b>${window.CLOUD_ON?'Nuvem (Firebase)':'Só neste aparelho'}</b></div><div class="kv"><span>Meus anúncios</span><b>${mine}</b></div><div class="kv"><span>Favoritos</span><b>${S.favs.length}</b></div><div class="kv"><span>Interesses enviados</span><b>${S.interests.length}</b></div></div>
  <button class="ghost" data-map="${esc(u.condo)}">🗺️ Ver mapa do meu condomínio</button>
  <button class="ghost" data-condosheet>🏢 Trocar condomínio</button>
  <button class="ghost" data-pushtoggle>🔔 Notificar novos posts do meu prédio: <b>${S.push?'ON':'OFF'}</b></button>
@@ -834,9 +836,9 @@ function saveCondo(){
  if(!name){toast('Informe o nome do condomínio');return}
  if(CONDOS.some(c=>c[0].toLowerCase()===name.toLowerCase())){toast('Esse condomínio já está na lista');return}
  const c=[name,0,g.bairro.trim(),g.cidade.trim(),g.end.trim()];
- CONDOS.push(c);const saved=store.get('condos',[]);saved.push(c);store.set('condos',saved);
+ CONDOS.push(c);const saved=store.get('condos',[]);saved.push(c);store.set('condos',saved);window.Cloud&&Cloud.saveCondo(c);
  if(g.mode==='onb'){S.onb.condo=name;S.onb.q=''}
- else{S.user.condo=name;S.condoSheet=false;S.cq='';save()}
+ else{S.user.condo=name;S.condoSheet=false;S.cq='';save();window.Cloud&&Cloud.saveUser(S.user)}
  S.reg={open:false,mode:g.mode,name:'',end:'',bairro:'',cidade:'Mogi das Cruzes'};
  render();toast('Condomínio cadastrado ✓');
 }
@@ -883,7 +885,7 @@ function restore(id,pos){if(!id)return;const el=document.getElementById(id);if(e
 function toast(m){S.toast=m;render();clearTimeout(mem.tt);mem.tt=setTimeout(()=>{S.toast=null;render()},2400)}
 
 /* ---------- actions ---------- */
-function openPost(id){const p=S.posts.find(x=>x.id===id);if(!p)return;p.views++;save();S.detail=id;render()}
+function openPost(id){const p=S.posts.find(x=>x.id===id);if(!p)return;p.views++;save();window.Cloud&&Cloud.view(id);S.detail=id;render()}
 function msgFor(p){return `Olá! Vi seu anúncio "${p.title}" no Achados de Condomínios e tenho interesse. Ainda está disponível?`}
 function startReward(kind,postId){
  const p=S.posts.find(x=>x.id===postId);
@@ -893,9 +895,9 @@ function startReward(kind,postId){
 }
 function finishReward(){
  const r=S.reward;const p=S.posts.find(x=>x.id===r.postId);
- if(r.kind==='boost'&&p){p.boostedUntil=now()+24*H}
+ if(r.kind==='boost'&&p){p.boostedUntil=now()+24*H;window.Cloud&&Cloud.boost(p)}
  else if(p){
-  if(r.kind==='want'||!S.interests.find(i=>i.postId===p.id)){p.wants++;S.interests.push({postId:p.id,userId:S.user.id,ts:now()})}
+  if(r.kind==='want'||!S.interests.find(i=>i.postId===p.id)){p.wants++;S.interests.push({postId:p.id,userId:S.user.id,ts:now()});window.Cloud&&Cloud.want(p,S.interests[S.interests.length-1])}
   try{navigator.clipboard&&navigator.clipboard.writeText(r.msg).catch(()=>{})}catch(e){}
  }
  save();
@@ -912,7 +914,7 @@ function resizeImg(file,cb){
 function simulatePush(){
  clearTimeout(mem.push);
  mem.push=setTimeout(()=>{
-  if(!S.user||!S.push)return;
+  if(!S.user||!S.push||window.CLOUD_ON)return;
   const p={id:'p'+now(),title:'Cadeira de escritório ergonômica',price:120,originalPrice:380,type:'venda',emoji:'💺',distance:0,building:S.user.condo+' • 5º andar',ts:now(),seller:'Renata',apt:'509',verified:true,views:0,wants:0,description:'Cadeira ergonômica com apoio lombar, regulagem de altura. Pouco uso.',isMy:true,boostedUntil:0};
   S.posts.unshift(p);save();S.pushMsg=p;render();
   setTimeout(()=>{S.pushMsg=null;render()},5000);
@@ -937,7 +939,7 @@ document.addEventListener('click',e=>{
  else if(t.hasAttribute('data-close')){if(S.mapFor){S.mapFor=null;render();return}S.detail=null;S.newPost=false;S.condoSheet=false;S.mapFor=null;render()}
  else if(d.map){S.mapFor=d.map;render()}
  else if(t.hasAttribute('data-condosheet')){S.condoSheet=true;S.cq='';S.reg.open=false;render()}
- else if(d.condopick){S.user.condo=d.condopick;S.condoSheet=false;save();render();toast('Condomínio alterado: '+d.condopick)}
+ else if(d.condopick){S.user.condo=d.condopick;S.condoSheet=false;save();render();window.Cloud&&Cloud.saveUser(S.user);toast('Condomínio alterado: '+d.condopick)}
  else if(d.regopen){S.reg={...S.reg,open:true,mode:d.regopen};render()}
  else if(t.hasAttribute('data-regcancel')){S.reg.open=false;render()}
  else if(t.hasAttribute('data-regsave')){saveCondo()}
@@ -989,13 +991,13 @@ document.addEventListener('change',e=>{
 document.addEventListener('click',e=>{
  if(e.target.id==='o-go'){
   const o=S.onb;S.user={id:'u'+now(),name:o.name.trim(),apt:o.apt.trim(),condo:o.condo,cityShort:'Mogi'};scrollTo(0,0);
-  S.posts.forEach(p=>{});save();render();
+  save();render();window.Cloud&&Cloud.saveUser(S.user);
  }
  if(e.target.id==='f-go'){
   const f=S.form;if(!f.title.trim())return;
   const my=f.reach==='pred';
   const p={id:'p'+now(),title:f.title.trim(),price:f.free?0:(f.price===''?null:Number(f.price)),type:f.type,emoji:DEFAULT_EMOJI[f.type],imageUrl:f.img||null,distance:0,building:S.user.condo,ts:now(),seller:S.user.name,apt:S.user.apt,verified:false,views:0,wants:0,description:f.desc.trim(),isMy:true,mine:true,reach:f.reach,boostedUntil:0};
-  S.posts.unshift(p);S.newPost=false;S.form=null;S.scope=my?'pred':'viz';S.filter='all';save();render();toast('Anúncio publicado! 🎉');
+  S.posts.unshift(p);window.Cloud&&Cloud.add(p);S.newPost=false;S.form=null;S.scope=my?'pred':'viz';S.filter='all';save();render();toast('Anúncio publicado! 🎉');
  }
 });
 let lastY=0;
@@ -1003,5 +1005,6 @@ addEventListener('scroll',()=>{const y=scrollY,f=document.querySelector('.fab');
 render();
 if(S.push)simulatePush();
 </script>
+<script src="cloud.js"></script>
 </body>
 </html>

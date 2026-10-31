@@ -25,13 +25,40 @@ Abra o arquivo direto no navegador (use largura de celular, até 400 px). Adicio
 
 ## O que é simulado
 
-- **Firebase:** os dados ficam no `localStorage` do navegador. Os campos seguem o modelo do briefing (`posts`, `users`, `interests`, `boostedUntil`).
+- **Firebase:** sem configuração, os dados ficam no `localStorage` do navegador. Com `firebase-config.js` preenchido, usa Firestore e Storage (veja abaixo).
 - **Google Places:** lista fixa de condomínios de exemplo.
 - **AdMob:** o vídeo é uma contagem regressiva de demonstração.
 - **Push:** simulado depois de ativar a opção em Perfil.
 - **Link de compartilhamento:** `achados.app/p/...` é um endereço de exemplo.
 
 Os anúncios e patrocinados exibidos são dados de exemplo.
+
+
+## Hospedagem e banco de dados (Firebase)
+
+Por padrão o protótipo guarda tudo no aparelho (`localStorage`). Para os moradores **compartilharem anúncios de verdade**, ligue o Firebase (plano gratuito Spark atende para começar):
+
+1. Crie um projeto em <https://console.firebase.google.com>.
+2. **Authentication** > Sign-in method > ative **Anônimo** (cada aparelho recebe uma identidade; depois dá para trocar por telefone ou Google).
+3. **Firestore Database** > criar banco em modo produção, região `southamerica-east1` (São Paulo).
+4. **Storage** > começar (para as fotos dos anúncios).
+5. Configurações do projeto > **Seus apps** > Web (`</>`) > copie o `firebaseConfig` e cole em [`firebase-config.js`](firebase-config.js).
+6. Publique as regras e o site:
+
+```bash
+npm i -g firebase-tools
+firebase login
+firebase use --add            # escolha o projeto
+firebase deploy --only firestore:rules,storage,hosting
+```
+
+O site fica em `https://SEU-PROJETO.web.app`. Se preferir hospedar só os arquivos no **GitHub Pages**, o banco continua sendo o Firestore: basta ativar o Pages e adicionar o domínio `SEU-USUARIO.github.io` em Authentication > Settings > Authorized domains.
+
+**O que vai para a nuvem:** `posts` (anúncios, com views e wants), `users`, `interests` (cliques em Quero), `condos` (condomínios cadastrados) e as fotos em Storage. Os anúncios aparecem em tempo real para todos.
+
+**Segurança:** a configuração do Firebase não é segredo. A proteção está nas regras ([`firestore.rules`](firestore.rules) e [`storage.rules`](storage.rules)): só o dono edita ou apaga o próprio anúncio, e os demais só somam +1 em visualizações e interesses.
+
+**Ainda simulado:** push (precisa do Firebase Cloud Messaging), AdMob real e distância exata entre condomínios (precisa de latitude/longitude do Google Places; hoje é aproximada).
 
 ## Estrutura
 
@@ -40,6 +67,11 @@ index.html          protótipo high-tech
 pixar.html          protótipo estilo animação 3D
 assets/og-image.png imagem Open Graph 1200x630
 assets/logo.png     logo
+cloud.js            sincronização com Firebase (Auth, Firestore, Storage)
+firebase-config.js  cole aqui a configuração do seu projeto
+firestore.rules     regras de segurança do banco
+storage.rules       regras de segurança das fotos
+firebase.json       configuração de hospedagem
 docs/briefing.md    briefing completo (telas, modelo de dados, monetização)
 ```
 

@@ -1,0 +1,39 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function signedIn() { return request.auth != null; }
+
+    // Anúncios: qualquer usuário logado lê; só o dono cria/edita/apaga.
+    // Outros usuários só podem somar +1 em views ou wants.
+    match /posts/{id} {
+      allow read: if signedIn();
+      allow create: if signedIn()
+        && request.resource.data.sellerUid == request.auth.uid
+        && request.resource.data.title is string
+        && request.resource.data.title.size() > 0 && request.resource.data.title.size() <= 120;
+      allow update: if signedIn() && (
+        resource.data.sellerUid == request.auth.uid
+        || (request.resource.data.diff(resource.data).affectedKeys().hasOnly(['views','wants'])
+            && request.resource.data.views - resource.data.views <= 1
+            && request.resource.data.wants - resource.data.wants <= 1));
+      allow delete: if signedIn() && resource.data.sellerUid == request.auth.uid;
+    }
+
+    // Perfil: cada um lê e grava só o próprio.
+    match /users/{uid} {
+      allow read, write: if signedIn() && request.auth.uid == uid;
+    }
+
+    // Interesses ("Quero"): o usuário cria o seu; só ele lê.
+    match /interests/{id} {
+      allow create: if signedIn() && request.resource.data.userId == request.auth.uid;
+      allow read: if signedIn() && resource.data.userId == request.auth.uid;
+    }
+
+    // Condomínios cadastrados: todos leem; qualquer logado cadastra um novo.
+    match /condos/{id} {
+      allow read: if signedIn();
+      allow create: if signedIn() && request.resource.data.createdBy == request.auth.uid;
+    }
+  }
+}

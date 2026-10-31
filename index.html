@@ -393,6 +393,8 @@ button.pill{font-family:inherit;cursor:pointer}
 .promo .ic{filter:drop-shadow(0 3px 2px rgba(0,0,0,.2))}
 .brand img{width:auto!important;height:48px!important}.onb img{width:auto!important;height:132px!important}.push img{width:auto!important;height:34px!important}
 .brand img{filter:drop-shadow(0 0 10px rgba(34,211,238,.55))!important}
+.onbname{text-align:center;font-family:'Space Grotesk',Inter,sans-serif;font-weight:700;font-size:34px;line-height:1.05;letter-spacing:-.5px;color:#fff;margin-top:-4px}.onbname span{display:block;color:var(--cy);font-size:24px;letter-spacing:0;margin-top:4px;text-shadow:0 0 18px rgba(34,211,238,.45)}
+.onb h1{font-size:19px;margin-top:4px}.onb{padding-top:32px}
 </style>
 </head>
 <body>
@@ -678,7 +680,7 @@ function condoPicker(mode){
 function onboarding(){
  const o=S.onb;const ok=o.name.trim()&&o.apt.trim()&&o.condo;
  const list=CONDOS.filter(c=>c[1]<=2&&c[0].toLowerCase().includes(o.q.toLowerCase()));
- return `<div class="onb"><img src="${LOGO}" alt="Achados"><h1>Tudo que rola no seu prédio e nos vizinhos</h1><p>Venda, doação e achados em um raio de 2km.</p>
+ return `<div class="onb"><img src="${LOGO}" alt="Achados"><div class="onbname">Achados<span>de Condomínios</span></div><h1>Tudo que rola no seu prédio e nos vizinhos</h1><p>Venda, doação e achados em um raio de 2km.</p>
  <div class="form" style="padding:0">
   <div><label>Nome</label><input type="text" id="o-name" value="${esc(o.name)}" placeholder="Seu nome"></div>
   <div><label>Apto</label><input type="text" id="o-apt" value="${esc(o.apt)}" placeholder="Ex.: 204"></div>

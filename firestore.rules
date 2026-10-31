@@ -2,26 +2,38 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
     function signedIn() { return request.auth != null; }
+    // Administrador = quem tem um documento em admins/{uid} (criado à mão no console).
+    function isAdmin() { return signedIn() && exists(/databases/$(database)/documents/admins/$(request.auth.uid)); }
 
-    // Anúncios: qualquer usuário logado lê; só o dono cria/edita/apaga.
-    // Outros usuários só podem somar +1 em views ou wants.
+    match /admins/{uid} {
+      allow read: if signedIn() && request.auth.uid == uid;   // só para o app saber se você é admin
+      allow write: if false;                                  // criar/remover só pelo console
+    }
+
+    // Anúncios: logado lê; só o dono cria/edita/apaga. Os demais só somam +1 em views ou wants.
+    // A validade nunca pode passar de ~30 dias a partir de agora (renovação = +30 dias).
     match /posts/{id} {
       allow read: if signedIn();
       allow create: if signedIn()
         && request.resource.data.sellerUid == request.auth.uid
         && request.resource.data.title is string
-        && request.resource.data.title.size() > 0 && request.resource.data.title.size() <= 120;
+        && request.resource.data.title.size() > 0 && request.resource.data.title.size() <= 120
+        && request.resource.data.expiresAt is number
+        && request.resource.data.expiresAt <= request.time.toMillis() + 31 * 24 * 60 * 60 * 1000;
       allow update: if signedIn() && (
-        resource.data.sellerUid == request.auth.uid
+        isAdmin()
+        || (resource.data.sellerUid == request.auth.uid
+            && request.resource.data.sellerUid == request.auth.uid
+            && request.resource.data.expiresAt <= request.time.toMillis() + 31 * 24 * 60 * 60 * 1000)
         || (request.resource.data.diff(resource.data).affectedKeys().hasOnly(['views','wants'])
             && request.resource.data.views - resource.data.views <= 1
             && request.resource.data.wants - resource.data.wants <= 1));
-      allow delete: if signedIn() && resource.data.sellerUid == request.auth.uid;
+      allow delete: if signedIn() && (resource.data.sellerUid == request.auth.uid || isAdmin());
     }
 
-    // Perfil: cada um lê e grava só o próprio.
+    // Perfil (inclui e-mail para os avisos): cada um lê e grava só o próprio; admin também.
     match /users/{uid} {
-      allow read, write: if signedIn() && request.auth.uid == uid;
+      allow read, write: if signedIn() && (request.auth.uid == uid || isAdmin());
     }
 
     // Interesses ("Quero"): o usuário cria o seu; só ele lê.
@@ -30,10 +42,20 @@ service cloud.firestore {
       allow read: if signedIn() && resource.data.userId == request.auth.uid;
     }
 
-    // Condomínios cadastrados: todos leem; qualquer logado cadastra um novo.
+    // Condomínios: todos leem; qualquer logado cadastra (endereço obrigatório); só o admin altera/apaga.
     match /condos/{id} {
       allow read: if signedIn();
-      allow create: if signedIn() && request.resource.data.createdBy == request.auth.uid;
+      allow create: if signedIn()
+        && request.resource.data.createdBy == request.auth.uid
+        && request.resource.data.status in ['approved', 'pending']
+        && request.resource.data.name is string && request.resource.data.name.size() > 1
+        && request.resource.data.endereco is string && request.resource.data.endereco.size() > 4
+        && request.resource.data.bairro is string && request.resource.data.bairro.size() > 1
+        && request.resource.data.cidade is string && request.resource.data.cidade.size() > 1;
+      allow update, delete: if isAdmin();
     }
+
+    // Fila de e-mails (extensão "Trigger Email"): só o servidor escreve.
+    match /mail/{id} { allow read, write: if false; }
   }
 }

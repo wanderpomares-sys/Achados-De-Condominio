@@ -78,3 +78,16 @@ docs/briefing.md    briefing completo (telas, modelo de dados, monetização)
 ## Próximos passos
 
 App em React Native + Expo + Firebase (Auth, Firestore, Storage), AdMob Rewarded, Google Places e push, conforme o [briefing](docs/briefing.md).
+
+## Duração do anúncio, renovação e e-mail
+- Todo anúncio vale **30 dias**; depois disso some (o app esconde e a função `apagarVencidos` apaga, com foto).
+- Quando faltam **3 dias** aparece o aviso no feed e o botão **Renovar** (+30 dias) no anúncio do dono.
+- O **e-mail de aviso** é enviado pela função `avisarVencimento` (todo dia 09:00) via extensão *Trigger Email from Firestore* (SMTP/SendGrid). Exige plano **Blaze**:
+  `firebase deploy --only functions,firestore:rules,storage`
+- Sem Firebase configurado (modo local) não há e-mail; só o aviso dentro do app.
+
+## Condomínios: endereço, duplicados e aprovação
+- Cadastro exige nome, endereço (com número), bairro e cidade.
+- Se o endereço e um nome parecido já existem, o app sugere usar o existente. Se a pessoa insistir que é outro, o condomínio fica **pendente** até o admin aprovar.
+- Admin pode **aprovar, renomear, mesclar (move moradores e anúncios) ou apagar**.
+- Virar admin: Perfil → Painel do administrador → entrar com Google; depois crie no Firestore o documento `admins/{seu uid}` (qualquer conteúdo).

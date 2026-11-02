@@ -507,7 +507,7 @@
   const _feedC = window.feed;
   window.feed = function () { return _feedC().replace('Destacar (15s)', `Destacar (${VIDEOS_PER_CREDIT} vídeos)`); };
 
-  /* ---------- planos: Gratuito x Anual (R$ 9,99/ano) — limites e pedidos; cobrança por Pix entra com o servidor ---------- */
+  /* ---------- planos: Gratuito x Anual (R$ 9,90/ano) — limites e pedidos; cobrança por Pix entra com o servidor ---------- */
   const QUOTA = { free: { ads: 1, boosts: 0 }, anual: { ads: 5, boosts: 1 } };
   const monthKey = () => new Date().toISOString().slice(0, 7);
   const payLink = () => String(window.PAY_LINK || '');
@@ -550,14 +550,14 @@
     const p = plan(), req = (store.get('planReqs', []) || []).length || (window.Cloud && Cloud.myReq);
     let act;
     if (p.tier === 'anual') act = `<small><b>Seu plano está ativo até ${fmtDate(p.until)}.</b></small>`;
-    else if (payLink()) act = `<a class="cta52" href="${esc(payLink())}" target="_blank" rel="noopener" style="display:flex;align-items:center;justify-content:center;text-decoration:none;margin-top:10px">Pagar R$ 9,99 com Pix</a>
+    else if (payLink()) act = `<a class="cta52" href="${esc(payLink())}" target="_blank" rel="noopener" style="display:flex;align-items:center;justify-content:center;text-decoration:none;margin-top:10px">Pagar R$ 9,90 com Pix</a>
         <button class="ghost" data-paid style="margin-top:8px">Já paguei</button>
         <small>Depois de pagar, toque em <b>Já paguei</b>. O administrador confirma o Pix e ativa o plano.${req ? ' <b>Pedido já enviado.</b>' : ''}</small>`;
     else act = `<button class="cta52" disabled style="margin-top:10px">Pagamento por Pix em breve</button>`;
     return `<div class="ov" data-planclose><div class="sheet" id="plansheet"><div class="handle"></div><button class="close" data-planclose>✕</button><div class="form"><h2>Planos</h2>
       ${S.plansWhy === 'ads' ? `<div class="cardc"><b>Você já usou o anúncio deste mês</b><br><small>Assine o plano anual para publicar até 5 por mês.</small></div>` : ''}
       <div class="cardc"><b>Gratuito</b><br><small>1 anúncio por mês. Destaque de 24 h assistindo 3 vídeos de 15 s.</small></div>
-      <div class="cardc" style="border:2px solid var(--red,#1A63E8)"><b>Anual — R$ 9,99 por ano</b><br><small>5 anúncios por mês. 1 destaque de 24 h por mês, sem vídeo. Menos de R$ 1 por mês.</small>${act}</div></div></div></div>`;
+      <div class="cardc" style="border:2px solid var(--red,#1A63E8)"><b>Anual — R$ 9,90 por ano</b><br><small>5 anúncios por mês. 1 destaque de 24 h por mês, sem vídeo. Menos de R$ 1 por mês.</small>${act}</div></div></div></div>`;
   }
   function planReqs() { return window.CLOUD_ON ? ((window.Cloud && Cloud.planReqs) || []) : (store.get('planReqs', []) || []); }
   function planReqHtml() {

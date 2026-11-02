@@ -108,7 +108,7 @@ App em React Native + Expo + Firebase (Auth, Firestore, Storage), AdMob Rewarded
 
 ## Planos (Gratuito e Anual)
 - **Gratuito:** 1 anúncio por mês; destaque de 24 h assistindo 3 vídeos.
-- **Anual (R$ 9,99/ano):** 5 anúncios por mês e 1 destaque por mês sem vídeo.
+- **Anual (R$ 9,90/ano):** 5 anúncios por mês e 1 destaque por mês sem vídeo.
 - Pagamento por Pix via link do Mercado Pago: coloque o link em `window.PAY_LINK` no `firebase-config.js`. Vazio = botão "em breve".
 - Fluxo atual (manual): usuário paga, toca em **Já paguei** → o admin vê o pedido em "Pedidos de plano anual" e toca em **Ativar 1 ano** (grava `plans/{uid}`).
 - Atenção: contadores de cota e créditos são do lado do cliente (burláveis). A fase 2 (webhook do Mercado Pago + servidor) fará a ativação automática e a validação real.

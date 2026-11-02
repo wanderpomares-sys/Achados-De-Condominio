@@ -10,4 +10,4 @@ window.FIREBASE_CONFIG = {
 };
 
 // Link de pagamento Pix do plano anual (Efí). Enquanto vazio, o botão mostra "Pagamento por Pix em breve".
-window.PAY_LINK = "";
+window.PAY_LINK = "https://mpago.li/1tRRFzZ";

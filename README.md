@@ -113,3 +113,9 @@ App em React Native + Expo + Firebase (Auth, Firestore, Storage), AdMob Rewarded
 - Fluxo atual (manual): usuário paga, toca em **Já paguei** → o admin vê o pedido em "Pedidos de plano anual" e toca em **Ativar 1 ano** (grava `plans/{uid}`).
 - Atenção: contadores de cota e créditos são do lado do cliente (burláveis). A fase 2 (webhook do Mercado Pago + servidor) fará a ativação automática e a validação real.
 - Regras do Firestore: republique `firestore.rules` (coleções `plans` e `planRequests`).
+
+## Patrocinados (R$ 29,90 por semana)
+- Para comércio local do condomínio (mercadinho, feirinha, curso), não para morador vendendo item.
+- O comerciante abre **Perfil → Anunciar meu negócio**, preenche título, descrição e WhatsApp/site, paga o Pix (`window.PAY_SPONSOR` em `firebase-config.js`) e toca em **Já paguei**.
+- O admin vê em "Patrocinados pendentes" e toca em **Ativar 7 dias**. O card amarelo aparece a cada 4 anúncios; ao tocar, abre o WhatsApp/site.
+- Sem patrocinador ativo, aparecem os exemplos (demo). Coleção `sponsors` no Firestore: republique `firestore.rules`.

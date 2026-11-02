@@ -5,7 +5,7 @@
   const cfg = window.FIREBASE_CONFIG;
   const noop = () => {};
   if (!window.CLOUD_ON) {
-    window.Cloud = { on: false, view: noop, want: noop, boost: noop, add: noop, renew: noop, purge: noop, saveUser: noop, saveCondo: noop, report: noop, loadMore: noop, more: false, requestPlan: noop, planReqs: [] };
+    window.Cloud = { on: false, view: noop, want: noop, boost: noop, add: noop, renew: noop, purge: noop, saveUser: noop, saveCondo: noop, report: noop, loadMore: noop, more: false, requestSponsor: noop, sponsors: [], requestPlan: noop, planReqs: [] };
     return;
   }
 
@@ -60,6 +60,16 @@
   function watchPlanReqs() {
     if (reqUnsub || !C.isAdmin) return;
     reqUnsub = db.collection('planRequests').onSnapshot(s => { C.planReqs = s.docs.map(d => ({ id: d.id, ...d.data() })); render(); }, noop);
+  }
+  // patrocinados: admin acompanha ao vivo (pendentes + ativos); os demais leem os ativos uma vez
+  C.sponsors = [];
+  C.requestSponsor = rec => db && uid ? db.collection('sponsors').add(clean({ ...rec, uid, status: 'pending', ts: Date.now() })).catch(fail) : null;
+  let spUnsub = null;
+  function loadSponsors() {
+    if (!db) return;
+    const fill = s => { C.sponsors = s.docs.map(d => ({ id: d.id, ...d.data() })); window.applySponsors && applySponsors(); };
+    if (C.isAdmin) { if (!spUnsub) spUnsub = db.collection('sponsors').onSnapshot(fill, noop); }
+    else db.collection('sponsors').where('status', '==', 'active').limit(10).get().then(fill).catch(noop);
   }
   C.loadMore = () => { postLimit += 30; listenPosts(); };
   C.view = id => db && db.collection('posts').doc(id).update({ views: firebase.firestore.FieldValue.increment(1) }).catch(noop);
@@ -123,6 +133,7 @@
     try { const d = await db.collection('admins').doc(uid).get(); C.isAdmin = !!d.exists; } catch (e) { C.isAdmin = false; }
     if (window.rebuildCondos) rebuildCondos();
     watchPlanReqs();
+    loadSponsors();
     render();
   }
   C.adminLogin = async () => {
@@ -159,6 +170,8 @@
     await batch.commit();
   }
   C.adm = {
+    activateSponsor: id => db.collection('sponsors').doc(id).update({ status: 'active', until: Date.now() + 7 * 864e5 }),
+    removeSponsor: id => db.collection('sponsors').doc(id).delete(),
     activatePlan: async uid2 => { await db.collection('plans').doc(uid2).set({ tier: 'anual', until: Date.now() + 365 * 864e5, ts: Date.now() }); await db.collection('planRequests').doc(uid2).delete(); },
     rejectPlan: uid2 => db.collection('planRequests').doc(uid2).delete(),
     approve: async rec => { await db.collection('condos').doc(rec.id).update({ status: 'approved' }); },

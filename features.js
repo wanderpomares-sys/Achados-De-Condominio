@@ -336,6 +336,7 @@
     };
     return `<div class="ov" data-admclose><div class="sheet adm" id="admsheet"><div class="handle"></div><button class="close" data-admclose>✕</button><div class="form"><h2>Painel do administrador</h2>
       ${planReqHtml()}
+      ${spAdminHtml()}
       <h3>Em análise (${pend.length})</h3>${pend.map(row).join('') || '<div class="cardc"><small>Nenhum cadastro esperando aprovação.</small></div>'}
       <h3>Aprovados (${appr.length})</h3>${appr.map(row).join('') || '<div class="cardc"><small>Nenhum condomínio ainda.</small></div>'}
       <small style="color:var(--gray)">Mesclar move moradores e anúncios para o condomínio escolhido e apaga este cadastro.</small></div></div></div>`;
@@ -543,7 +544,8 @@
     const card = `<div class="row2" style="display:block;margin-top:12px"><div class="kv"><span>Meu plano</span><b>${p.tier === 'anual' ? 'Anual' : 'Gratuito'}</b></div>
       <div class="kv"><span>Anúncios neste mês</span><b>${p.ads}/${q.ads}</b></div>
       ${p.tier === 'anual' ? `<div class="kv"><span>Destaque grátis do mês</span><b>${p.boosts < q.boosts ? 'disponível' : 'usado'}</b></div><div class="kv"><span>Válido até</span><b>${fmtDate(p.until)}</b></div>` : ''}
-      <button class="ghost" data-plans style="margin-top:8px">Ver planos</button></div>`;
+      <button class="ghost" data-plans style="margin-top:8px">Ver planos</button>
+      <button class="ghost" data-spnew style="margin-top:8px">Anunciar meu negócio (patrocinado)</button></div>`;
     return _perfilP().replace('<button class="ghost" data-map=', card + '<button class="ghost" data-map=');
   };
   function plansSheet() {
@@ -587,6 +589,75 @@
       }
     }
   });
+
+  /* ---------- patrocinados: R$ 29,90 por semana (card amarelo a cada 4 anúncios) ---------- */
+  const SP_DEMO = SPONSORS.slice();
+  const spStore = () => store.get('sponsors', []) || [];
+  const spAll = () => window.CLOUD_ON ? ((window.Cloud && Cloud.sponsors) || []) : spStore();
+  function syncSponsors() {
+    const act = spAll().filter(x => x.status === 'active' && x.until > Date.now());
+    SPONSORS.length = 0; (act.length ? act : SP_DEMO).forEach(x => SPONSORS.push(x));
+  }
+  window.applySponsors = () => { syncSponsors(); render(); };
+  function spUrl(v) {
+    v = String(v || '').trim(); if (!v) return '';
+    if (/^https?:\/\//i.test(v)) return v;
+    const d = v.replace(/\D/g, ''); if (d.length >= 10 && /^[\d\s()+-]+$/.test(v)) return 'https://wa.me/' + (d.length <= 11 ? '55' + d : d);
+    return /^[\w-]+(\.[\w-]+)+/.test(v) ? 'https://' + v : '';
+  }
+  document.addEventListener('click', e => {
+    const t = e.target.closest('[data-sp]'); if (!t) return;
+    const sp = SPONSORS.find(x => x.id === t.dataset.sp);
+    if (sp && sp.link) { e.stopImmediatePropagation(); const u = spUrl(sp.link); if (u) window.open(u, '_blank', 'noopener'); else toast('Anúncio sem link'); }
+  }, true);
+  const spDraft = () => S.spForm || (S.spForm = store.get('spDraft', null) || { title: '', sub: '', link: '' });
+  function spSheet() {
+    const f = spDraft(), link = String(window.PAY_SPONSOR || ''), mine = spStore().some(x => x.status === 'pending') || window.Cloud && Cloud.mySp;
+    return `<div class="ov" data-spclose><div class="sheet" id="spsheet"><div class="handle"></div><button class="close" data-spclose>✕</button><div class="form"><h2>Anuncie seu negócio</h2>
+      <div class="cardc"><b>Card Patrocinado — R$ 29,90 por semana</b><br><small>Aparece em amarelo a cada 4 anúncios, para os moradores dos condomínios da região. Ideal para comércio, serviços e profissionais.</small></div>
+      <div><label>Título</label><input type="text" id="sp-title" maxlength="80" value="${esc(f.title)}" placeholder="Ex.: Pizzaria Forno a Lenha — 15% OFF"></div>
+      <div><label>Descrição curta</label><input type="text" id="sp-sub" maxlength="140" value="${esc(f.sub)}" placeholder="Ex.: Cupom ACHADOS15 • entrega no condomínio"></div>
+      <div><label>WhatsApp ou site</label><input type="text" id="sp-link" maxlength="200" value="${esc(f.link)}" placeholder="(11) 99999-9999 ou seusite.com.br"></div>
+      ${link ? `<a class="cta52" href="${esc(link)}" target="_blank" rel="noopener" style="display:flex;align-items:center;justify-content:center;text-decoration:none;margin-top:6px">Pagar R$ 29,90 com Pix</a>
+      <button class="ghost" data-sppaid style="margin-top:8px">Já paguei</button>
+      <small>Preencha, pague e toque em <b>Já paguei</b>. O administrador confirma o Pix e publica por 7 dias.${mine ? ' <b>Pedido já enviado.</b>' : ''}</small>` : `<button class="cta52" disabled style="margin-top:10px">Pagamento por Pix em breve</button>`}
+    </div></div></div>`;
+  }
+  function spAdminHtml() {
+    const l = spAll(), pend = l.filter(x => x.status === 'pending'), act = l.filter(x => x.status === 'active' && x.until > Date.now());
+    const row = (x, on) => `<div class="cardc"><b>${esc(x.title)}</b><small>${esc([x.sub, x.link, x.name && (x.name + ' • apto ' + (x.apt || '')), x.condo, on ? 'até ' + fmtDate(x.until) : ''].filter(Boolean).join(' • '))}</small>
+      <div class="grid2">${on ? '' : `<button class="ok" data-spact="activate" data-spid="${esc(x.id)}">Ativar 7 dias</button>`}<button class="no" data-spact="remove" data-spid="${esc(x.id)}">${on ? 'Remover' : 'Recusar'}</button></div></div>`;
+    return `<h3>Patrocinados pendentes (${pend.length})</h3>${pend.map(x => row(x, false)).join('') || '<div class="cardc"><small>Nenhum pedido esperando.</small></div>'}
+      <h3>Patrocinados no ar (${act.length})</h3>${act.map(x => row(x, true)).join('') || '<div class="cardc"><small>Nenhum no ar (aparecem os exemplos).</small></div>'}`;
+  }
+  document.addEventListener('input', e => {
+    const m = { 'sp-title': 'title', 'sp-sub': 'sub', 'sp-link': 'link' }[e.target.id]; if (!m) return;
+    spDraft()[m] = e.target.value; store.set('spDraft', S.spForm);
+  });
+  document.addEventListener('click', e => {
+    const t = e.target.closest('[data-spnew],[data-spclose],[data-sppaid],[data-spact]'); if (!t) return;
+    if (t.hasAttribute('data-spnew')) { S.spOpen = true; return render(); }
+    if (t.hasAttribute('data-spclose')) { if (e.target.closest('.sheet') && !t.matches('button.close')) return; S.spOpen = false; return render(); }
+    if (t.hasAttribute('data-sppaid')) {
+      const f = spDraft(); if (f.title.trim().length < 3) return toast('Escreva o título do anúncio');
+      if (!spUrl(f.link)) return toast('Informe um WhatsApp ou site válido');
+      const u = S.user || {}, rec = { title: f.title.trim(), sub: f.sub.trim(), link: f.link.trim(), name: u.name || '', apt: u.apt || '', condo: u.condo || '' };
+      if (window.CLOUD_ON) { Cloud.requestSponsor(rec); Cloud.mySp = true; }
+      else store.set('sponsors', spStore().concat([{ ...rec, id: 'sp' + Date.now(), status: 'pending', ts: Date.now() }]));
+      S.spForm = null; store.set('spDraft', null); S.spOpen = false;
+      toast('Pedido enviado. Assim que o Pix for confirmado, seu card entra no ar.'); return render();
+    }
+    if (t.dataset.spact) {
+      const id = t.dataset.spid, act = t.dataset.spact;
+      if (window.CLOUD_ON) {
+        (act === 'activate' ? Cloud.adm.activateSponsor(id) : Cloud.adm.removeSponsor(id)).then(() => toast('Feito')).catch(x => toast('Erro: ' + (x.message || x)));
+      } else {
+        const l = spStore();
+        store.set('sponsors', act === 'activate' ? l.map(x => x.id === id ? { ...x, status: 'active', until: Date.now() + 7 * DAY } : x) : l.filter(x => x.id !== id));
+        toast('Feito'); render();
+      }
+    }
+  });
   document.addEventListener('click', e => {
     if (!e.target.closest('[data-theme-toggle]')) return;
     const n = themeNow() === 'dark' ? 'light' : 'dark';
@@ -596,12 +667,13 @@
   });
   const _render = window.render;
   window.render = function () {
-    purgeExpired();
+    purgeExpired(); syncSponsors();
     const all = S.posts;
     S.posts = all.filter(p => !hiddenFor(p));
     try { _render(); } finally { S.posts = all; }
     if (S.adminOpen) document.getElementById('root').insertAdjacentHTML('beforeend', adminSheet());
     if (S.plansOpen) document.getElementById('root').insertAdjacentHTML('beforeend', plansSheet());
+    if (S.spOpen) document.getElementById('root').insertAdjacentHTML('beforeend', spSheet());
   };
 
   async function admAct(act, id) {

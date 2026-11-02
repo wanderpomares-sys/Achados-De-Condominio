@@ -14,4 +14,4 @@ window.PAY_LINK = "https://mpago.li/1tRRFzZ";
 window.PAY_SPONSOR = "https://mpago.li/1qy8VFx";
 
 // Endereço do Worker da Cloudflare (pagamento 100% automático). Vazio = modo manual (botão "Já paguei").
-window.PAY_WORKER = "";
+window.PAY_WORKER = "https://achados-pagamentos.wanderpomares.workers.dev";

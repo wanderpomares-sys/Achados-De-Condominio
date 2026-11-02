@@ -435,6 +435,76 @@
   document.addEventListener('click', e => {
     if (e.target.closest('[data-loadmore]') && window.Cloud) Cloud.loadMore();
   });
+
+  /* ---------- créditos de destaque: 3 vídeos = 1 destaque de 24 h (no aparelho; trava de verdade vem com o servidor) ---------- */
+  const VIDEOS_PER_CREDIT = 3;
+  const wallet = () => { const w = store.get('wallet', null) || {}; return { videos: w.videos | 0, credits: w.credits | 0 }; };
+  const saveWallet = w => store.set('wallet', w);
+  function applyBoost(postId) {
+    const p = S.posts.find(x => x.id === postId);
+    if (!p) return false;
+    p.boostedUntil = now() + 24 * H; window.Cloud && Cloud.boost(p); save();
+    return true;
+  }
+  const _startR = window.startReward;
+  window.startReward = function (kind, postId) {
+    if (kind === 'boost') {
+      const w = wallet();
+      if (w.credits > 0 && applyBoost(postId)) {         // já tem crédito: destaca direto
+        w.credits--; saveWallet(w);
+        S.reward = { kind: 'boost', postId, left: 0, msg: '' }; return render();
+      }
+      return _startR('credit', postId);                  // sem crédito: começa a ganhar assistindo
+    }
+    return _startR(kind, postId);
+  };
+  const _finishR = window.finishReward;
+  window.finishReward = function () {
+    const r = S.reward;
+    if (r && r.kind === 'credit') {
+      const w = wallet(); w.videos++; r.got = false;
+      if (w.videos >= VIDEOS_PER_CREDIT) { w.videos = 0; w.credits++; r.got = true; }
+      saveWallet(w); return;
+    }
+    return _finishR();
+  };
+  const _rewardUI = window.reward;
+  window.reward = function () {
+    const r = S.reward;
+    if (!r || r.kind !== 'credit') return _rewardUI();
+    const w = wallet(), done = r.left <= 0;
+    const n = done ? (r.got ? VIDEOS_PER_CREDIT : w.videos) : w.videos + 1;
+    const dots = Array.from({ length: VIDEOS_PER_CREDIT }, (_, i) => `<i style="display:inline-block;width:28px;height:8px;border-radius:4px;margin:0 3px;background:${i < n ? 'var(--red,#1A63E8)' : 'var(--border,#D6E0EE)'}"></i>`).join('');
+    const body = !done
+      ? `<h3>Vídeo ${n} de ${VIDEOS_PER_CREDIT}</h3><p>Ajude o app continuar grátis 💛</p><div>${dots}</div>
+         <div class="tv"><b>${r.left}s</b>vídeo patrocinado (demo)</div>
+         <div class="prog"><i style="width:${(1 - r.left / REWARD_SECS) * 100}%"></i></div>
+         <button class="ghost" data-rwcancel>Cancelar</button>`
+      : r.got
+        ? `<div style="font-size:48px">🎉</div><h3>Você ganhou 1 destaque!</h3><p>Seu anúncio fica no topo, nos 5 prédios, por 24 horas.</p>
+           <button class="cta52" style="margin-top:16px" data-usecredit>Destacar agora</button>
+           <button class="ghost" data-rwcancel style="margin-top:8px">Guardar para depois</button>`
+        : `<h3>Vídeo ${w.videos} de ${VIDEOS_PER_CREDIT} concluído</h3><div>${dots}</div>
+           <p>Faltam ${VIDEOS_PER_CREDIT - w.videos} vídeo${VIDEOS_PER_CREDIT - w.videos > 1 ? 's' : ''} para ganhar 1 destaque de 24 h.</p>
+           <button class="cta52" style="margin-top:16px" data-credmore>Assistir o próximo</button>
+           <button class="ghost" data-rwcancel style="margin-top:8px">Agora não</button>`;
+    return `<div class="ov"><div class="sheet"><div class="handle"></div><div class="rw">${body}</div></div></div>`;
+  };
+  document.addEventListener('click', e => {
+    if (e.target.closest('[data-usecredit]') && S.reward) {
+      const w = wallet(), id = S.reward.postId;
+      if (w.credits > 0 && applyBoost(id)) { w.credits--; saveWallet(w); S.reward = { kind: 'boost', postId: id, left: 0, msg: '' }; render(); }
+    } else if (e.target.closest('[data-credmore]') && S.reward) {
+      const id = S.reward.postId; S.reward = null; _startR('credit', id);
+    }
+  });
+  const _perfilC = window.perfil;
+  window.perfil = function () {
+    const w = wallet();
+    return _perfilC().replace('<button class="ghost" data-map=', `<div class="row2" style="display:block;margin-top:12px"><div class="kv"><span>Destaques disponíveis</span><b>${w.credits}</b></div><div class="kv"><span>Vídeos para o próximo</span><b>${w.videos}/${VIDEOS_PER_CREDIT}</b></div></div><button class="ghost" data-map=`);
+  };
+  const _feedC = window.feed;
+  window.feed = function () { return _feedC().replace('Destacar (15s)', `Destacar (${VIDEOS_PER_CREDIT} vídeos)`); };
   document.addEventListener('click', e => {
     if (!e.target.closest('[data-theme-toggle]')) return;
     const n = themeNow() === 'dark' ? 'light' : 'dark';

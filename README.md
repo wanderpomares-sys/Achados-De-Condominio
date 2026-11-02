@@ -101,3 +101,7 @@ App em React Native + Expo + Firebase (Auth, Firestore, Storage), AdMob Rewarded
 - O feed carrega **30 anúncios por vez** (botão "Ver mais anúncios" carrega mais 30).
 - A lista de condomínios fica **guardada no aparelho por 6 horas** (só o administrador acompanha ao vivo).
 - Meta: poucas leituras por usuário por dia para ficar na cota grátis (50 mil leituras/dia).
+
+## Créditos de destaque
+- Cada 3 vídeos de 15 s (hoje simulados) dão 1 crédito = 1 destaque de 24 h. Com crédito, o destaque é direto, sem vídeo.
+- O saldo aparece no Perfil. Por enquanto fica só no aparelho (não protegido contra fraude); a trava de verdade vem junto com o servidor de pagamentos.

@@ -5,7 +5,7 @@
   const cfg = window.FIREBASE_CONFIG;
   const noop = () => {};
   if (!window.CLOUD_ON) {
-    window.Cloud = { on: false, view: noop, want: noop, boost: noop, add: noop, renew: noop, purge: noop, saveUser: noop, saveCondo: noop, report: noop, loadMore: noop, more: false, requestSponsor: noop, sponsors: [], requestPlan: noop, planReqs: [] };
+    window.Cloud = { on: false, view: noop, want: noop, boost: noop, add: noop, renew: noop, purge: noop, saveUser: noop, saveCondo: noop, report: noop, loadMore: noop, more: false, requestSponsor: noop, checkout: noop, sponsors: [], requestPlan: noop, planReqs: [] };
     return;
   }
 
@@ -63,6 +63,14 @@
   }
   // patrocinados: admin acompanha ao vivo (pendentes + ativos); os demais leem os ativos uma vez
   C.sponsors = [];
+  // pagamento automático: o Worker cria o Pix no Mercado Pago e libera tudo quando o pagamento é confirmado
+  C.checkout = async (type, sponsor) => {
+    const idToken = await firebase.auth().currentUser.getIdToken();
+    const r = await fetch(String(window.PAY_WORKER).replace(/\/$/, '') + '/checkout', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ type, idToken, sponsor, back: location.origin + location.pathname }) });
+    const j = await r.json().catch(() => ({}));
+    if (!r.ok || !j.url) throw new Error(j.error || 'Não foi possível criar o pagamento');
+    return j.url;
+  };
   C.requestSponsor = rec => db && uid ? db.collection('sponsors').add(clean({ ...rec, uid, status: 'pending', ts: Date.now() })).catch(fail) : null;
   let spUnsub = null;
   function loadSponsors() {

@@ -12,3 +12,6 @@ window.FIREBASE_CONFIG = {
 // Link de pagamento Pix do plano anual (Efí). Enquanto vazio, o botão mostra "Pagamento por Pix em breve".
 window.PAY_LINK = "https://mpago.li/1tRRFzZ";
 window.PAY_SPONSOR = "https://mpago.li/1qy8VFx";
+
+// Endereço do Worker da Cloudflare (pagamento 100% automático). Vazio = modo manual (botão "Já paguei").
+window.PAY_WORKER = "";

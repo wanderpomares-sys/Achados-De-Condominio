@@ -1,0 +1,5 @@
+
+# segredos nunca no repositório
+*adminsdk*.json
+*service-account*.json
+.dev.vars

@@ -512,6 +512,13 @@
   const QUOTA = { free: { ads: 1, boosts: 0 }, anual: { ads: 5, boosts: 1 } };
   const monthKey = () => new Date().toISOString().slice(0, 7);
   const payLink = () => String(window.PAY_LINK || '');
+  const autoPay = () => !!(window.PAY_WORKER && window.CLOUD_ON);
+  async function goPay(type, sponsor) {
+    if (S.paying) return; S.paying = true; toast('Abrindo o pagamento…');
+    try { location.href = await Cloud.checkout(type, sponsor); }
+    catch (x) { S.paying = false; toast('Erro: ' + (x.message || x)); }
+  }
+  (function () { const m = /[?&]pago=(plan|sponsor)/.exec(location.search); if (m) { setTimeout(() => toast('Pagamento recebido! Estamos liberando…'), 600); try { history.replaceState(null, '', location.pathname); } catch (x) {} } })();
   function plan() {
     const p = store.get('plan', null) || {};
     const fresh = p.month === monthKey();
@@ -552,6 +559,8 @@
     const p = plan(), req = (store.get('planReqs', []) || []).length || (window.Cloud && Cloud.myReq);
     let act;
     if (p.tier === 'anual') act = `<small><b>Seu plano está ativo até ${fmtDate(p.until)}.</b></small>`;
+    else if (autoPay()) act = `<button class="cta52" data-autopay="plan" style="margin-top:10px">Pagar R$ 9,90 com Pix</button>
+        <small>Assim que o Pix for confirmado, o plano é liberado <b>automaticamente</b>.</small>`;
     else if (payLink()) act = `<a class="cta52" href="${esc(payLink())}" target="_blank" rel="noopener" style="display:flex;align-items:center;justify-content:center;text-decoration:none;margin-top:10px">Pagar R$ 9,90 com Pix</a>
         <button class="ghost" data-paid style="margin-top:8px">Já paguei</button>
         <small>Depois de pagar, toque em <b>Já paguei</b>. O administrador confirma o Pix e ativa o plano.${req ? ' <b>Pedido já enviado.</b>' : ''}</small>`;
@@ -618,7 +627,8 @@
       <div><label>Título</label><input type="text" id="sp-title" maxlength="80" value="${esc(f.title)}" placeholder="Ex.: Pizzaria Forno a Lenha — 15% OFF"></div>
       <div><label>Descrição curta</label><input type="text" id="sp-sub" maxlength="140" value="${esc(f.sub)}" placeholder="Ex.: Cupom ACHADOS15 • entrega no condomínio"></div>
       <div><label>WhatsApp ou site</label><input type="text" id="sp-link" maxlength="200" value="${esc(f.link)}" placeholder="(11) 99999-9999 ou seusite.com.br"></div>
-      ${link ? `<a class="cta52" href="${esc(link)}" target="_blank" rel="noopener" style="display:flex;align-items:center;justify-content:center;text-decoration:none;margin-top:6px">Pagar R$ 29,90 com Pix</a>
+      ${autoPay() ? `<button class="cta52" data-autopay="sponsor" style="margin-top:6px">Pagar R$ 29,90 com Pix</button>
+      <small>Preencha e pague. Assim que o Pix for confirmado, seu card entra no ar <b>automaticamente</b> por 7 dias.</small>` : link ? `<a class="cta52" href="${esc(link)}" target="_blank" rel="noopener" style="display:flex;align-items:center;justify-content:center;text-decoration:none;margin-top:6px">Pagar R$ 29,90 com Pix</a>
       <button class="ghost" data-sppaid style="margin-top:8px">Já paguei</button>
       <small>Preencha, pague e toque em <b>Já paguei</b>. O administrador confirma o Pix e publica por 7 dias.${mine ? ' <b>Pedido já enviado.</b>' : ''}</small>` : `<button class="cta52" disabled style="margin-top:10px">Pagamento por Pix em breve</button>`}
     </div></div></div>`;
@@ -633,6 +643,14 @@
   document.addEventListener('input', e => {
     const m = { 'sp-title': 'title', 'sp-sub': 'sub', 'sp-link': 'link' }[e.target.id]; if (!m) return;
     spDraft()[m] = e.target.value; store.set('spDraft', S.spForm);
+  });
+  document.addEventListener('click', e => {
+    const a = e.target.closest('[data-autopay]'); if (!a) return;
+    if (a.dataset.autopay === 'plan') return goPay('plan');
+    const f = spDraft(), u = S.user || {};
+    if (f.title.trim().length < 3) return toast('Escreva o título do anúncio');
+    if (!spUrl(f.link)) return toast('Informe um WhatsApp ou site válido');
+    goPay('sponsor', { title: f.title.trim(), sub: f.sub.trim(), link: f.link.trim(), name: u.name || '', apt: u.apt || '', condo: u.condo || '' });
   });
   document.addEventListener('click', e => {
     const t = e.target.closest('[data-spnew],[data-spclose],[data-sppaid],[data-spact]'); if (!t) return;

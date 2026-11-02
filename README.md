@@ -119,3 +119,6 @@ App em React Native + Expo + Firebase (Auth, Firestore, Storage), AdMob Rewarded
 - O comerciante abre **Perfil → Anunciar meu negócio**, preenche título, descrição e WhatsApp/site, paga o Pix (`window.PAY_SPONSOR` em `firebase-config.js`) e toca em **Já paguei**.
 - O admin vê em "Patrocinados pendentes" e toca em **Ativar 7 dias**. O card amarelo aparece a cada 4 anúncios; ao tocar, abre o WhatsApp/site.
 - Sem patrocinador ativo, aparecem os exemplos (demo). Coleção `sponsors` no Firestore: republique `firestore.rules`.
+
+## Pagamento automático
+Veja `worker/LEIAME.md`. Com `window.PAY_WORKER` preenchido, planos e patrocinados são liberados sozinhos após o Pix (Cloudflare Worker + webhook do Mercado Pago).

@@ -628,8 +628,10 @@ const TYPES={venda:{l:'VENDA',c:'#2ECC71'},doacao:{l:'DOAÇÃO',c:'#3498DB'},ach
 const FILTERS=[['all','✨','Tudo'],['venda','💰','Venda'],['doacao','🎁','Doação'],['achado','🔑','Achados'],['novidade','🎉','Novidades'],['evento','📅','Eventos'],['vaga','🅿️','Vagas'],['curso','📚','Cursos']];
 const GRAD={venda:'linear-gradient(145deg,#7BF0B8,#2DC98A)',doacao:'linear-gradient(145deg,#8CC8FF,#3D8BFF)',achado:'linear-gradient(145deg,#FFE27A,#FFB020)',novidade:'linear-gradient(145deg,#C5A8FF,#8B5CF6)',evento:'linear-gradient(145deg,#FFA8D6,#F0528F)',vaga:'linear-gradient(145deg,#C9D6EA,#8FA6C8)',curso:'linear-gradient(145deg,#8DEBFF,#27B4E0)'};
 const DEFAULT_EMOJI={venda:'🛍️',doacao:'🎁',achado:'🔑',novidade:'🎉',evento:'📅',vaga:'🅿️',curso:'📚'};
-// Condomínios (mock de Google Places, raio 2km)
-const CONDOS=[['Cond. Solar',0.0],['Cond. Flores',0.3],['Cond. Village',1.2],['Cond. Vista Verde',0.8],['Cond. Parque das Águas',1.6],['Cond. Mirante',1.9],['Cond. Bosque Azul',2.4]];
+// Condomínios (mock de Google Places, raio 20km)
+const RADIUS_MAX=20,RADIUS_OPTS=[2,5,10,20]; // o morador escolhe a distância, até 20 km
+const RAD=()=>Math.min(RADIUS_MAX,(S.user&&S.user.radius)||5);
+const CONDOS=[['Cond. Solar',0.0],['Cond. Flores',0.3],['Cond. Village',1.2],['Cond. Vista Verde',0.8],['Cond. Parque das Águas',1.6],['Cond. Mirante',1.9],['Cond. Bosque Azul',2.4],['Cond. Vale Verde',8.5],['Cond. Alto da Serra',14.2],['Cond. Lagoa Dourada',18.7]];
 const H=3600e3,M=60e3;
 const now=()=>Date.now();
 const SEED=[
@@ -684,14 +686,14 @@ const priceHtml=p=>{
 };
 const isBoost=p=>p.boostedUntil>now();
 function visible(){
- let l=S.posts.filter(p=>S.scope==='pred'?p.isMy:p.distance<=2&&p.reach!=='pred');
+ let l=S.posts.filter(p=>S.scope==='pred'?p.isMy:p.distance<=RAD()&&p.reach!=='pred');
  if(S.filter!=='all')l=l.filter(p=>p.type===S.filter);
  const q=S.q.trim().toLowerCase();
  if(q)l=l.filter(p=>(p.title+' '+p.description+' '+p.building+' '+p.seller+' '+TYPES[p.type].l).toLowerCase().includes(q));
  return l.sort((a,b)=>(isBoost(b)-isBoost(a))||(b.ts-a.ts));
 }
 const countMy=()=>S.posts.filter(p=>p.isMy).length;
-const countViz=()=>S.posts.filter(p=>p.distance<=2&&p.reach!=='pred').length;
+const countViz=()=>S.posts.filter(p=>p.distance<=RAD()&&p.reach!=='pred').length;
 
 /* ---------- views ---------- */
 function short(b){return b.replace('Cond. ','')}
@@ -726,7 +728,7 @@ function feed(){
  if(boosted.length)sections.push(['⚡','Em destaque','Anúncios impulsionados',boosted,'#F59E0B']);
  const mine=rest.filter(p=>p.isMy),viz=rest.filter(p=>!p.isMy);
  if(mine.length)sections.push(['🏢','No seu prédio',esc(short(S.user.condo))+' • seus vizinhos de porta',mine,'#1A63E8']);
- if(viz.length&&S.scope!=='pred')sections.push(['📍','Nos vizinhos','Condomínios em até 2 km',viz,'#0EA5A4']);
+ if(viz.length&&S.scope!=='pred')sections.push(['📍','Nos vizinhos','Condomínios em até '+RAD()+' km',viz,'#0EA5A4']);
  sections.forEach(([ic,t,sub,arr,col],si2)=>{
   out+=`<section class="blk">${secHead(ic,t,sub,arr.length,col)}`;
   arr.forEach(p=>{
@@ -737,12 +739,12 @@ function feed(){
   out+='</section>';
  });
  if(!l.length)out=`<div class="empty"><b>🔎</b>Nada por aqui ainda.<br>Tente outro filtro ou publique o primeiro anúncio!</div>`;
- return `<header class="hdr"><div class="brand"><img src="${LOGO}" alt="Achados"><b>Achados<small>de Condomínios</small></b></div><button class="pill" data-map="${esc(S.user.condo)}">📍 ${esc(S.user.cityShort||'Mogi')} • 2km</button></header>
+ return `<header class="hdr"><div class="brand"><img src="${LOGO}" alt="Achados"><b>Achados<small>de Condomínios</small></b></div><button class="pill" data-map="${esc(S.user.condo)}">📍 ${esc(S.user.cityShort||'Mogi')} • ${RAD()}km</button></header>
  <section class="top">
   <div class="greet"><div>Olá, <b>${esc(S.user.name.split(' ')[0])}</b> 👋</div><span>${esc(short(S.user.condo))} • Apto ${esc(S.user.apt)}</span></div>
   <div class="search"><span>🔍</span><input id="q" value="${esc(S.q)}" placeholder="Buscar sofá, vaga, feirinha..." autocomplete="off"></div>
   <div class="lab">Onde procurar</div>
-  <div class="scopes"><button class="${S.scope==='pred'?'on':''}" data-scope="pred">Meu Prédio • ${countMy()}</button><button class="${S.scope==='viz'?'on':''}" data-scope="viz">Vizinhos 2km • ${countViz()}</button></div>
+  <div class="scopes"><button class="${S.scope==='pred'?'on':''}" data-scope="pred">Meu Prédio • ${countMy()}</button><button class="${S.scope==='viz'?'on':''}" data-scope="viz">Vizinhos ${RAD()}km • ${countViz()}</button></div>
  </section>
 <div class="layout">
   <aside class="rail" aria-label="Atalhos">
@@ -775,7 +777,7 @@ function perfil(){
 function condoPicker(mode){
  const onb=mode==='onb';const q=(onb?S.onb.q:S.cq).toLowerCase();
  const sel=onb?S.onb.condo:S.user.condo;
- const list=CONDOS.filter(c=>c[1]<=2&&c[0].toLowerCase().includes(q));
+ const list=CONDOS.filter(c=>c[0].toLowerCase().includes(q));
  const g=S.reg;
  return `<input type="text" id="${onb?'o-q':'c-q'}" value="${esc(onb?S.onb.q:S.cq)}" placeholder="Buscar condomínio..." autocomplete="off" style="margin-bottom:8px">
   <div class="sug">${list.map(c=>`<button class="${sel===c[0]?'on':''}" ${onb?'data-condo':'data-condopick'}="${esc(c[0])}">${esc(c[0])}<small>${c[1]===0?(c[2]?esc(c[2]):'aqui'):c[1].toLocaleString('pt-BR')+' km'}</small></button>`).join('')||'<button disabled>Nenhum condomínio encontrado</button>'}</div>
@@ -789,12 +791,12 @@ function condoPicker(mode){
 }
 function onboarding(){
  const o=S.onb;const ok=o.name.trim()&&o.apt.trim()&&o.condo;
- const list=CONDOS.filter(c=>c[1]<=2&&c[0].toLowerCase().includes(o.q.toLowerCase()));
- return `<div class="onb"><img src="${LOGO}" alt="Achados"><div class="onbname">Achados<span>de Condomínios</span></div><h1>Tudo que rola no seu prédio e nos vizinhos</h1><p>Venda, doação e achados em um raio de 2km.</p>
+ const list=CONDOS.filter(c=>c[0].toLowerCase().includes(o.q.toLowerCase()));
+ return `<div class="onb"><img src="${LOGO}" alt="Achados"><div class="onbname">Achados<span>de Condomínios</span></div><h1>Tudo que rola no seu prédio e nos vizinhos</h1><p>Venda, doação e achados em um raio de até 20km.</p>
  <div class="form" style="padding:0">
   <div><label>Nome</label><input type="text" id="o-name" value="${esc(o.name)}" placeholder="Seu nome"></div>
   <div><label>Apto</label><input type="text" id="o-apt" value="${esc(o.apt)}" placeholder="Ex.: 204"></div>
-  <div><label>Condomínio <small style="color:var(--gray);font-weight:400">(raio 2km • Google Places)</small></label>
+  <div><label>Condomínio <small style="color:var(--gray);font-weight:400">(onde você mora)</small></label>
    ${condoPicker('onb')}
   </div>
   <button class="cta48" id="o-go" ${ok?'':'disabled'}>Ver o que tem no meu bairro →</button></div></div>`;
@@ -852,7 +854,7 @@ function newPost(){
    ${f.free?'':`<input type="number" inputmode="decimal" id="f-price" value="${esc(f.price)}" placeholder="R$" style="margin-top:8px">`}</div>
   <div><label>Foto</label><label class="up" style="${f.img?`background-image:url(${f.img});color:transparent`:''}">📷 Toque para enviar<input type="file" accept="image/*" id="f-img" hidden></label></div>
   <div><label>Descrição</label><textarea id="f-desc" placeholder="Estado, medidas, como retirar...">${esc(f.desc)}</textarea></div>
-  <div><label>Alcance</label><div class="row"><button class="opt ${f.reach==='pred'?'on':''}" data-reach="pred">🏢 Só meu prédio</button><button class="opt ${f.reach==='viz'?'on':''}" data-reach="viz">📍 Vizinhos 2km</button></div></div>
+  <div><label>Alcance</label><div class="row"><button class="opt ${f.reach==='pred'?'on':''}" data-reach="pred">🏢 Só meu prédio</button><button class="opt ${f.reach==='viz'?'on':''}" data-reach="viz">📍 Vizinhos ${RAD()}km</button></div></div>
   <button class="cta52" id="f-go" ${f.title.trim()?'':'disabled'}>Publicar</button></div></div></div>`;
 }
 function reward(){

@@ -1,6 +1,6 @@
 # Achados de Condomínios
 
-Marketplace hiperlocal entre prédios: venda, doação, achados, eventos, vagas e cursos entre vizinhos em um raio de 2 km.
+Marketplace hiperlocal entre prédios: venda, doação, achados, eventos, vagas e cursos entre vizinhos em um raio escolhido por você (2, 5, 10 ou 20 km).
 
 Este repositório contém o **protótipo HTML** (arquivo único, sem build) e o briefing do app.
 
@@ -15,8 +15,8 @@ Abra o arquivo direto no navegador (use largura de celular, até 400 px). Adicio
 
 ## O que o protótipo faz
 
-- Onboarding: nome, apto e condomínio (lista em raio de 2 km, cadastro de condomínio novo)
-- Feed com busca, escopo (Meu Prédio / Vizinhos 2 km), barra lateral de atalhos por categoria e seções
+- Onboarding: nome, apto e condomínio (lista em raio escolhido pelo morador, até 20 km, cadastro de condomínio novo)
+- Feed com busca, escopo (Meu Prédio / Vizinhos (distância escolhida)), barra lateral de atalhos por categoria e seções
 - Card patrocinado a cada 4º card e banner "Destaque seu anúncio"
 - Vídeo rewarded de 15 s antes de liberar o WhatsApp (com mensagem pronta copiada) ou destacar um anúncio por 24 h
 - Detalhe do anúncio, mapa do condomínio com "Como chegar" (Google Maps e Waze)

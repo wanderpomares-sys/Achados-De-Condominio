@@ -13,6 +13,10 @@
   /* ---------- estilos ---------- */
   const st = document.createElement('style');
   st.textContent = `
+  .rad span{flex:none}
+  .rad{display:flex;align-items:center;gap:6px;margin:8px 0 4px;font-size:13px;font-weight:700;color:var(--gray,#5B6B80)}
+  .rad button{height:32px;flex:1;min-width:0;white-space:nowrap;padding:0 4px;border-radius:16px;border:1px solid var(--border,#D6E0EE);background:transparent;color:var(--dark,#12263F);font-weight:700;font-size:13px;cursor:pointer;font-family:inherit}
+  .rad button.on{background:var(--red,#1A63E8);color:#fff;border-color:var(--red,#1A63E8)}
   .hbtns{display:flex;align-items:center;gap:8px;flex:none}
   .themebtn{width:40px;height:40px;border-radius:50%;border:1px solid var(--border,#D6E0EE);background:transparent;color:var(--red,#1A63E8);display:flex;align-items:center;justify-content:center;padding:0;cursor:pointer;flex:none}
   .themebtn svg{width:20px;height:20px}
@@ -116,7 +120,7 @@
     const onb = mode === 'onb';
     const q = (onb ? S.onb.q : S.cq).toLowerCase();
     const sel = onb ? S.onb.condo : S.user.condo;
-    const list = CONDOS.filter(c => c[1] <= 2 && c[0].toLowerCase().includes(q));
+    const list = CONDOS.filter(c => c[0].toLowerCase().includes(q));
     const g = S.reg;
     const label = c => c[5] === 'pending' ? 'em análise' : (c[2] ? esc(c[2]) : (c[1] === 0 ? 'aqui' : c[1].toLocaleString('pt-BR') + ' km'));
     const matches = (g.open && g.mode === mode && g.matches && g.matches.length) ? `
@@ -359,6 +363,22 @@
     const btn = `<button class="themebtn" data-theme-toggle aria-label="${dark ? 'Mudar para tema claro' : 'Mudar para tema escuro'}">${dark ? SUN : MOON}</button>`;
     return h.replace(/(<button class="pill" data-map="[^"]*">[^<]*<\/button>)/, `<div class="hbtns">${btn}$1</div>`);
   };
+
+  /* ---------- distância escolhida pelo morador (2, 5, 10 ou 20 km) ---------- */
+  const _feedR = window.feed;
+  window.feed = function () {
+    let h = _feedR();
+    if (S.scope !== 'viz' || !S.user) return h;
+    const cur = RAD();
+    const chips = `<div class="rad"><span>Distância:</span>${RADIUS_OPTS.map(n => `<button class="${n === cur ? 'on' : ''}" data-rad="${n}">${n} km</button>`).join('')}</div>`;
+    return h.replace(/(<div class="scopes">.*?<\/div>)/s, '$1' + chips);
+  };
+  document.addEventListener('click', e => {
+    const t = e.target.closest('[data-rad]');
+    if (!t || !S.user) return;
+    S.user.radius = Math.min(RADIUS_MAX, Number(t.dataset.rad) || 5);
+    save(); render();
+  });
   document.addEventListener('click', e => {
     if (!e.target.closest('[data-theme-toggle]')) return;
     const n = themeNow() === 'dark' ? 'light' : 'dark';

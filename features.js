@@ -335,6 +335,7 @@
       </div>`;
     };
     return `<div class="ov" data-admclose><div class="sheet adm" id="admsheet"><div class="handle"></div><button class="close" data-admclose>✕</button><div class="form"><h2>Painel do administrador</h2>
+      ${planReqHtml()}
       <h3>Em análise (${pend.length})</h3>${pend.map(row).join('') || '<div class="cardc"><small>Nenhum cadastro esperando aprovação.</small></div>'}
       <h3>Aprovados (${appr.length})</h3>${appr.map(row).join('') || '<div class="cardc"><small>Nenhum condomínio ainda.</small></div>'}
       <small style="color:var(--gray)">Mesclar move moradores e anúncios para o condomínio escolhido e apaga este cadastro.</small></div></div></div>`;
@@ -505,6 +506,87 @@
   };
   const _feedC = window.feed;
   window.feed = function () { return _feedC().replace('Destacar (15s)', `Destacar (${VIDEOS_PER_CREDIT} vídeos)`); };
+
+  /* ---------- planos: Gratuito x Anual (R$ 9,99/ano) — limites e pedidos; cobrança por Pix entra com o servidor ---------- */
+  const QUOTA = { free: { ads: 1, boosts: 0 }, anual: { ads: 5, boosts: 1 } };
+  const monthKey = () => new Date().toISOString().slice(0, 7);
+  const payLink = () => String(window.PAY_LINK || '');
+  function plan() {
+    const p = store.get('plan', null) || {};
+    const fresh = p.month === monthKey();
+    return { tier: p.tier === 'anual' && p.until > Date.now() ? 'anual' : 'free', until: p.until || 0, month: monthKey(), ads: fresh ? (p.ads | 0) : 0, boosts: fresh ? (p.boosts | 0) : 0 };
+  }
+  const savePlan = p => store.set('plan', p);
+  window.applyCloudPlan = d => { const cur = plan(); savePlan({ ...cur, tier: d && d.tier === 'anual' ? 'anual' : 'free', until: d && d.until ? d.until : 0 }); render(); };
+
+  // publicar: gratuito = 1 anúncio por mês; anual = 5
+  document.addEventListener('click', e => {
+    if (e.target.id !== 'f-go' || !S.form || !S.form.title.trim()) return;
+    const p = plan();
+    if (p.ads >= QUOTA[p.tier].ads) { e.stopImmediatePropagation(); e.preventDefault(); S.plansOpen = true; S.plansWhy = 'ads'; render(); return; }
+    p.ads++; savePlan(p);
+  }, true);
+  // destaque do mês incluso no plano anual (sem vídeo)
+  const _startP = window.startReward;
+  window.startReward = function (kind, postId) {
+    if (kind === 'boost') {
+      const p = plan();
+      if (p.tier === 'anual' && p.boosts < QUOTA.anual.boosts && applyBoost(postId)) {
+        p.boosts++; savePlan(p); S.reward = { kind: 'boost', postId, left: 0, msg: '' }; return render();
+      }
+    }
+    return _startP(kind, postId);
+  };
+  const _perfilP = window.perfil;
+  window.perfil = function () {
+    const p = plan(), q = QUOTA[p.tier];
+    const card = `<div class="row2" style="display:block;margin-top:12px"><div class="kv"><span>Meu plano</span><b>${p.tier === 'anual' ? 'Anual' : 'Gratuito'}</b></div>
+      <div class="kv"><span>Anúncios neste mês</span><b>${p.ads}/${q.ads}</b></div>
+      ${p.tier === 'anual' ? `<div class="kv"><span>Destaque grátis do mês</span><b>${p.boosts < q.boosts ? 'disponível' : 'usado'}</b></div><div class="kv"><span>Válido até</span><b>${fmtDate(p.until)}</b></div>` : ''}
+      <button class="ghost" data-plans style="margin-top:8px">Ver planos</button></div>`;
+    return _perfilP().replace('<button class="ghost" data-map=', card + '<button class="ghost" data-map=');
+  };
+  function plansSheet() {
+    const p = plan(), req = (store.get('planReqs', []) || []).length || (window.Cloud && Cloud.myReq);
+    let act;
+    if (p.tier === 'anual') act = `<small><b>Seu plano está ativo até ${fmtDate(p.until)}.</b></small>`;
+    else if (payLink()) act = `<a class="cta52" href="${esc(payLink())}" target="_blank" rel="noopener" style="display:flex;align-items:center;justify-content:center;text-decoration:none;margin-top:10px">Pagar R$ 9,99 com Pix</a>
+        <button class="ghost" data-paid style="margin-top:8px">Já paguei</button>
+        <small>Depois de pagar, toque em <b>Já paguei</b>. O administrador confirma o Pix e ativa o plano.${req ? ' <b>Pedido já enviado.</b>' : ''}</small>`;
+    else act = `<button class="cta52" disabled style="margin-top:10px">Pagamento por Pix em breve</button>`;
+    return `<div class="ov" data-planclose><div class="sheet" id="plansheet"><div class="handle"></div><button class="close" data-planclose>✕</button><div class="form"><h2>Planos</h2>
+      ${S.plansWhy === 'ads' ? `<div class="cardc"><b>Você já usou o anúncio deste mês</b><br><small>Assine o plano anual para publicar até 5 por mês.</small></div>` : ''}
+      <div class="cardc"><b>Gratuito</b><br><small>1 anúncio por mês. Destaque de 24 h assistindo 3 vídeos de 15 s.</small></div>
+      <div class="cardc" style="border:2px solid var(--red,#1A63E8)"><b>Anual — R$ 9,99 por ano</b><br><small>5 anúncios por mês. 1 destaque de 24 h por mês, sem vídeo. Menos de R$ 1 por mês.</small>${act}</div></div></div></div>`;
+  }
+  function planReqs() { return window.CLOUD_ON ? ((window.Cloud && Cloud.planReqs) || []) : (store.get('planReqs', []) || []); }
+  function planReqHtml() {
+    const list = planReqs();
+    return `<h3>Pedidos de plano anual (${list.length})</h3>${list.map(r => `<div class="cardc"><b>${esc(r.name || '')} • apto ${esc(r.apt || '')}</b>
+      <small>${esc([r.condo, r.email, r.ts ? fmtDate(r.ts) : ''].filter(Boolean).join(' • '))}</small>
+      <div class="grid2"><button class="ok" data-planact="activate" data-uid="${esc(r.uid || r.id)}">Ativar 1 ano</button><button class="no" data-planact="reject" data-uid="${esc(r.uid || r.id)}">Recusar</button></div></div>`).join('') || '<div class="cardc"><small>Nenhum pedido esperando.</small></div>'}`;
+  }
+  document.addEventListener('click', e => {
+    const t = e.target.closest('[data-plans],[data-planclose],[data-paid],[data-planact]');
+    if (!t) return;
+    if (t.hasAttribute('data-plans')) { S.plansOpen = true; S.plansWhy = ''; return render(); }
+    if (t.hasAttribute('data-planclose')) { if (e.target.closest('.sheet') && !t.matches('button.close')) return; S.plansOpen = false; return render(); }
+    if (t.hasAttribute('data-paid')) {
+      const u = S.user || {}, info = { name: u.name, apt: u.apt, email: u.email || '', condo: u.condo, uid: u.id || 'local', ts: Date.now() };
+      if (window.CLOUD_ON) { window.Cloud && Cloud.requestPlan(info); Cloud.myReq = true; }
+      else store.set('planReqs', [info]);
+      toast('Pedido enviado. Assim que o Pix for confirmado, o plano é ativado.'); return render();
+    }
+    if (t.dataset.planact) {
+      const uid2 = t.dataset.uid, act = t.dataset.planact;
+      if (window.CLOUD_ON) {
+        (act === 'activate' ? Cloud.adm.activatePlan(uid2) : Cloud.adm.rejectPlan(uid2)).then(() => toast(act === 'activate' ? 'Plano ativado' : 'Pedido recusado')).catch(x => toast('Erro: ' + (x.message || x)));
+      } else {
+        if (act === 'activate') savePlan({ tier: 'anual', until: Date.now() + 365 * DAY, month: monthKey(), ads: 0, boosts: 0 });
+        store.set('planReqs', []); toast(act === 'activate' ? 'Plano ativado' : 'Pedido recusado'); render();
+      }
+    }
+  });
   document.addEventListener('click', e => {
     if (!e.target.closest('[data-theme-toggle]')) return;
     const n = themeNow() === 'dark' ? 'light' : 'dark';
@@ -519,6 +601,7 @@
     S.posts = all.filter(p => !hiddenFor(p));
     try { _render(); } finally { S.posts = all; }
     if (S.adminOpen) document.getElementById('root').insertAdjacentHTML('beforeend', adminSheet());
+    if (S.plansOpen) document.getElementById('root').insertAdjacentHTML('beforeend', plansSheet());
   };
 
   async function admAct(act, id) {

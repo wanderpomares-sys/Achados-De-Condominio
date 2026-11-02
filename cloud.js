@@ -5,7 +5,7 @@
   const cfg = window.FIREBASE_CONFIG;
   const noop = () => {};
   if (!window.CLOUD_ON) {
-    window.Cloud = { on: false, view: noop, want: noop, boost: noop, add: noop, renew: noop, purge: noop, saveUser: noop, saveCondo: noop, report: noop, loadMore: noop, more: false };
+    window.Cloud = { on: false, view: noop, want: noop, boost: noop, add: noop, renew: noop, purge: noop, saveUser: noop, saveCondo: noop, report: noop, loadMore: noop, more: false, requestPlan: noop, planReqs: [] };
     return;
   }
 
@@ -54,7 +54,13 @@
     render();
   };
 
-  C.more = false;
+  C.more = false; C.planReqs = [];
+  C.requestPlan = info => db && uid && db.collection('planRequests').doc(uid).set(clean({ ...info, uid })).catch(fail);
+  let reqUnsub = null;
+  function watchPlanReqs() {
+    if (reqUnsub || !C.isAdmin) return;
+    reqUnsub = db.collection('planRequests').onSnapshot(s => { C.planReqs = s.docs.map(d => ({ id: d.id, ...d.data() })); render(); }, noop);
+  }
   C.loadMore = () => { postLimit += 30; listenPosts(); };
   C.view = id => db && db.collection('posts').doc(id).update({ views: firebase.firestore.FieldValue.increment(1) }).catch(noop);
   C.want = (p, interest) => {
@@ -116,6 +122,7 @@
   async function checkAdmin() {
     try { const d = await db.collection('admins').doc(uid).get(); C.isAdmin = !!d.exists; } catch (e) { C.isAdmin = false; }
     if (window.rebuildCondos) rebuildCondos();
+    watchPlanReqs();
     render();
   }
   C.adminLogin = async () => {
@@ -152,6 +159,8 @@
     await batch.commit();
   }
   C.adm = {
+    activatePlan: async uid2 => { await db.collection('plans').doc(uid2).set({ tier: 'anual', until: Date.now() + 365 * 864e5, ts: Date.now() }); await db.collection('planRequests').doc(uid2).delete(); },
+    rejectPlan: uid2 => db.collection('planRequests').doc(uid2).delete(),
     approve: async rec => { await db.collection('condos').doc(rec.id).update({ status: 'approved' }); },
     rename: async (rec, newName) => {
       const old = rec.name;
@@ -198,6 +207,8 @@
         if (cached) fillCondos(cached);
         else db.collection('condos').get().then(snap => { const l = snap.docs.map(d => ({ id: d.id, ...d.data() })); cacheSet(l); fillCondos(l); }).catch(fail);
       }
+
+      db.collection('plans').doc(uid).onSnapshot(d => { window.applyCloudPlan && applyCloudPlan(d.exists ? d.data() : null); }, noop);
 
       // se o admin renomear/mesclar o meu condomínio, o app acompanha
       db.collection('users').doc(uid).onSnapshot(d => {

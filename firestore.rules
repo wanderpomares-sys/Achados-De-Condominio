@@ -67,6 +67,17 @@ service cloud.firestore {
       allow read: if isAdmin();
     }
 
+    // Plano anual: só o administrador ativa; o dono lê o próprio plano.
+    match /plans/{uid} {
+      allow read: if signedIn() && (request.auth.uid == uid || isAdmin());
+      allow write: if isAdmin();
+    }
+    // Pedidos de plano (depois de pagar o Pix): o morador cria o seu; o admin lê e apaga.
+    match /planRequests/{uid} {
+      allow create, update: if signedIn() && request.auth.uid == uid;
+      allow read, delete: if signedIn() && (request.auth.uid == uid || isAdmin());
+    }
+
     // Fila de e-mails (extensão "Trigger Email"): só o servidor escreve.
     match /mail/{id} { allow read, write: if false; }
   }

@@ -8,3 +8,6 @@ window.FIREBASE_CONFIG = {
   messagingSenderId: "490345201426",
   appId: "1:490345201426:web:473ed54080db4c3efdfdcb"
 };
+
+// Link de pagamento Pix do plano anual (Efí). Enquanto vazio, o botão mostra "Pagamento por Pix em breve".
+window.PAY_LINK = "";

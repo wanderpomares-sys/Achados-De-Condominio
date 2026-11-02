@@ -5,7 +5,7 @@
   const cfg = window.FIREBASE_CONFIG;
   const noop = () => {};
   if (!window.CLOUD_ON) {
-    window.Cloud = { on: false, view: noop, want: noop, boost: noop, add: noop, renew: noop, purge: noop, saveUser: noop, saveCondo: noop, report: noop };
+    window.Cloud = { on: false, view: noop, want: noop, boost: noop, add: noop, renew: noop, purge: noop, saveUser: noop, saveCondo: noop, report: noop, loadMore: noop, more: false };
     return;
   }
 
@@ -17,7 +17,10 @@
     document.head.appendChild(s);
   });
 
-  let db, st, uid = null, raw = [];
+  let db, st, uid = null, raw = [], postLimit = 30, unsubPosts = null;
+  const CACHE_KEY = 'condoCache', CACHE_TTL = 6 * 3600e3; // lista de condomínios guardada no aparelho por 6 h
+  const cacheGet = () => { try { const x = JSON.parse(localStorage.getItem(CACHE_KEY) || 'null'); return x && Date.now() - x.ts < CACHE_TTL ? x.list : null; } catch (e) { return null; } };
+  const cacheSet = list => { try { localStorage.setItem(CACHE_KEY, JSON.stringify({ ts: Date.now(), list })); } catch (e) {} };
   const C = window.Cloud = { on: true, ready: false, isAdmin: false, uid: null, email: null };
   const clean = o => JSON.parse(JSON.stringify(o)); // remove undefined (Firestore não aceita)
   const slug = s => (s || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
@@ -51,6 +54,8 @@
     render();
   };
 
+  C.more = false;
+  C.loadMore = () => { postLimit += 30; listenPosts(); };
   C.view = id => db && db.collection('posts').doc(id).update({ views: firebase.firestore.FieldValue.increment(1) }).catch(noop);
   C.want = (p, interest) => {
     if (!db) return;
@@ -103,6 +108,7 @@
   C.saveCondo = rec => {
     if (!db || !uid) return;
     rec.createdBy = uid;
+    try { const cur = cacheGet() || []; cacheSet(cur.filter(x => x.id !== rec.id).concat([{ ...rec }])); } catch (e) {}
     db.collection('condos').doc(rec.id).set(clean({ name: rec.name, endereco: rec.endereco, cep: rec.cep, lat: rec.lat, lng: rec.lng, bairro: rec.bairro, cidade: rec.cidade, status: rec.status, createdBy: uid, ts: rec.ts })).catch(fail);
   };
 
@@ -163,6 +169,15 @@
     }
   };
 
+  function listenPosts() {
+    if (unsubPosts) unsubPosts();
+    unsubPosts = db.collection('posts').orderBy('ts', 'desc').limit(postLimit).onSnapshot(snap => {
+      raw = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+      C.more = snap.docs.length >= postLimit;
+      C.apply();
+    }, fail);
+  }
+
   (async () => {
     try {
       if (!window.firebase) for (const u of LIBS) await loadScript(u);
@@ -174,13 +189,15 @@
       await checkAdmin();
       if (S.user) { S.user.id = uid; C.saveUser(S.user); }
 
-      // condomínios cadastrados (lista real; pendentes só aparecem para quem criou e para o admin)
-      db.collection('condos').onSnapshot(snap => {
-        CR.length = 0;
-        snap.docs.forEach(d => CR.push({ id: d.id, ...d.data() }));
-        rebuildCondos();
-        C.apply();
-      }, fail);
+      // condomínios: admin acompanha ao vivo; os demais usam a lista guardada (6 h) ou leem uma vez
+      const fillCondos = list => { CR.length = 0; list.forEach(x => CR.push(x)); rebuildCondos(); C.apply(); };
+      if (C.isAdmin) {
+        db.collection('condos').onSnapshot(snap => fillCondos(snap.docs.map(d => ({ id: d.id, ...d.data() }))), fail);
+      } else {
+        const cached = cacheGet();
+        if (cached) fillCondos(cached);
+        else db.collection('condos').get().then(snap => { const l = snap.docs.map(d => ({ id: d.id, ...d.data() })); cacheSet(l); fillCondos(l); }).catch(fail);
+      }
 
       // se o admin renomear/mesclar o meu condomínio, o app acompanha
       db.collection('users').doc(uid).onSnapshot(d => {
@@ -188,10 +205,7 @@
         if (x && S.user && x.building && x.building !== S.user.condo) { S.user.condo = x.building; save(); C.apply(); }
       }, noop);
 
-      db.collection('posts').orderBy('ts', 'desc').limit(200).onSnapshot(snap => {
-        raw = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-        C.apply();
-      }, fail);
+      listenPosts();
     } catch (e) { fail(e); }
   })();
 })();

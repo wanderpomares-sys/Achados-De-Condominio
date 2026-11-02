@@ -424,6 +424,17 @@
     S.user.radius = Math.min(RADIUS_MAX, Number(t.dataset.rad) || 5);
     save(); render();
   });
+
+  // "Ver mais anúncios" (o feed carrega 30 por vez para gastar menos leituras do Firebase)
+  const _feedM = window.feed;
+  window.feed = function () {
+    let h = _feedM();
+    if (!(window.CLOUD_ON && window.Cloud && Cloud.more)) return h;
+    return h.replace(/<\/div>\n <\/div>$/, '<button class="ghost" data-loadmore style="margin:12px 0">Ver mais anúncios</button></div>\n </div>');
+  };
+  document.addEventListener('click', e => {
+    if (e.target.closest('[data-loadmore]') && window.Cloud) Cloud.loadMore();
+  });
   document.addEventListener('click', e => {
     if (!e.target.closest('[data-theme-toggle]')) return;
     const n = themeNow() === 'dark' ? 'light' : 'dark';

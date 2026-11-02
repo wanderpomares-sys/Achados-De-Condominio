@@ -96,3 +96,8 @@ App em React Native + Expo + Firebase (Auth, Firestore, Storage), AdMob Rewarded
 - O cadastro do condomínio pede **CEP**. Ele preenche rua, bairro e cidade (BrasilAPI, com ViaCEP de reserva) e traz as coordenadas quando existem. Se não vierem, o app tenta achar o endereço no OpenStreetMap (Nominatim, uma consulta por cadastro).
 - A distância entre o meu condomínio e os outros é calculada pelas coordenadas (haversine). Condomínios de exemplo, ou sem coordenadas, usam uma distância fixa aproximada; o painel do admin marca "sem coordenadas".
 - O morador escolhe o raio (2, 5, 10 ou 20 km) na aba "Vizinhos".
+
+## Custo do Firebase (leituras)
+- O feed carrega **30 anúncios por vez** (botão "Ver mais anúncios" carrega mais 30).
+- A lista de condomínios fica **guardada no aparelho por 6 horas** (só o administrador acompanha ao vivo).
+- Meta: poucas leituras por usuário por dia para ficar na cota grátis (50 mil leituras/dia).

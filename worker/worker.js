@@ -54,7 +54,7 @@ async function checkout(req, env, url, origin) {
     back_urls: { success: ok, pending: ok, failure: back },
     auto_return: 'approved',
     statement_descriptor: 'ACHADOS',
-    payment_methods: { excluded_payment_types: [{ id: 'credit_card' }, { id: 'debit_card' }, { id: 'ticket' }, { id: 'prepaid_card' }], installments: 1 }
+    payment_methods: { excluded_payment_types: [{ id: 'ticket' }, { id: 'atm' }], installments: 1 }
   });
   return { url: pref.init_point };
 }

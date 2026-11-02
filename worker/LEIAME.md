@@ -19,7 +19,7 @@ O morador toca em **Pagar** → o Worker cria um Pix do Mercado Pago só para aq
 8. **Teste real:** pague o plano de R$ 9,90 com o seu Pix e veja o plano ativar sozinho. Depois estorne no Mercado Pago, se quiser.
 
 ## Observações
-- Só Pix e saldo Mercado Pago (cartão e boleto ficam desligados, para manter a taxa baixa e não ter chargeback).
+- Aceita Pix, cartão (sem parcelamento) e saldo Mercado Pago. Boleto e pagamento em lotérica ficam desligados. Cartão tem taxa maior que Pix e pode ter estorno (chargeback).
 - Preços: `PRICE_PLAN` (9.9) e `PRICE_SPONSOR` (29.9) podem ser mudados nas variáveis do Worker. Mantenha iguais aos textos do app.
 - Se `PAY_WORKER` estiver vazio, o app volta ao modo manual (botão "Já paguei" e ativação pelo admin).
 - Plano gratuito da Cloudflare: 100 mil chamadas por dia, mais que suficiente.

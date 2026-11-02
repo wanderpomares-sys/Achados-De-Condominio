@@ -85,6 +85,38 @@
     return Math.max(jac, l, subset);
   }
 
+
+  /* ---------- distância real entre condomínios (CEP → coordenadas) ---------- */
+  const rad = x => x * Math.PI / 180;
+  const haversine = (a, b) => {
+    const R = 6371, dLat = rad(b.lat - a.lat), dLng = rad(b.lng - a.lng);
+    const h = Math.sin(dLat / 2) ** 2 + Math.cos(rad(a.lat)) * Math.cos(rad(b.lat)) * Math.sin(dLng / 2) ** 2;
+    return 2 * R * Math.asin(Math.sqrt(h));
+  };
+  const hasGeo = c => c && typeof c.lat === 'number' && typeof c.lng === 'number' && isFinite(c.lat) && isFinite(c.lng);
+  const fmtCep = v => { const d = String(v || '').replace(/\D/g, '').slice(0, 8); return d.length > 5 ? d.slice(0, 5) + '-' + d.slice(5) : d; };
+  async function lookupCep(cep) { // BrasilAPI (traz coordenadas quando tem); ViaCEP como reserva
+    const d = String(cep || '').replace(/\D/g, ''); if (d.length !== 8) return null;
+    try {
+      const r = await fetch('https://brasilapi.com.br/api/cep/v2/' + d); if (!r.ok) throw new Error('cep');
+      const j = await r.json(), c = (j.location && j.location.coordinates) || {};
+      const lat = Number(c.latitude), lng = Number(c.longitude);
+      return { street: j.street || '', bairro: j.neighborhood || '', cidade: j.city || '', lat: isFinite(lat) && c.latitude != null ? lat : null, lng: isFinite(lng) && c.longitude != null ? lng : null };
+    } catch (e) {
+      try {
+        const r = await fetch('https://viacep.com.br/ws/' + d + '/json/'); const j = await r.json(); if (j.erro) return null;
+        return { street: j.logradouro || '', bairro: j.bairro || '', cidade: j.localidade || '', lat: null, lng: null };
+      } catch (e2) { return null; }
+    }
+  }
+  async function geocode(end, bairro, cidade) { // OpenStreetMap/Nominatim (uso leve, 1 consulta por cadastro)
+    try {
+      const q = encodeURIComponent([end, bairro, cidade, 'Brasil'].filter(Boolean).join(', '));
+      const r = await fetch('https://nominatim.openstreetmap.org/search?format=json&limit=1&countrycodes=br&q=' + q, { headers: { 'Accept-Language': 'pt-BR' } });
+      const j = await r.json();
+      return j && j[0] ? { lat: Number(j[0].lat), lng: Number(j[0].lon) } : null;
+    } catch (e) { return null; }
+  }
   /* ---------- registros de condomínios (CR) ---------- */
   const baseDist = Object.fromEntries(CONDOS.map(c => [c[0], c[1]]));
   let CR;
@@ -95,9 +127,14 @@
   const persistCR = () => { if (!window.CLOUD_ON) store.set('condoRecs', CR); };
   function rebuildCondos() {
     const me = window.Cloud && Cloud.uid;
+    const mine = S.user && CR.find(x => x.name === S.user.condo);
     CONDOS.length = 0;
     CR.filter(c => c.status === 'approved' || (c.status === 'pending' && (!window.CLOUD_ON || c.createdBy === me || (window.Cloud && Cloud.isAdmin))))
-      .forEach(c => CONDOS.push([c.name, baseDist[c.name] != null ? baseDist[c.name] : 0, c.bairro || '', c.cidade || '', c.endereco || '', c.status]));
+      .forEach(c => {
+        let d = baseDist[c.name] != null ? baseDist[c.name] : 0;
+        if (hasGeo(mine) && hasGeo(c)) d = c.name === mine.name ? 0 : Math.max(0.1, Math.round(haversine(mine, c) * 10) / 10); // distância real
+        CONDOS.push([c.name, d, c.bairro || '', c.cidade || '', c.endereco || '', c.status]);
+      });
   }
   window.rebuildCondos = rebuildCondos; window.persistCR = persistCR;
   rebuildCondos(); persistCR();
@@ -133,23 +170,25 @@
     <div class="sug">${list.map(c => `<button class="${sel === c[0] ? 'on' : ''}" ${onb ? 'data-condo' : 'data-condopick'}="${esc(c[0])}">${esc(c[0])}<small>${label(c)}</small></button>`).join('') || '<button disabled>Nenhum condomínio encontrado</button>'}</div>
     ${g.open && g.mode === mode ? `<div class="regbox"><b>Cadastrar meu condomínio</b>
       <input type="text" id="r-name" value="${esc(g.name)}" placeholder="Nome do condomínio *">
+      <input type="text" id="r-cep" inputmode="numeric" maxlength="9" value="${esc(g.cep || '')}" placeholder="CEP * (preenche o endereço)" autocomplete="postal-code">
       <input type="text" id="r-end" value="${esc(g.end)}" placeholder="Endereço: rua e número *">
       <input type="text" id="r-bairro" value="${esc(g.bairro)}" placeholder="Bairro *">
       <input type="text" id="r-cidade" value="${esc(g.cidade)}" placeholder="Cidade *">
-      <small class="req">Todos os campos são obrigatórios. Cadastros parecidos com um já existente passam por aprovação.</small>
+      <small class="req">${g.geoMsg ? esc(g.geoMsg) + ' ' : ''}Todos os campos são obrigatórios; o CEP serve para calcular a distância até os vizinhos. Cadastros parecidos com um já existente passam por aprovação.</small>
       ${matches}
       <div class="row"><button class="opt" data-regcancel>Cancelar</button><button class="cta48" style="flex:1;min-width:120px" data-regsave>Salvar</button></div></div>`
       : `<button class="ghost" data-regopen="${mode}">＋ Cadastrar meu condomínio</button>`}`;
   };
 
-  const resetReg = mode => { S.reg = { open: false, mode, name: '', end: '', bairro: '', cidade: 'Mogi das Cruzes', matches: null, confirmNew: false }; };
+  const resetReg = mode => { S.reg = { open: false, mode, name: '', cep: '', end: '', bairro: '', cidade: 'Mogi das Cruzes', lat: null, lng: null, geoMsg: '', matches: null, confirmNew: false }; };
   function chooseCondo(name) {
     if (S.reg.mode === 'onb') { S.onb.condo = name; S.onb.q = ''; }
-    else { S.user.condo = name; S.condoSheet = false; save(); window.Cloud && Cloud.saveUser(S.user); }
+    else { S.user.condo = name; S.condoSheet = false; save(); rebuildCondos(); window.Cloud && Cloud.saveUser(S.user); }
   }
-  window.saveCondo = function () {
+  window.saveCondo = async function () {
     const g = S.reg, name = g.name.trim(), end = g.end.trim(), bairro = g.bairro.trim(), cidade = g.cidade.trim();
     if (!name || !end || !bairro || !cidade) return toast('Preencha nome, endereço, bairro e cidade');
+    if (String(g.cep || '').replace(/\D/g, '').length !== 8) return toast('Informe o CEP (8 números)');
     if (!/\d/.test(end)) return toast('Inclua o número no endereço (ex.: Rua das Flores, 120)');
     if (CR.some(c => c.status !== 'rejected' && norm(c.name) === norm(name))) {
       g.matches = findMatches({ name, end, cidade }); g.confirmNew = false; render();
@@ -157,10 +196,16 @@
     }
     const m = findMatches({ name, end, cidade });
     if (m.length && !g.confirmNew) { g.matches = m; render(); return; }
-    const rec = { id: 'c-' + slug(name) + '-' + Math.random().toString(36).slice(2, 6), name, endereco: end, bairro, cidade, status: m.length ? 'pending' : 'approved', createdBy: (S.user && S.user.id) || null, ts: Date.now() };
-    CR.push(rec); persistCR(); rebuildCondos();
+    if (g.lat == null) { // sem coordenadas pelo CEP: tenta achar pelo endereço
+      toast('Localizando o endereço…');
+      const geo = await geocode(end, bairro, cidade);
+      if (geo && isFinite(geo.lat) && isFinite(geo.lng)) { g.lat = geo.lat; g.lng = geo.lng; }
+    }
+    const rec = { id: 'c-' + slug(name) + '-' + Math.random().toString(36).slice(2, 6), name, endereco: end, cep: fmtCep(g.cep), bairro, cidade, status: m.length ? 'pending' : 'approved', createdBy: (S.user && S.user.id) || null, ts: Date.now() };
+    if (g.lat != null && g.lng != null) { rec.lat = g.lat; rec.lng = g.lng; }
+    CR.push(rec); persistCR();
     window.Cloud && Cloud.saveCondo(rec);
-    chooseCondo(name);
+    chooseCondo(name); rebuildCondos();
     const mode = g.mode; resetReg(mode);
     render();
     toast(rec.status === 'pending' ? 'Enviado para análise. Você já pode usar o app.' : 'Condomínio cadastrado');
@@ -278,7 +323,7 @@
       const sug = findMatches({ name: rec.name, end: rec.endereco || '', cidade: rec.cidade }).filter(m => m.rec !== rec).slice(0, 2);
       return `<div class="cardc" data-rec="${esc(rec.id)}">
         <input type="text" value="${esc(rec.name)}" data-admname="${esc(rec.id)}">
-        <small>${esc([rec.endereco || 'sem endereço', rec.bairro, rec.cidade].filter(Boolean).join(' • '))}</small>
+        <small>${esc([rec.endereco || 'sem endereço', rec.cep, rec.bairro, rec.cidade, hasGeo(rec) ? '' : 'sem coordenadas'].filter(Boolean).join(' • '))}</small>
         ${rec.status === 'pending' && sug.length ? `<div class="sim">Parecido com: ${sug.map(m => esc(m.rec.name) + ' (' + m.why + ')').join('; ')}</div>` : ''}
         <div class="grid2">
           <button data-admact="rename" data-id="${esc(rec.id)}">Salvar nome</button>
@@ -448,6 +493,18 @@
     const id = e.target.id;
     if (id === 'o-email') { S.onb.email = e.target.value; refreshGo(); }
     else if (id === 'o-name' || id === 'o-apt') refreshGo();
+    else if (id === 'r-cep') {
+      const v = fmtCep(e.target.value); e.target.value = v; S.reg.cep = v; S.reg.lat = S.reg.lng = null; S.reg.geoMsg = '';
+      if (v.length === 9) lookupCep(v).then(r => {
+        if (!r || S.reg.cep !== v) { if (!r) { S.reg.geoMsg = 'CEP não encontrado agora; preencha o endereço.'; render(); } return; }
+        if (r.street && !S.reg.end.trim()) S.reg.end = r.street + ', ';
+        if (r.bairro) S.reg.bairro = r.bairro;
+        if (r.cidade) S.reg.cidade = r.cidade;
+        S.reg.lat = r.lat; S.reg.lng = r.lng;
+        S.reg.geoMsg = 'Endereço preenchido. Complete o número.';
+        render();
+      });
+    }
     else if (/^r-(name|end|bairro|cidade)$/.test(id)) { S.reg.matches = null; S.reg.confirmNew = false; const b = $('.dupbox'); if (b) b.remove(); }
   });
   resetReg('onb');

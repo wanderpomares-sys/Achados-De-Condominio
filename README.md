@@ -91,3 +91,8 @@ App em React Native + Expo + Firebase (Auth, Firestore, Storage), AdMob Rewarded
 - Se o endereço e um nome parecido já existem, o app sugere usar o existente. Se a pessoa insistir que é outro, o condomínio fica **pendente** até o admin aprovar.
 - Admin pode **aprovar, renomear, mesclar (move moradores e anúncios) ou apagar**.
 - Virar admin: Perfil → Painel do administrador → entrar com Google; depois crie no Firestore o documento `admins/{seu uid}` (qualquer conteúdo).
+
+## Distância real entre condomínios
+- O cadastro do condomínio pede **CEP**. Ele preenche rua, bairro e cidade (BrasilAPI, com ViaCEP de reserva) e traz as coordenadas quando existem. Se não vierem, o app tenta achar o endereço no OpenStreetMap (Nominatim, uma consulta por cadastro).
+- A distância entre o meu condomínio e os outros é calculada pelas coordenadas (haversine). Condomínios de exemplo, ou sem coordenadas, usam uma distância fixa aproximada; o painel do admin marca "sem coordenadas".
+- O morador escolhe o raio (2, 5, 10 ou 20 km) na aba "Vizinhos".

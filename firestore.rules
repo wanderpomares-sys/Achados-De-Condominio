@@ -55,7 +55,8 @@ service cloud.firestore {
         && request.resource.data.name is string && request.resource.data.name.size() > 1
         && request.resource.data.endereco is string && request.resource.data.endereco.size() > 4
         && request.resource.data.bairro is string && request.resource.data.bairro.size() > 1
-        && request.resource.data.cidade is string && request.resource.data.cidade.size() > 1;
+        && request.resource.data.cidade is string && request.resource.data.cidade.size() > 1
+        && (!('lat' in request.resource.data) || (request.resource.data.lat is number && request.resource.data.lng is number));
       allow update, delete: if isAdmin();
     }
 

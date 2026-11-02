@@ -39,6 +39,7 @@
   }
   // aplica a lista bruta: esconde vencidos, "só meu prédio" e condomínios ainda em análise
   C.apply = () => {
+    if (window.rebuildCondos) rebuildCondos(); // distâncias a partir do MEU condomínio
     const now = Date.now();
     S.posts = raw.map(toUI).filter(p => {
       if (p.expiresAt && p.expiresAt < now) return false;
@@ -102,7 +103,7 @@
   C.saveCondo = rec => {
     if (!db || !uid) return;
     rec.createdBy = uid;
-    db.collection('condos').doc(rec.id).set(clean({ name: rec.name, endereco: rec.endereco, bairro: rec.bairro, cidade: rec.cidade, status: rec.status, createdBy: uid, ts: rec.ts })).catch(fail);
+    db.collection('condos').doc(rec.id).set(clean({ name: rec.name, endereco: rec.endereco, cep: rec.cep, lat: rec.lat, lng: rec.lng, bairro: rec.bairro, cidade: rec.cidade, status: rec.status, createdBy: uid, ts: rec.ts })).catch(fail);
   };
 
   /* ---------- administrador ---------- */

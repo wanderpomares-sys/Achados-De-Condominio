@@ -5,7 +5,7 @@
   const cfg = window.FIREBASE_CONFIG;
   const noop = () => {};
   if (!window.CLOUD_ON) {
-    window.Cloud = { on: false, view: noop, want: noop, boost: noop, add: noop, renew: noop, purge: noop, saveUser: noop, saveCondo: noop };
+    window.Cloud = { on: false, view: noop, want: noop, boost: noop, add: noop, renew: noop, purge: noop, saveUser: noop, saveCondo: noop, report: noop };
     return;
   }
 
@@ -58,6 +58,15 @@
   };
   C.boost = p => db && db.collection('posts').doc(p.id).update({ boostedUntil: p.boostedUntil }).catch(fail);
   C.renew = p => db && db.collection('posts').doc(p.id).update({ expiresAt: p.expiresAt, warnedAt: null }).catch(fail);
+  C.report = async p => { // uma denúncia por pessoa por anúncio; o contador sobe junto (rules validam)
+    if (!db || !uid) return;
+    try {
+      const b = db.batch();
+      b.set(db.collection('reports').doc(p.id + '_' + uid), { postId: p.id, userId: uid, ts: Date.now() });
+      b.update(db.collection('posts').doc(p.id), { reportsCount: firebase.firestore.FieldValue.increment(1) });
+      await b.commit();
+    } catch (e) { console.warn('[Cloud] denúncia', e); }
+  };
   C.purge = list => db && list.forEach(p => db.collection('posts').doc(p.id).delete().catch(noop)); // dono apaga os próprios vencidos
   C.add = async p => {
     if (!db) return fail(new Error('ainda conectando, tente de novo em instantes'));
@@ -65,7 +74,7 @@
       let url = p.imageUrl || null;
       if (url && url.startsWith('data:')) {
         try {
-          const ref = st.ref(`posts/${uid}/${p.id}.jpg`);
+          const ref = st.ref(`posts/${uid}/${p.id}.${url.startsWith('data:image/webp') ? 'webp' : 'jpg'}`);
           await ref.putString(url, 'data_url');
           url = await ref.getDownloadURL();
         } catch (e) { // Storage ainda não ativado (plano grátis): publica sem foto

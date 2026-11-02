@@ -25,6 +25,10 @@ service cloud.firestore {
         || (resource.data.sellerUid == request.auth.uid
             && request.resource.data.sellerUid == request.auth.uid
             && request.resource.data.expiresAt <= request.time.toMillis() + 31 * 24 * 60 * 60 * 1000)
+        || (request.resource.data.diff(resource.data).affectedKeys().hasOnly(['reportsCount'])
+            && request.resource.data.reportsCount - resource.data.get('reportsCount', 0) == 1
+            && existsAfter(/databases/$(database)/documents/reports/$(id + '_' + request.auth.uid))
+            && !exists(/databases/$(database)/documents/reports/$(id + '_' + request.auth.uid)))
         || (request.resource.data.diff(resource.data).affectedKeys().hasOnly(['views','wants'])
             && request.resource.data.views - resource.data.views <= 1
             && request.resource.data.wants - resource.data.wants <= 1));
@@ -53,6 +57,13 @@ service cloud.firestore {
         && request.resource.data.bairro is string && request.resource.data.bairro.size() > 1
         && request.resource.data.cidade is string && request.resource.data.cidade.size() > 1;
       allow update, delete: if isAdmin();
+    }
+
+    // Denúncias: uma por pessoa por anúncio (id = postId_uid); só o admin lê.
+    match /reports/{rid} {
+      allow create: if signedIn() && rid == request.resource.data.postId + '_' + request.auth.uid
+        && request.resource.data.userId == request.auth.uid;
+      allow read: if isAdmin();
     }
 
     // Fila de e-mails (extensão "Trigger Email"): só o servidor escreve.

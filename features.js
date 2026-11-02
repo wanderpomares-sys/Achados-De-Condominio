@@ -286,10 +286,58 @@
       <h3>Aprovados (${appr.length})</h3>${appr.map(row).join('') || '<div class="cardc"><small>Nenhum condomínio ainda.</small></div>'}
       <small style="color:var(--gray)">Mesclar move moradores e anúncios para o condomínio escolhido e apaga este cadastro.</small></div></div></div>`;
   }
+
+  /* ---------- foto: compressão no aparelho (WebP, até ~200 KB) ---------- */
+  window.resizeImg = function (file, cb) {
+    const fr = new FileReader();
+    fr.onload = () => {
+      const im = new Image();
+      im.onload = () => {
+        const m = 800, sc = Math.min(1, m / Math.max(im.width, im.height));
+        const c = document.createElement('canvas');
+        c.width = Math.round(im.width * sc); c.height = Math.round(im.height * sc);
+        c.getContext('2d').drawImage(im, 0, 0, c.width, c.height);
+        let mime = 'image/webp', out = c.toDataURL(mime, .7);
+        if (!out.startsWith('data:image/webp')) { mime = 'image/jpeg'; out = c.toDataURL(mime, .7); } // navegador sem WebP
+        for (let q = .6; q >= .3 && out.length * .75 > 200 * 1024; q -= .1) out = c.toDataURL(mime, q);
+        cb(out);
+      };
+      im.src = fr.result;
+    };
+    fr.readAsDataURL(file);
+  };
+
+  /* ---------- denúncia: 3 denúncias escondem o anúncio (não apaga) ---------- */
+  const REPORT_LIMIT = 3;
+  const reported = () => store.get('reported', []);
+  const hiddenFor = p => {
+    if (p.mine || isAdminNow()) return false;
+    return reported().includes(p.id) || (p.reportsCount || 0) >= REPORT_LIMIT;
+  };
+  const isAdminNow = () => !!(window.CLOUD_ON && window.Cloud && Cloud.isAdmin);
+  const _detail2 = window.detail;
+  window.detail = function () {
+    let h = _detail2();
+    const p = S.posts.find(x => x.id === S.detail);
+    if (!p || p.mine) return h;
+    return h.replace('<div class="proof">', `<button class="ghost rep" data-report="${p.id}" style="margin:0 0 10px">Denunciar anúncio</button><div class="proof">`);
+  };
+  document.addEventListener('click', e => {
+    const t = e.target.closest('[data-report]');
+    if (!t) return;
+    const p = S.posts.find(x => x.id === t.dataset.report);
+    if (!p) return;
+    const list = reported();
+    if (!list.includes(p.id)) { list.push(p.id); store.set('reported', list); }
+    window.Cloud && Cloud.report && Cloud.report(p);
+    S.detail = null; toast('Denúncia enviada. Obrigado por ajudar!'); render();
+  });
   const _render = window.render;
   window.render = function () {
     purgeExpired();
-    _render();
+    const all = S.posts;
+    S.posts = all.filter(p => !hiddenFor(p));
+    try { _render(); } finally { S.posts = all; }
     if (S.adminOpen) document.getElementById('root').insertAdjacentHTML('beforeend', adminSheet());
   };
 

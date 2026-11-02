@@ -13,6 +13,9 @@
   /* ---------- estilos ---------- */
   const st = document.createElement('style');
   st.textContent = `
+  .hbtns{display:flex;align-items:center;gap:8px;flex:none}
+  .themebtn{width:40px;height:40px;border-radius:50%;border:1px solid var(--border,#D6E0EE);background:transparent;color:var(--red,#1A63E8);display:flex;align-items:center;justify-content:center;padding:0;cursor:pointer;flex:none}
+  .themebtn svg{width:20px;height:20px}
   .av{flex:none;aspect-ratio:1/1}
   .exp{margin-top:8px;font-size:13px;font-weight:800;color:var(--gray,#5B6B80);display:flex;align-items:center;gap:6px}
   .exp:before{content:"";width:8px;height:8px;border-radius:50%;background:#2ECC71;flex:none}
@@ -345,6 +348,16 @@
     if (!HAS_DARK) return h;
     const dark = themeNow() === 'dark';
     return h.replace('<button class="ghost" data-reset', `<button class="ghost" data-theme-toggle>${dark ? MOON : SUN} Tema: <b>${dark ? 'Escuro' : 'Claro'}</b> — toque para ${dark ? 'clarear' : 'escurecer'}</button><button class="ghost" data-reset`);
+  };
+
+  // atalho sol/lua no topo do feed (só no index, que tem tema escuro)
+  const _feedT = window.feed;
+  window.feed = function () {
+    let h = _feedT();
+    if (!HAS_DARK) return h;
+    const dark = themeNow() === 'dark';
+    const btn = `<button class="themebtn" data-theme-toggle aria-label="${dark ? 'Mudar para tema claro' : 'Mudar para tema escuro'}">${dark ? SUN : MOON}</button>`;
+    return h.replace(/(<button class="pill" data-map="[^"]*">[^<]*<\/button>)/, `<div class="hbtns">${btn}$1</div>`);
   };
   document.addEventListener('click', e => {
     if (!e.target.closest('[data-theme-toggle]')) return;

@@ -420,22 +420,34 @@
     return h.replace(/(<button class="pill" data-map="[^"]*">[^<]*<\/button>)/, `<div class="hbtns">${btn}$1</div>`);
   };
 
-  /* ---------- distância escolhida pelo morador (2, 5, 10 ou 20 km) ---------- */
+  /* ---------- distância: tocar em "Vizinhos" abre as opções (1 a 20 km) ---------- */
+  const RAD_LIST = [1, 2, 5, 10, 15, 20];
   const _feedR = window.feed;
   window.feed = function () {
     let h = _feedR();
     if (!S.user) return h;
     const cur = RAD();
-    const chips = `<div class="rad"><span>Distância:</span>${RADIUS_OPTS.map(n => `<button class="${n === cur ? 'on' : ''}" data-rad="${n}">${n} km</button>`).join('')}</div>`;
-    return h.replace(/(<div class="scopes">.*?<\/div>)/s, '$1' + chips);
+    h = h.replace(/(data-scope="viz">Vizinhos [^<]*?)(<\/button>)/, '$1 ▾$2');
+    if (!S.radOpen) return h;
+    const pop = `<div class="rad"><span>Até:</span>${RAD_LIST.map(n => `<button class="${n === cur ? 'on' : ''}" data-rad="${n}">${n} km</button>`).join('')}</div>`;
+    return h.replace(/(<div class="scopes">.*?<\/div>)/s, '$1' + pop);
   };
-  document.addEventListener('click', e => {
-    const t = e.target.closest('[data-rad]');
-    if (!t || !S.user) return;
-    S.user.radius = Math.min(RADIUS_MAX, Number(t.dataset.rad) || 5);
-    S.scope = 'viz'; // escolher a distância já mostra os vizinhos
-    save(); render();
-  });
+  window.addEventListener('click', e => {
+    if (!S.user) return;
+    const r = e.target.closest('[data-rad]');
+    if (r) {
+      e.stopImmediatePropagation();
+      S.user.radius = Math.min(RADIUS_MAX, Number(r.dataset.rad) || 5);
+      S.scope = 'viz'; S.radOpen = false;
+      save(); render(); return;
+    }
+    const s = e.target.closest('[data-scope]');
+    if (!s) return;
+    if (s.dataset.scope === 'viz') {
+      e.stopImmediatePropagation();
+      S.scope = 'viz'; S.radOpen = !S.radOpen; render();
+    } else S.radOpen = false;
+  }, true);
 
   // "Ver mais anúncios" (o feed carrega 30 por vez para gastar menos leituras do Firebase)
   const _feedM = window.feed;

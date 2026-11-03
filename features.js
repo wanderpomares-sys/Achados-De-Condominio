@@ -676,6 +676,30 @@
       }
     }
   });
+
+  /* ---------- alcance: tipos que ficam só no prédio (vaga de garagem) ---------- */
+  const LOCK_PRED = ['vaga'];
+  const _newPostL = window.newPost;
+  window.newPost = function () {
+    let h = _newPostL();
+    if (S.form && LOCK_PRED.includes(S.form.type)) {
+      S.form.reach = 'pred';
+      h = h.replace(/<div><label>Alcance<\/label>[\s\S]*?<\/div><\/div>/, `<div><label>Alcance</label><div class="cardc"><b>🏢 Só meu prédio</b><br><small>Vaga de garagem só aparece para moradores do seu condomínio.</small></div></div>`);
+    }
+    return h;
+  };
+  document.addEventListener('click', e => {
+    if (e.target.closest('[data-reach]') && S.form && LOCK_PRED.includes(S.form.type)) { e.stopImmediatePropagation(); e.preventDefault(); toast('Esse tipo fica só no seu prédio'); }
+  }, true);
+  document.addEventListener('click', e => {
+    if (e.target.id === 'f-go' && S.form && LOCK_PRED.includes(S.form.type)) S.form.reach = 'pred';
+  }, true);
+  document.addEventListener('change', e => {
+    if (e.target.id !== 'f-type' || !S.form) return;
+    if (!LOCK_PRED.includes(S.form.type) && S.form._wasLocked) S.form.reach = 'viz';
+    S.form._wasLocked = LOCK_PRED.includes(S.form.type);
+    render();
+  }); // mostra/esconde o alcance travado
   document.addEventListener('click', e => {
     if (!e.target.closest('[data-theme-toggle]')) return;
     const n = themeNow() === 'dark' ? 'light' : 'dark';

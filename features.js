@@ -738,6 +738,27 @@
     if (e.target.closest('.sheet') && !t.matches('button.close')) return;
     S.safeOpen = false; render();
   });
+
+  /* ---------- atualização automática: app instalado ou aberto há tempo pega a versão nova ---------- */
+  (function () {
+    if (!/^https?:$/.test(location.protocol)) return;
+    const FILES = [location.pathname, 'features.js', 'cloud.js', 'firebase-config.js'];
+    const stamp = () => Promise.all(FILES.map(f => fetch(f, { method: 'HEAD', cache: 'no-store' }).then(r => (r.headers.get('etag') || r.headers.get('last-modified') || '') ).catch(() => ''))).then(a => a.join('|'));
+    let base = null, busy = false;
+    const check = () => {
+      if (busy) return; busy = true;
+      stamp().then(v => {
+        busy = false; if (!v.replace(/\|/g, '')) return;
+        if (base === null) { base = v; return; }
+        if (v === base) return;
+        if (S.newPost || S.reward || S.plansOpen || S.spOpen || S.reg && S.reg.open) { toast('Nova versão disponível. Feche e abra o app para atualizar.'); base = v; return; }
+        location.reload();
+      });
+    };
+    check();                                              // marca a versão carregada
+    document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') check(); });
+    setInterval(() => { if (document.visibilityState === 'visible') check(); }, 10 * 60 * 1000);
+  })();
   document.addEventListener('click', e => {
     if (!e.target.closest('[data-theme-toggle]')) return;
     const n = themeNow() === 'dark' ? 'light' : 'dark';

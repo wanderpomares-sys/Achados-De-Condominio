@@ -684,13 +684,13 @@
   });
 
   /* ---------- alcance: tipos que ficam só no prédio (vaga de garagem) ---------- */
-  const LOCK_PRED = ['vaga'];
+  const LOCK_PRED = ['vaga', 'aviso'];
   const _newPostL = window.newPost;
   window.newPost = function () {
     let h = _newPostL();
     if (S.form && LOCK_PRED.includes(S.form.type)) {
       S.form.reach = 'pred';
-      h = h.replace(/<div><label>Alcance<\/label>[\s\S]*?<\/div><\/div>/, `<div><label>Alcance</label><div class="cardc"><b>🏢 Só meu prédio</b><br><small>Vaga de garagem só aparece para moradores do seu condomínio.</small></div></div>`);
+      h = h.replace(/<div><label>Alcance<\/label>[\s\S]*?<\/div><\/div>/, `<div><label>Alcance</label><div class="cardc"><b>🏢 Só meu prédio</b><br><small>${S.form.type === 'aviso' ? 'Avisos só aparecem para moradores do seu condomínio. Não são oficiais e não podem pedir pagamento nem dados pessoais.' : 'Este tipo só aparece para moradores do seu condomínio.'}</small></div></div>`);
     }
     return h;
   };
@@ -709,6 +709,7 @@
 
   /* ---------- segurança contra golpes e termos ---------- */
   const SAFE_SHORT = `<div class="safe">⚠️ <b>Cuidado com golpes.</b> Combine a entrega pessoalmente, no condomínio. <b>Não pague antecipado</b>, não envie códigos e desconfie de pressa. <button class="lk" data-safe>Ver dicas</button></div>`;
+  const SAFE_AVISO = `<div class="safe">📢 <b>Aviso de morador, não verificado.</b> Confirme com a administração do condomínio. <b>Não pague nem envie dados</b> por causa de um aviso. <button class="lk" data-safe>Ver dicas</button></div>`;
   const SAFE_PAY = `<small>🔒 O Achados só cobra <b>dentro do app</b>, pelo botão <b>Pagar</b> (pagamento do Mercado Pago). Nunca cobramos por WhatsApp, e-mail, ligação ou mensagem.</small>`;
   function safeSheet() {
     return `<div class="ov" data-safeclose><div class="sheet" id="safesheet"><div class="handle"></div><button class="close" data-safeclose>✕</button><div class="form"><h2>Segurança e termos</h2>
@@ -720,6 +721,7 @@
   const _detailS = window.detail;
   window.detail = function () {
     const h = _detailS(); const p = S.posts.find(x => x.id === S.detail);
+    if (p && p.type === 'aviso') return h.replace('<div class="proof">', SAFE_AVISO + '<div class="proof">');
     if (!p || p.mine) return h;
     return h.replace('<button class="ghost rep"', SAFE_SHORT + '<button class="ghost rep"');
   };

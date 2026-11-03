@@ -231,6 +231,13 @@
     activatePlan: async uid2 => { await db.collection('plans').doc(uid2).set({ tier: 'anual', until: Date.now() + 365 * 864e5, ts: Date.now() }); await db.collection('planRequests').doc(uid2).delete(); },
     rejectPlan: uid2 => db.collection('planRequests').doc(uid2).delete(),
     approve: async rec => { await db.collection('condos').doc(rec.id).update({ status: 'approved' }); },
+    importCondos: async list => {
+      for (let i = 0; i < list.length; i += 400) {
+        const b = db.batch();
+        list.slice(i, i + 400).forEach(r => b.set(db.collection('condos').doc(r.id), clean({ name: r.name, endereco: r.endereco, cep: r.cep, lat: r.lat, lng: r.lng, bairro: r.bairro, cidade: r.cidade, status: 'pending', createdBy: uid, ts: r.ts })));
+        await b.commit();
+      }
+    },
     rename: async (rec, newName) => {
       const old = rec.name;
       await db.collection('condos').doc(rec.id).update({ name: newName });

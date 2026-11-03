@@ -21,6 +21,10 @@
   .themebtn{width:40px;height:40px;border-radius:50%;border:1px solid var(--border,#D6E0EE);background:transparent;color:var(--red,#1A63E8);display:flex;align-items:center;justify-content:center;padding:0;cursor:pointer;flex:none}
   .themebtn svg{width:20px;height:20px}
   .av{flex:none;aspect-ratio:1/1}
+  .safe{background:#FFF8E1;border:1px solid #FFE082;color:#4A3205;border-radius:12px;padding:10px 12px;margin:0 0 10px;font-size:13px;line-height:1.4}
+  .safe b{color:inherit}.safe a,.safe button.lk{color:#B45309;font-weight:700;text-decoration:underline;background:none;border:0;padding:0;font:inherit;font-weight:700;cursor:pointer}
+  html[data-theme=dark] .safe{background:rgba(255,176,32,.12);border-color:rgba(255,176,32,.35);color:#FFD27A}
+  html[data-theme=dark] .safe a,html[data-theme=dark] .safe button.lk{color:#FFB020}
   .exp{margin-top:8px;font-size:13px;font-weight:800;color:var(--gray,#5B6B80);display:flex;align-items:center;gap:6px}
   .exp:before{content:"";width:8px;height:8px;border-radius:50%;background:#2ECC71;flex:none}
   .exp.warn{color:#FFB020}.exp.warn:before{background:#FFB020}
@@ -565,6 +569,7 @@
         <button class="ghost" data-paid style="margin-top:8px">Já paguei</button>
         <small>Depois de pagar, toque em <b>Já paguei</b>. O administrador confirma o Pix e ativa o plano.${req ? ' <b>Pedido já enviado.</b>' : ''}</small>`;
     else act = `<button class="cta52" disabled style="margin-top:10px">Pagamento por Pix em breve</button>`;
+    act += `<br>${SAFE_PAY}`;
     return `<div class="ov" data-planclose><div class="sheet" id="plansheet"><div class="handle"></div><button class="close" data-planclose>✕</button><div class="form"><h2>Planos</h2>
       ${S.plansWhy === 'ads' ? `<div class="cardc"><b>Você já usou o anúncio deste mês</b><br><small>Assine o plano anual para publicar até 5 por mês.</small></div>` : ''}
       <div class="cardc"><b>Gratuito</b><br><small>1 anúncio por mês. Destaque de 24 h assistindo 3 vídeos de 15 s.</small></div>
@@ -631,6 +636,7 @@
       <small>Preencha e pague. Assim que o Pix for confirmado, seu card entra no ar <b>automaticamente</b> por 7 dias.</small>` : link ? `<a class="cta52" href="${esc(link)}" target="_blank" rel="noopener" style="display:flex;align-items:center;justify-content:center;text-decoration:none;margin-top:6px">Pagar R$ 29,90 com Pix</a>
       <button class="ghost" data-sppaid style="margin-top:8px">Já paguei</button>
       <small>Preencha, pague e toque em <b>Já paguei</b>. O administrador confirma o Pix e publica por 7 dias.${mine ? ' <b>Pedido já enviado.</b>' : ''}</small>` : `<button class="cta52" disabled style="margin-top:10px">Pagamento por Pix em breve</button>`}
+      <br>${SAFE_PAY}
     </div></div></div>`;
   }
   function spAdminHtml() {
@@ -700,6 +706,35 @@
     S.form._wasLocked = LOCK_PRED.includes(S.form.type);
     render();
   }); // mostra/esconde o alcance travado
+
+  /* ---------- segurança contra golpes e termos ---------- */
+  const SAFE_SHORT = `<div class="safe">⚠️ <b>Cuidado com golpes.</b> Combine a entrega pessoalmente, no condomínio. <b>Não pague antecipado</b>, não envie códigos e desconfie de pressa. <button class="lk" data-safe>Ver dicas</button></div>`;
+  const SAFE_PAY = `<small>🔒 O Achados só cobra <b>dentro do app</b>, pelo botão <b>Pagar</b> (pagamento do Mercado Pago). Nunca cobramos por WhatsApp, e-mail, ligação ou mensagem.</small>`;
+  function safeSheet() {
+    return `<div class="ov" data-safeclose><div class="sheet" id="safesheet"><div class="handle"></div><button class="close" data-safeclose>✕</button><div class="form"><h2>Segurança e termos</h2>
+      <div class="cardc"><b>Ao comprar ou vender</b><br><small>• Combine a entrega <b>pessoalmente</b>, dentro do condomínio.<br>• <b>Não pague antecipado</b> nem faça Pix para "reservar" um item.<br>• Confira o item antes de pagar.<br>• Nunca envie códigos recebidos por SMS, senhas ou fotos de documentos.<br>• Desconfie de preço bom demais, pressa e histórias complicadas.<br>• Algo estranho? Use <b>Denunciar anúncio</b>.</small></div>
+      <div class="cardc"><b>Cobranças do Achados</b><br><small>O Achados só cobra (plano anual, destaque e patrocinado) <b>dentro do app</b>, pelo botão <b>Pagar</b>, em um pagamento do Mercado Pago aberto a partir do app. <b>Não cobramos por WhatsApp, e-mail, ligação ou mensagem</b>, e nunca pedimos senha ou código. Endereço oficial: <b>achadosdecondominios.com.br</b>. Se alguém cobrar em nosso nome fora do app, é golpe.</small></div>
+      <div class="cardc"><b>Avisos importantes</b><br><small>O Achados é um mural entre vizinhos. Ele <b>não participa, não intermedia e não garante</b> nenhuma negociação, entrega, pagamento ou aviso publicado. Cada usuário é responsável pelo que anuncia e pelo que combina. Avisos de síndico ou administração publicados por moradores <b>não são oficiais</b>: confirme com a administração do condomínio. Anúncios proibidos ou enganosos podem ser removidos.</small></div>
+    </div></div></div>`;
+  }
+  const _detailS = window.detail;
+  window.detail = function () {
+    const h = _detailS(); const p = S.posts.find(x => x.id === S.detail);
+    if (!p || p.mine) return h;
+    return h.replace('<button class="ghost rep"', SAFE_SHORT + '<button class="ghost rep"');
+  };
+  const _perfilS = window.perfil;
+  window.perfil = function () { return _perfilS().replace('<button class="ghost" data-map=', '<button class="ghost" data-safe style="margin-top:8px">🛡️ Segurança e termos</button><button class="ghost" data-map='); };
+  const _onbS = window.onboarding;
+  window.onboarding = function () { return _onbS().replace('<button class="cta48" id="o-go"', '<small style="display:block;text-align:center;color:var(--gray);margin:0 0 8px">Ao entrar, você concorda com as regras do app. <button class="lk" data-safe style="color:var(--red,#1A63E8);background:none;border:0;padding:0;font:inherit;text-decoration:underline">Segurança e termos</button></small><button class="cta48" id="o-go"'); };
+  const _newPostS = window.newPost;
+  window.newPost = function () { return _newPostS().replace('<button class="cta52" id="f-go"', '<small style="color:var(--gray);font-size:13px">Não peça nem aceite pagamento antecipado. Combine a entrega pessoalmente.</small>\n  <button class="cta52" id="f-go"'); };
+  document.addEventListener('click', e => {
+    const t = e.target.closest('[data-safe],[data-safeclose]'); if (!t) return;
+    if (t.hasAttribute('data-safe')) { e.stopPropagation(); S.safeOpen = true; return render(); }
+    if (e.target.closest('.sheet') && !t.matches('button.close')) return;
+    S.safeOpen = false; render();
+  });
   document.addEventListener('click', e => {
     if (!e.target.closest('[data-theme-toggle]')) return;
     const n = themeNow() === 'dark' ? 'light' : 'dark';
@@ -716,6 +751,7 @@
     if (S.adminOpen) document.getElementById('root').insertAdjacentHTML('beforeend', adminSheet());
     if (S.plansOpen) document.getElementById('root').insertAdjacentHTML('beforeend', plansSheet());
     if (S.spOpen) document.getElementById('root').insertAdjacentHTML('beforeend', spSheet());
+    if (S.safeOpen) document.getElementById('root').insertAdjacentHTML('beforeend', safeSheet());
   };
 
   async function admAct(act, id) {

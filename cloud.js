@@ -5,7 +5,7 @@
   const cfg = window.FIREBASE_CONFIG;
   const noop = () => {};
   if (!window.CLOUD_ON) {
-    window.Cloud = { on: false, view: noop, want: noop, boost: noop, add: noop, renew: noop, purge: noop, saveUser: noop, saveCondo: noop, report: noop, loadMore: noop, more: false, requestSponsor: noop, checkout: noop, sponsors: [], requestPlan: noop, planReqs: [] };
+    window.Cloud = { on: false, view: noop, want: noop, boost: noop, add: noop, renew: noop, purge: noop, saveUser: noop, saveCondo: noop, report: noop, loadMore: noop, more: false, requestSponsor: noop, remove: noop, update: noop, checkout: noop, sponsors: [], requestPlan: noop, planReqs: [] };
     return;
   }
 
@@ -96,6 +96,27 @@
       b.update(db.collection('posts').doc(p.id), { reportsCount: firebase.firestore.FieldValue.increment(1) });
       await b.commit();
     } catch (e) { console.warn('[Cloud] denúncia', e); }
+  };
+  // o dono encerra ou altera o próprio anúncio
+  C.remove = async p => {
+    if (!db) return;
+    try {
+      await db.collection('posts').doc(p.id).delete();
+      if (st) ['webp', 'jpg'].forEach(x => st.ref(`posts/${uid}/${p.id}.${x}`).delete().catch(noop)); // apaga a foto, se houver
+    } catch (e) { fail(e); }
+  };
+  C.update = async p => {
+    if (!db) return;
+    try {
+      let url = p.imageUrl || null;
+      if (url && url.startsWith('data:')) {
+        try {
+          const ref = st.ref(`posts/${uid}/${p.id}.${url.startsWith('data:image/webp') ? 'webp' : 'jpg'}`);
+          await ref.putString(url, 'data_url'); url = await ref.getDownloadURL();
+        } catch (e) { url = null; if (window.toast) toast('Alterações salvas sem a foto nova (armazenamento de fotos ainda não ativado)'); }
+      }
+      await db.collection('posts').doc(p.id).update(clean({ title: p.title, price: p.price === undefined ? null : p.price, type: p.type, description: p.description, imageUrl: url, reach: p.reach }));
+    } catch (e) { fail(e); }
   };
   C.purge = list => db && list.forEach(p => db.collection('posts').doc(p.id).delete().catch(noop)); // dono apaga os próprios vencidos
   C.add = async p => {

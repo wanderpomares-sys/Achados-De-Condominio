@@ -534,7 +534,7 @@
 
   // publicar: gratuito = 1 anúncio por mês; anual = 5
   document.addEventListener('click', e => {
-    if (e.target.id !== 'f-go' || !S.form || !S.form.title.trim()) return;
+    if (e.target.id !== 'f-go' || !S.form || !S.form.title.trim() || S.form.editId) return;
     const p = plan();
     if (p.ads >= QUOTA[p.tier].ads) { e.stopImmediatePropagation(); e.preventDefault(); S.plansOpen = true; S.plansWhy = 'ads'; render(); return; }
     p.ads++; savePlan(p);
@@ -759,6 +759,53 @@
     document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') check(); });
     setInterval(() => { if (document.visibilityState === 'visible') check(); }, 10 * 60 * 1000);
   })();
+
+  /* ---------- o dono encerra ou edita o próprio anúncio ---------- */
+  const _detailE = window.detail;
+  window.detail = function () {
+    const h = _detailE(); const p = S.posts.find(x => x.id === S.detail);
+    if (!p || !p.mine) return h;
+    return h.replace('<div class="proof">', `<div class="row" style="gap:8px;margin:0 0 10px"><button class="ghost" data-edit="${p.id}" style="flex:1;margin:0">✏️ Editar</button><button class="ghost" data-end="${p.id}" style="flex:1;margin:0;color:#C0392B">🗑️ Encerrar</button></div><div class="proof">`);
+  };
+  const _newPostE = window.newPost;
+  window.newPost = function () {
+    const h = _newPostE();
+    if (!(S.form && S.form.editId)) return h;
+    return h.replace('<h2>Novo anúncio</h2>', '<h2>Editar anúncio</h2>').replace(/(id="f-go"[^>]*>)Publicar</, '$1Salvar alterações<');
+  };
+  function endSheet() {
+    const p = S.posts.find(x => x.id === S.endFor); if (!p) return '';
+    return `<div class="ov" data-endclose><div class="sheet" id="endsheet"><div class="handle"></div><button class="close" data-endclose>✕</button><div class="form"><h2>Encerrar anúncio?</h2>
+      <div class="cardc"><b>${esc(p.title)}</b><br><small>O anúncio some agora para todos os vizinhos e não dá para desfazer. Use quando o item foi vendido, doado ou você desistiu.</small></div>
+      <button class="cta52" data-endyes style="background:#C0392B;border-color:#C0392B">Sim, encerrar anúncio</button>
+      <button class="ghost" data-endclose style="margin-top:8px">Cancelar</button></div></div></div>`;
+  }
+  document.addEventListener('click', e => {
+    if (e.target.id === 'f-go' && S.form && S.form.editId) {            // salvar edição (não conta na cota mensal)
+      e.stopImmediatePropagation(); e.preventDefault();
+      const f = S.form, p = S.posts.find(x => x.id === f.editId); if (!p || !f.title.trim()) return;
+      p.title = f.title.trim(); p.type = f.type; p.price = f.free ? 0 : (f.price === '' || f.price == null ? null : Number(f.price));
+      p.description = f.desc.trim(); p.imageUrl = f.img || null; p.reach = LOCK_PRED.includes(f.type) ? 'pred' : f.reach; p.emoji = DEFAULT_EMOJI[f.type];
+      if (window.CLOUD_ON) Cloud.update(p); else save();
+      S.newPost = false; S.form = null; S.detail = null; render(); toast('Anúncio atualizado ✓');
+    }
+  }, true);
+  document.addEventListener('click', e => {
+    const t = e.target.closest('[data-edit],[data-end],[data-endyes],[data-endclose]'); if (!t) return;
+    if (t.hasAttribute('data-edit')) {
+      const p = S.posts.find(x => x.id === t.dataset.edit); if (!p || !p.mine) return;
+      S.form = { title: p.title, type: p.type, free: p.price === 0, price: p.price ? String(p.price) : '', img: p.imageUrl || null, desc: p.description || '', reach: p.reach || 'viz', editId: p.id, _wasLocked: LOCK_PRED.includes(p.type) };
+      S.detail = null; S.newPost = true; return render();
+    }
+    if (t.hasAttribute('data-end')) { S.endFor = t.dataset.end; return render(); }
+    if (t.hasAttribute('data-endclose')) { if (e.target.closest('.sheet') && !t.matches('button.close,.ghost')) return; S.endFor = null; return render(); }
+    if (t.hasAttribute('data-endyes')) {
+      const p = S.posts.find(x => x.id === S.endFor); S.endFor = null; if (!p || !p.mine) return render();
+      S.posts = S.posts.filter(x => x.id !== p.id); S.detail = null;
+      if (window.CLOUD_ON) Cloud.remove(p); else save();
+      render(); toast('Anúncio encerrado');
+    }
+  });
   document.addEventListener('click', e => {
     if (!e.target.closest('[data-theme-toggle]')) return;
     const n = themeNow() === 'dark' ? 'light' : 'dark';
@@ -776,6 +823,7 @@
     if (S.plansOpen) document.getElementById('root').insertAdjacentHTML('beforeend', plansSheet());
     if (S.spOpen) document.getElementById('root').insertAdjacentHTML('beforeend', spSheet());
     if (S.safeOpen) document.getElementById('root').insertAdjacentHTML('beforeend', safeSheet());
+    if (S.endFor) document.getElementById('root').insertAdjacentHTML('beforeend', endSheet());
   };
 
   async function admAct(act, id) {

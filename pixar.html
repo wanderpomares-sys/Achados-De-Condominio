@@ -11,7 +11,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Fredoka:wght@500;600;700&family=Nunito:wght@500;600;700;800&display=swap" rel="stylesheet">
 <style>
-:root{--red:#1A63E8;--dark:#12263F;--gray:#5B6B80;--bg:#F2F6FC;--white:#FFFFFF;--border:#D6E0EE;--shadow:0 2px 12px rgba(0,0,0,.08);--r:16px;--rb:12px;--rc:20px}
+:root{--red:#0F2E6B;--dark:#12263F;--gray:#5B6B80;--bg:#F2F6FC;--white:#FFFFFF;--border:#D6E0EE;--shadow:0 2px 12px rgba(0,0,0,.08);--r:16px;--rb:12px;--rc:20px}
 *{box-sizing:border-box;-webkit-font-smoothing:antialiased;-webkit-tap-highlight-color:transparent}
 html,body{margin:0;background:var(--bg);font-family:Inter,system-ui,-apple-system,sans-serif;font-size:16px;color:var(--dark);overflow-x:hidden}
 button{font-family:inherit;cursor:pointer;border:0;background:none;color:inherit}
@@ -69,7 +69,7 @@ input,textarea,select{font-family:inherit;font-size:16px;color:var(--dark)}
 .nav button{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;color:var(--gray);font-size:11px;font-weight:700}
 .nav button span{font-size:22px;line-height:1;filter:grayscale(1);opacity:.7}
 .nav button.on{color:var(--red)}.nav button.on span{filter:none;opacity:1}
-.fab{position:fixed;bottom:80px;left:50%;margin-left:calc(min(100vw,400px)/2 - 72px);width:56px;height:56px;border-radius:50%;background:var(--red);color:#fff;font-size:28px;box-shadow:0 4px 16px rgba(26,99,232,.4);z-index:31;display:flex;align-items:center;justify-content:center;line-height:1}
+.fab{position:fixed;bottom:80px;left:50%;margin-left:calc(min(100vw,400px)/2 - 72px);width:56px;height:56px;border-radius:50%;background:var(--red);color:#fff;font-size:28px;box-shadow:0 4px 16px rgba(15,46,107,.4);z-index:31;display:flex;align-items:center;justify-content:center;line-height:1}
 /* sheets */
 .ov{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:50;display:flex;align-items:flex-end;justify-content:center;animation:fade .2s}
 .sheet{width:100%;max-width:400px;max-height:94vh;background:#fff;border-radius:20px 20px 0 0;overflow-y:auto;animation:up .28s ease;position:relative}
@@ -174,7 +174,7 @@ input,textarea,select{font-family:inherit;font-size:16px;color:var(--dark)}
 .scopes button{font-size:14px}
 
 /* v3 azul + seções + fontes maiores + botões simétricos */
-:root{--red:#1A63E8;--dark:#12263F;--gray:#5B6B80;--bg:#F2F6FC;--border:#D6E0EE}
+:root{--red:#0F2E6B;--dark:#12263F;--gray:#5B6B80;--bg:#F2F6FC;--border:#D6E0EE}
 html,body{font-size:17px}
 .hdr{height:68px;border-bottom:2px solid #E1E9F5}
 .brand b{font-size:19px}.brand b small{font-size:13px}
@@ -233,7 +233,7 @@ html,body{font-size:17px}
 .rb{width:60px;height:60px;flex:none;border-radius:14px;border:2px solid var(--border);background:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;font-size:11px;font-weight:700;color:var(--dark)}
 .rb em{font-style:normal;font-size:22px;line-height:1}
 .rb.on{background:#E8F0FE;border-color:var(--red);color:var(--red)}
-.rb.add{background:var(--red);border-color:var(--red);color:#fff;box-shadow:0 4px 12px rgba(26,99,232,.35)}
+.rb.add{background:var(--red);border-color:var(--red);color:#fff;box-shadow:0 4px 12px rgba(15,46,107,.35)}
 .rb.add em{font-size:26px;font-weight:700}
 .sep{width:32px;height:2px;background:#E1E9F5;flex:none;border-radius:1px}
 .layout .blk{margin:0 0 20px 0;border-left:0}
@@ -261,10 +261,10 @@ html,body{font-size:17px}
 .app.feedpage{padding-left:72px}
 .feedpage .hdr{margin-left:-72px}
 .layout{display:block}
-.rail{position:fixed;top:68px;bottom:68px;left:max(0px,calc(50% - 200px));width:72px;max-height:none;margin:0;border-radius:0;border:0;background:linear-gradient(180deg,#1A63E8 0%,#0B3F9E 100%);padding:10px 8px;gap:6px;justify-content:space-between;overflow:hidden;box-shadow:2px 0 14px rgba(11,63,158,.25);z-index:25}
+.rail{position:fixed;top:68px;bottom:68px;left:max(0px,calc(50% - 200px));width:72px;max-height:none;margin:0;border-radius:0;border:0;background:linear-gradient(180deg,#0F2E6B 0%,#0B3F9E 100%);padding:10px 8px;gap:6px;justify-content:space-between;overflow:hidden;box-shadow:2px 0 14px rgba(11,63,158,.25);z-index:25}
 .rb{width:100%;height:auto;flex:1 1 0;min-height:0;max-height:60px;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.22);color:#fff;font-size:10.5px;border-radius:12px}
 .rb em{font-size:20px}
-.rb.on{background:#fff;color:#1A63E8;border-color:#fff;box-shadow:0 2px 8px rgba(0,0,0,.2)}
+.rb.on{background:#fff;color:#0F2E6B;border-color:#fff;box-shadow:0 2px 8px rgba(0,0,0,.2)}
 .rb.add{background:#FFB020;border-color:#FFB020;color:#12263F;box-shadow:0 3px 10px rgba(0,0,0,.25)}
 .rb.add em{font-size:24px}
 .sep{background:rgba(255,255,255,.35);flex:none;width:32px;height:2px}
@@ -653,7 +653,7 @@ const SPONSORS=[
  {id:'s2',title:'Lavanderia Express — retirada na portaria',emoji:'👕',sub:'Primeira lavagem grátis para vizinhos'},
  {id:'s3',title:'Academia Move — aula experimental grátis',emoji:'🏋️',sub:'A 400m do seu condomínio'}];
 const AGENDA=[
- {c:'#1A63E8',d:'SEX • 18h–22h',t:'Feirinha Noturna',m:'📍 Área da piscina • Grátis • <b>42 vão</b>'},
+ {c:'#0F2E6B',d:'SEX • 18h–22h',t:'Feirinha Noturna',m:'📍 Área da piscina • Grátis • <b>42 vão</b>'},
  {c:'#10B981',d:'INAUGUROU',t:'Mercadinho Self Service',m:'📍 2º andar • Aberto 24h'},
  {c:'#EC4899',d:'SÁB • 14h',t:'Curso de brigadeiro gourmet',m:'📍 Salão de festas • R$ 30 • <span class="scar">Só 8 vagas restantes!</span>'},
  {c:'#3498DB',d:'TER/QUI • 7h',t:'Aula funcional',m:'📍 Academia do condomínio • Grátis'}];
@@ -727,7 +727,7 @@ function feed(){
  const boosted=l.filter(isBoost);const rest=l.filter(p=>!isBoost(p));
  if(boosted.length)sections.push(['⚡','Em destaque','Anúncios impulsionados',boosted,'#F59E0B']);
  const mine=rest.filter(p=>p.isMy),viz=rest.filter(p=>!p.isMy);
- if(mine.length)sections.push(['🏢','No seu prédio',esc(short(S.user.condo))+' • seus vizinhos de porta',mine,'#1A63E8']);
+ if(mine.length)sections.push(['🏢','No seu prédio',esc(short(S.user.condo))+' • seus vizinhos de porta',mine,'#0F2E6B']);
  if(viz.length&&S.scope!=='pred')sections.push(['📍','Nos vizinhos','Condomínios em até '+RAD()+' km',viz,'#0EA5A4']);
  sections.forEach(([ic,t,sub,arr,col],si2)=>{
   out+=`<section class="blk">${secHead(ic,t,sub,arr.length,col)}`;

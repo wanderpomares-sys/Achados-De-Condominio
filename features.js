@@ -16,9 +16,9 @@
   .rad span{flex:none}
   .rad{display:flex;align-items:center;gap:6px;margin:8px 0 4px;font-size:13px;font-weight:700;color:var(--gray,#5B6B80)}
   .rad button{height:32px;flex:1;min-width:0;white-space:nowrap;padding:0 4px;border-radius:16px;border:1px solid var(--border,#D6E0EE);background:transparent;color:var(--dark,#12263F);font-weight:700;font-size:13px;cursor:pointer;font-family:inherit}
-  .rad button.on{background:var(--red,#1A63E8);color:#fff;border-color:var(--red,#1A63E8)}
+  .rad button.on{background:var(--red,#0F2E6B);color:#fff;border-color:var(--red,#0F2E6B)}
   .hbtns{display:flex;align-items:center;gap:8px;flex:none}
-  .themebtn{width:40px;height:40px;border-radius:50%;border:1px solid var(--border,#D6E0EE);background:transparent;color:var(--red,#1A63E8);display:flex;align-items:center;justify-content:center;padding:0;cursor:pointer;flex:none}
+  .themebtn{width:40px;height:40px;border-radius:50%;border:1px solid var(--border,#D6E0EE);background:transparent;color:var(--red,#0F2E6B);display:flex;align-items:center;justify-content:center;padding:0;cursor:pointer;flex:none}
   .themebtn svg{width:20px;height:20px}
   .av{flex:none;aspect-ratio:1/1}
   .safe{background:#FFF8E1;border:1px solid #FFE082;color:#4A3205;border-radius:12px;padding:10px 12px;margin:0 0 10px;font-size:13px;line-height:1.4}
@@ -419,7 +419,7 @@
   const _feedR = window.feed;
   window.feed = function () {
     let h = _feedR();
-    if (S.scope !== 'viz' || !S.user) return h;
+    if (!S.user) return h;
     const cur = RAD();
     const chips = `<div class="rad"><span>Distância:</span>${RADIUS_OPTS.map(n => `<button class="${n === cur ? 'on' : ''}" data-rad="${n}">${n} km</button>`).join('')}</div>`;
     return h.replace(/(<div class="scopes">.*?<\/div>)/s, '$1' + chips);
@@ -428,6 +428,7 @@
     const t = e.target.closest('[data-rad]');
     if (!t || !S.user) return;
     S.user.radius = Math.min(RADIUS_MAX, Number(t.dataset.rad) || 5);
+    S.scope = 'viz'; // escolher a distância já mostra os vizinhos
     save(); render();
   });
 
@@ -480,7 +481,7 @@
     if (!r || r.kind !== 'credit') return _rewardUI();
     const w = wallet(), done = r.left <= 0;
     const n = done ? (r.got ? VIDEOS_PER_CREDIT : w.videos) : w.videos + 1;
-    const dots = Array.from({ length: VIDEOS_PER_CREDIT }, (_, i) => `<i style="display:inline-block;width:28px;height:8px;border-radius:4px;margin:0 3px;background:${i < n ? 'var(--red,#1A63E8)' : 'var(--border,#D6E0EE)'}"></i>`).join('');
+    const dots = Array.from({ length: VIDEOS_PER_CREDIT }, (_, i) => `<i style="display:inline-block;width:28px;height:8px;border-radius:4px;margin:0 3px;background:${i < n ? 'var(--red,#0F2E6B)' : 'var(--border,#D6E0EE)'}"></i>`).join('');
     const body = !done
       ? `<h3>Vídeo ${n} de ${VIDEOS_PER_CREDIT}</h3><p>Ajude o app continuar grátis 💛</p><div>${dots}</div>
          <div class="tv"><b>${r.left}s</b>vídeo patrocinado (demo)</div>
@@ -573,7 +574,7 @@
     return `<div class="ov" data-planclose><div class="sheet" id="plansheet"><div class="handle"></div><button class="close" data-planclose>✕</button><div class="form"><h2>Planos</h2>
       ${S.plansWhy === 'ads' ? `<div class="cardc"><b>Você já usou o anúncio deste mês</b><br><small>Assine o plano anual para publicar até 5 por mês.</small></div>` : ''}
       <div class="cardc"><b>Gratuito</b><br><small>1 anúncio por mês. Destaque de 24 h assistindo 3 vídeos de 15 s.</small></div>
-      <div class="cardc" style="border:2px solid var(--red,#1A63E8)"><b>Anual — R$ 9,90 por ano</b><br><small>5 anúncios por mês. 1 destaque de 24 h por mês, sem vídeo. Menos de R$ 1 por mês.</small>${act}</div></div></div></div>`;
+      <div class="cardc" style="border:2px solid var(--red,#0F2E6B)"><b>Anual — R$ 9,90 por ano</b><br><small>5 anúncios por mês. 1 destaque de 24 h por mês, sem vídeo. Menos de R$ 1 por mês.</small>${act}</div></div></div></div>`;
   }
   function planReqs() { return window.CLOUD_ON ? ((window.Cloud && Cloud.planReqs) || []) : (store.get('planReqs', []) || []); }
   function planReqHtml() {
@@ -728,7 +729,7 @@
   const _perfilS = window.perfil;
   window.perfil = function () { return _perfilS().replace('<button class="ghost" data-map=', '<button class="ghost" data-safe style="margin-top:8px">🛡️ Segurança e termos</button><button class="ghost" data-map='); };
   const _onbS = window.onboarding;
-  window.onboarding = function () { return _onbS().replace('<button class="cta48" id="o-go"', '<small style="display:block;text-align:center;color:var(--gray);margin:0 0 8px">Ao entrar, você concorda com as regras do app. <button class="lk" data-safe style="color:var(--red,#1A63E8);background:none;border:0;padding:0;font:inherit;text-decoration:underline">Segurança e termos</button></small><button class="cta48" id="o-go"'); };
+  window.onboarding = function () { return _onbS().replace('<button class="cta48" id="o-go"', '<small style="display:block;text-align:center;color:var(--gray);margin:0 0 8px">Ao entrar, você concorda com as regras do app. <button class="lk" data-safe style="color:var(--red,#0F2E6B);background:none;border:0;padding:0;font:inherit;text-decoration:underline">Segurança e termos</button></small><button class="cta48" id="o-go"'); };
   const _newPostS = window.newPost;
   window.newPost = function () { return _newPostS().replace('<button class="cta52" id="f-go"', '<small style="color:var(--gray);font-size:13px">Não peça nem aceite pagamento antecipado. Combine a entrega pessoalmente.</small>\n  <button class="cta52" id="f-go"'); };
   document.addEventListener('click', e => {

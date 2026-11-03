@@ -5,7 +5,7 @@
   const cfg = window.FIREBASE_CONFIG;
   const noop = () => {};
   if (!window.CLOUD_ON) {
-    window.Cloud = { on: false, view: noop, want: noop, boost: noop, add: noop, renew: noop, purge: noop, saveUser: noop, saveCondo: noop, report: noop, loadMore: noop, more: false, requestSponsor: noop, remove: noop, update: noop, checkout: noop, sponsors: [], requestPlan: noop, planReqs: [] };
+    window.Cloud = { on: false, view: noop, want: noop, boost: noop, add: noop, renew: noop, purge: noop, saveUser: noop, saveCondo: noop, report: noop, loadMore: noop, more: false, requestSponsor: noop, reported: [], repLoaded: false, expired: [], expLoaded: false, remove: noop, update: noop, checkout: noop, sponsors: [], requestPlan: noop, planReqs: [] };
     return;
   }
 
@@ -58,7 +58,7 @@
   C.requestPlan = info => db && uid && db.collection('planRequests').doc(uid).set(clean({ ...info, uid })).catch(fail);
   let reqUnsub = null;
   function watchPlanReqs() {
-    if (reqUnsub || !C.isAdmin) return;
+    if (reqUnsub || !C.isAdmin || C.role === 'mod') return;
     reqUnsub = db.collection('planRequests').onSnapshot(s => { C.planReqs = s.docs.map(d => ({ id: d.id, ...d.data() })); render(); }, noop);
   }
   // patrocinados: admin acompanha ao vivo (pendentes + ativos); os demais leem os ativos uma vez
@@ -76,7 +76,7 @@
   function loadSponsors() {
     if (!db) return;
     const fill = s => { C.sponsors = s.docs.map(d => ({ id: d.id, ...d.data() })); window.applySponsors && applySponsors(); };
-    if (C.isAdmin) { if (!spUnsub) spUnsub = db.collection('sponsors').onSnapshot(fill, noop); }
+    if (C.isAdmin && C.role !== 'mod') { if (!spUnsub) spUnsub = db.collection('sponsors').onSnapshot(fill, noop); }
     else db.collection('sponsors').where('status', '==', 'active').limit(10).get().then(fill).catch(noop);
   }
   C.loadMore = () => { postLimit += 30; listenPosts(); };
@@ -159,7 +159,7 @@
 
   /* ---------- administrador ---------- */
   async function checkAdmin() {
-    try { const d = await db.collection('admins').doc(uid).get(); C.isAdmin = !!d.exists; } catch (e) { C.isAdmin = false; }
+    try { const d = await db.collection('admins').doc(uid).get(); C.isAdmin = !!d.exists; C.role = d.exists && d.data() && d.data().role === 'mod' ? 'mod' : 'admin'; } catch (e) { C.isAdmin = false; C.role = null; }
     if (window.rebuildCondos) rebuildCondos();
     watchPlanReqs();
     loadSponsors();
@@ -199,6 +199,33 @@
     await batch.commit();
   }
   C.adm = {
+    // anúncios vencidos (só o admin): lista para apagar em lote ou um a um
+    // anúncios denunciados: o moderador mantém (zera as denúncias) ou apaga
+    loadReported: async () => {
+      C.repLoaded = true;
+      try {
+        const s = await db.collection('posts').where('reportsCount', '>=', 1).limit(100).get();
+        C.reported = s.docs.map(d => ({ id: d.id, ...d.data() })).sort((a, b) => (b.reportsCount || 0) - (a.reportsCount || 0));
+      } catch (e) { fail(e); C.reported = []; }
+      render();
+    },
+    keepReported: async id => { await db.collection('posts').doc(id).update({ reportsCount: 0 }); C.reported = C.reported.filter(x => x.id !== id); render(); },
+    deleteReported: async id => { await db.collection('posts').doc(id).delete(); C.reported = C.reported.filter(x => x.id !== id); render(); },
+    loadExpired: async () => {
+      C.expLoaded = true;
+      try {
+        const s = await db.collection('posts').where('expiresAt', '<', Date.now()).limit(300).get();
+        C.expired = s.docs.map(d => ({ id: d.id, ...d.data() })).sort((a, b) => a.expiresAt - b.expiresAt);
+      } catch (e) { fail(e); C.expired = []; }
+      render();
+    },
+    deleteExpired: async ids => {
+      for (let i = 0; i < ids.length; i += 400) {
+        const b = db.batch(); ids.slice(i, i + 400).forEach(id => b.delete(db.collection('posts').doc(id)));
+        await b.commit();
+      }
+      C.expired = C.expired.filter(x => !ids.includes(x.id)); render();
+    },
     activateSponsor: id => db.collection('sponsors').doc(id).update({ status: 'active', until: Date.now() + 7 * 864e5 }),
     removeSponsor: id => db.collection('sponsors').doc(id).delete(),
     activatePlan: async uid2 => { await db.collection('plans').doc(uid2).set({ tier: 'anual', until: Date.now() + 365 * 864e5, ts: Date.now() }); await db.collection('planRequests').doc(uid2).delete(); },

@@ -314,6 +314,7 @@
   };
   const ops = () => (window.CLOUD_ON ? Cloud.adm : localAdm);
   const isAdmin = () => !window.CLOUD_ON || (window.Cloud && Cloud.isAdmin);
+  const isMod = () => !!(window.CLOUD_ON && window.Cloud && Cloud.role === 'mod');
 
   function adminSheet() {
     if (window.CLOUD_ON && !isAdmin()) {
@@ -324,6 +325,7 @@
     const pend = CR.filter(c => c.status === 'pending'), appr = CR.filter(c => c.status === 'approved');
     const others = rec => CR.filter(c => c !== rec && c.status !== 'rejected');
     const row = rec => {
+      if (isMod()) return `<div class="cardc"><b>${esc(rec.name)}</b><small>${esc([rec.endereco || 'sem endereço', rec.cep, rec.bairro, rec.cidade].filter(Boolean).join(' • '))}</small>${rec.status === 'pending' ? `<div class="grid2"><button class="ok" data-admact="approve" data-id="${esc(rec.id)}">Aprovar</button><button class="no" data-admact="remove" data-id="${esc(rec.id)}">Recusar</button></div>` : ''}</div>`;
       const sug = findMatches({ name: rec.name, end: rec.endereco || '', cidade: rec.cidade }).filter(m => m.rec !== rec).slice(0, 2);
       return `<div class="cardc" data-rec="${esc(rec.id)}">
         <input type="text" value="${esc(rec.name)}" data-admname="${esc(rec.id)}">
@@ -338,9 +340,12 @@
         </div>
       </div>`;
     };
-    return `<div class="ov" data-admclose><div class="sheet adm" id="admsheet"><div class="handle"></div><button class="close" data-admclose>✕</button><div class="form"><h2>Painel do administrador</h2>
-      ${planReqHtml()}
-      ${spAdminHtml()}
+    return `<div class="ov" data-admclose><div class="sheet adm" id="admsheet"><div class="handle"></div><button class="close" data-admclose>✕</button><div class="form"><h2>Painel ${isMod() ? 'do moderador' : 'do administrador'}</h2>
+      ${isMod() ? '<div class="cardc"><b>Perfil: moderador</b><small>Você modera anúncios denunciados e vencidos e aprova condomínios.</small></div>' : ''}
+      ${isMod() ? '' : planReqHtml()}
+      ${isMod() ? '' : spAdminHtml()}
+      ${reportedHtml()}
+      ${expiredHtml()}
       <h3>Em análise (${pend.length})</h3>${pend.map(row).join('') || '<div class="cardc"><small>Nenhum cadastro esperando aprovação.</small></div>'}
       <h3>Aprovados (${appr.length})</h3>${appr.map(row).join('') || '<div class="cardc"><small>Nenhum condomínio ainda.</small></div>'}
       <small style="color:var(--gray)">Mesclar move moradores e anúncios para o condomínio escolhido e apaga este cadastro.</small></div></div></div>`;
@@ -806,6 +811,43 @@
       render(); toast('Anúncio encerrado');
     }
   });
+
+  /* ---------- admin: apagar anúncios vencidos (em lote ou um a um) ---------- */
+  function expiredHtml() {
+    if (!window.CLOUD_ON) return '';
+    const list = (window.Cloud && Cloud.expired) || [];
+    if (!Cloud.expLoaded) return `<h3>Anúncios vencidos</h3><div class="cardc"><small>Carregando…</small></div>`;
+    const ago = ts => { const d = Math.max(1, Math.round((Date.now() - ts) / DAY)); return `venceu há ${d} dia${d === 1 ? '' : 's'}`; };
+    const rows = list.slice(0, 50).map(x => `<div class="cardc"><b>${esc(x.title || '')}</b><small>${esc([x.seller, x.building, ago(x.expiresAt)].filter(Boolean).join(' • '))}</small>
+      <div class="grid2"><button class="no" data-expdel="${esc(x.id)}">Apagar</button></div></div>`).join('');
+    return `<h3>Anúncios vencidos (${list.length})</h3>${rows || '<div class="cardc"><small>Nenhum anúncio vencido guardado.</small></div>'}
+      ${list.length > 50 ? `<small>Mostrando 50 de ${list.length}.</small>` : ''}
+      ${list.length ? `<button class="no" data-expall style="width:100%;margin-top:8px">${S.expConfirm ? `Toque de novo para confirmar: apagar ${list.length}` : `Apagar todos os vencidos (${list.length})`}</button>` : ''}
+      <button class="ghost" data-exprefresh style="margin-top:8px">Atualizar lista</button>`;
+  }
+  document.addEventListener('click', e => {
+    const t = e.target.closest('[data-expdel],[data-expall],[data-exprefresh]'); if (!t || !window.CLOUD_ON) return;
+    if (t.hasAttribute('data-exprefresh')) { S.expConfirm = false; Cloud.adm.loadReported(); return Cloud.adm.loadExpired(); }
+    if (t.hasAttribute('data-expdel')) { return Cloud.adm.deleteExpired([t.dataset.expdel]).then(() => toast('Anúncio apagado')).catch(x => toast('Erro: ' + (x.message || x))); }
+    if (!S.expConfirm) { S.expConfirm = true; render(); setTimeout(() => { if (S.expConfirm) { S.expConfirm = false; render(); } }, 6000); return; }
+    S.expConfirm = false;
+    const ids = Cloud.expired.map(x => x.id);
+    Cloud.adm.deleteExpired(ids).then(() => toast(ids.length + ' anúncios apagados')).catch(x => toast('Erro: ' + (x.message || x)));
+  });
+
+  /* ---------- moderação: anúncios denunciados ---------- */
+  function reportedHtml() {
+    if (!window.CLOUD_ON) return '';
+    if (!Cloud.repLoaded) return `<h3>Anúncios denunciados</h3><div class="cardc"><small>Carregando…</small></div>`;
+    const list = Cloud.reported || [];
+    return `<h3>Anúncios denunciados (${list.length})</h3>${list.map(x => `<div class="cardc"><b>${esc(x.title || '')}</b><small>${esc([x.seller, x.building, (x.reportsCount || 0) + ' denúncia' + ((x.reportsCount || 0) === 1 ? '' : 's')].filter(Boolean).join(' • '))}</small>
+      <div class="grid2"><button class="ok" data-repkeep="${esc(x.id)}">Manter</button><button class="no" data-repdel="${esc(x.id)}">Apagar</button></div></div>`).join('') || '<div class="cardc"><small>Nenhum anúncio denunciado.</small></div>'}`;
+  }
+  document.addEventListener('click', e => {
+    const t = e.target.closest('[data-repkeep],[data-repdel]'); if (!t || !window.CLOUD_ON) return;
+    const keep = t.hasAttribute('data-repkeep'), id = keep ? t.dataset.repkeep : t.dataset.repdel;
+    (keep ? Cloud.adm.keepReported(id) : Cloud.adm.deleteReported(id)).then(() => toast(keep ? 'Anúncio mantido' : 'Anúncio apagado')).catch(x => toast('Erro: ' + (x.message || x)));
+  });
   document.addEventListener('click', e => {
     if (!e.target.closest('[data-theme-toggle]')) return;
     const n = themeNow() === 'dark' ? 'light' : 'dark';
@@ -819,6 +861,7 @@
     const all = S.posts;
     S.posts = all.filter(p => !hiddenFor(p));
     try { _render(); } finally { S.posts = all; }
+    if (S.adminOpen && window.CLOUD_ON && window.Cloud && Cloud.isAdmin) { if (!Cloud.expLoaded) Cloud.adm.loadExpired(); if (!Cloud.repLoaded) Cloud.adm.loadReported(); }
     if (S.adminOpen) document.getElementById('root').insertAdjacentHTML('beforeend', adminSheet());
     if (S.plansOpen) document.getElementById('root').insertAdjacentHTML('beforeend', plansSheet());
     if (S.spOpen) document.getElementById('root').insertAdjacentHTML('beforeend', spSheet());

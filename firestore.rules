@@ -3,7 +3,10 @@ service cloud.firestore {
   match /databases/{database}/documents {
     function signedIn() { return request.auth != null; }
     // Administrador = quem tem um documento em admins/{uid} (criado à mão no console).
-    function isAdmin() { return signedIn() && exists(/databases/$(database)/documents/admins/$(request.auth.uid)); }
+    // Equipe = quem tem um documento em admins/{uid}. Administrador = equipe sem role "mod".
+    // Moderador = documento com o campo role = "mod" (modera anúncios e condomínios; não mexe em planos, patrocinados nem e-mails).
+    function isStaff() { return signedIn() && exists(/databases/$(database)/documents/admins/$(request.auth.uid)); }
+    function isAdmin() { return isStaff() && get(/databases/$(database)/documents/admins/$(request.auth.uid)).data.get('role', 'admin') != 'mod'; }
 
     match /admins/{uid} {
       allow read: if signedIn() && request.auth.uid == uid;   // só para o app saber se você é admin
@@ -21,7 +24,7 @@ service cloud.firestore {
         && request.resource.data.expiresAt is number
         && request.resource.data.expiresAt <= request.time.toMillis() + 31 * 24 * 60 * 60 * 1000;
       allow update: if signedIn() && (
-        isAdmin()
+        isStaff()
         || (resource.data.sellerUid == request.auth.uid
             && request.resource.data.sellerUid == request.auth.uid
             && request.resource.data.expiresAt <= request.time.toMillis() + 31 * 24 * 60 * 60 * 1000)
@@ -32,7 +35,7 @@ service cloud.firestore {
         || (request.resource.data.diff(resource.data).affectedKeys().hasOnly(['views','wants'])
             && request.resource.data.views - resource.data.views <= 1
             && request.resource.data.wants - resource.data.wants <= 1));
-      allow delete: if signedIn() && (resource.data.sellerUid == request.auth.uid || isAdmin());
+      allow delete: if signedIn() && (resource.data.sellerUid == request.auth.uid || isStaff());
     }
 
     // Perfil (inclui e-mail para os avisos): cada um lê e grava só o próprio; admin também.
@@ -57,14 +60,14 @@ service cloud.firestore {
         && request.resource.data.bairro is string && request.resource.data.bairro.size() > 1
         && request.resource.data.cidade is string && request.resource.data.cidade.size() > 1
         && (!('lat' in request.resource.data) || (request.resource.data.lat is number && request.resource.data.lng is number));
-      allow update, delete: if isAdmin();
+      allow update, delete: if isStaff();
     }
 
     // Denúncias: uma por pessoa por anúncio (id = postId_uid); só o admin lê.
     match /reports/{rid} {
       allow create: if signedIn() && rid == request.resource.data.postId + '_' + request.auth.uid
         && request.resource.data.userId == request.auth.uid;
-      allow read: if isAdmin();
+      allow read: if isStaff();
     }
 
     // Plano anual: só o administrador ativa; o dono lê o próprio plano.

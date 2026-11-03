@@ -528,7 +528,8 @@
 
   /* ---------- créditos de destaque: 3 vídeos = 1 destaque de 24 h (no aparelho; trava de verdade vem com o servidor) ---------- */
   const VIDEOS_PER_CREDIT = 3;
-  const wallet = () => { const w = store.get('wallet', null) || {}; return { videos: w.videos | 0, credits: w.credits | 0 }; };
+  const VIDEOS_PER_AD = 3;   // 3 vídeos = 1 anúncio extra
+  const wallet = () => { const w = store.get('wallet', null) || {}; return { videos: w.videos | 0, credits: w.credits | 0, adv: w.adv | 0, adc: w.adc | 0 }; };
   const saveWallet = w => store.set('wallet', w);
   function applyBoost(postId) {
     const p = S.posts.find(x => x.id === postId);
@@ -551,6 +552,11 @@
   const _finishR = window.finishReward;
   window.finishReward = function () {
     const r = S.reward;
+    if (r && r.kind === 'credit' && r.what === 'ad') {
+      const w = wallet(); w.adv++; r.got = false;
+      if (w.adv >= VIDEOS_PER_AD) { w.adv = 0; w.adc++; r.got = true; }
+      saveWallet(w); return;
+    }
     if (r && r.kind === 'credit') {
       const w = wallet(); w.videos++; r.got = false;
       if (w.videos >= VIDEOS_PER_CREDIT) { w.videos = 0; w.credits++; r.got = true; }
@@ -585,7 +591,7 @@
       const w = wallet(), id = S.reward.postId;
       if (w.credits > 0 && applyBoost(id)) { w.credits--; saveWallet(w); S.reward = { kind: 'boost', postId: id, left: 0, msg: '' }; render(); }
     } else if (e.target.closest('[data-credmore]') && S.reward) {
-      const id = S.reward.postId; S.reward = null; _startR('credit', id);
+      const id = S.reward.postId, what = S.reward.what; S.reward = null; _startR('credit', id); if (what) S.reward.what = what;
     }
   });
   const _perfilC = window.perfil;
@@ -619,7 +625,11 @@
   document.addEventListener('click', e => {
     if (e.target.id !== 'f-go' || !S.form || !S.form.title.trim() || S.form.editId) return;
     const p = plan();
-    if (p.ads >= QUOTA[p.tier].ads) { e.stopImmediatePropagation(); e.preventDefault(); S.plansOpen = true; S.plansWhy = 'ads'; render(); return; }
+    if (p.ads >= QUOTA[p.tier].ads) {
+      const w = wallet();
+      if (w.adc > 0) { w.adc--; saveWallet(w); return; }   // anúncio extra ganho com vídeos
+      e.stopImmediatePropagation(); e.preventDefault(); S.plansOpen = true; S.plansWhy = 'ads'; render(); return;
+    }
     p.ads++; savePlan(p);
   }, true);
   // destaque do mês incluso no plano anual (sem vídeo)
@@ -633,11 +643,44 @@
     }
     return _startP(kind, postId);
   };
+
+  /* ---------- anúncio extra grátis: 3 vídeos = +1 anúncio (ou plano anual) ---------- */
+  const _rewardAd = window.reward;
+  window.reward = function () {
+    const r = S.reward;
+    if (!r || r.kind !== 'credit' || r.what !== 'ad') return _rewardAd();
+    const w = wallet(), done = r.left <= 0;
+    const n = done ? (r.got ? VIDEOS_PER_AD : w.adv) : w.adv + 1;
+    const dots = Array.from({ length: VIDEOS_PER_AD }, (_, i) => `<i style="display:inline-block;width:28px;height:8px;border-radius:4px;margin:0 3px;background:${i < n ? 'var(--red,#0F2E6B)' : 'var(--border,#D6E0EE)'}"></i>`).join('');
+    const body = !done
+      ? `<h3>Vídeo ${n} de ${VIDEOS_PER_AD}</h3><p>Os vídeos mantêm o app grátis 💛 Falta pouco para o seu anúncio extra.</p><div>${dots}</div>
+         <div class="tv"><b>${r.left}s</b>vídeo patrocinado (demo)</div>
+         <div class="prog"><i style="width:${(1 - r.left / REWARD_SECS) * 100}%"></i></div>
+         <button class="ghost" data-rwcancel>Cancelar</button>`
+      : r.got
+        ? `<div style="font-size:48px">🎉</div><h3>Você ganhou +1 anúncio!</h3><p>Toque abaixo para publicar o seu anúncio agora.</p>
+           <button class="cta52" style="margin-top:16px" data-adpublish>Publicar agora</button>
+           <button class="ghost" data-rwcancel style="margin-top:8px">Guardar para depois</button>`
+        : `<h3>Vídeo ${w.adv} de ${VIDEOS_PER_AD} concluído</h3><div>${dots}</div>
+           <p>Faltam ${VIDEOS_PER_AD - w.adv} vídeo${VIDEOS_PER_AD - w.adv > 1 ? 's' : ''} para ganhar +1 anúncio.</p>
+           <button class="cta52" style="margin-top:16px" data-credmore>Assistir o próximo</button>
+           <button class="ghost" data-rwcancel style="margin-top:8px">Agora não</button>`;
+    return `<div class="ov"><div class="sheet"><div class="handle"></div><div class="rw">${body}</div></div></div>`;
+  };
+  document.addEventListener('click', e => {
+    if (e.target.closest('[data-adwatch]')) {
+      S.plansOpen = false; window.startReward('credit', null); if (S.reward) S.reward.what = 'ad'; render();
+    } else if (e.target.closest('[data-adpublish]')) {
+      S.reward = null; render(); setTimeout(() => { const b = $('#f-go'); if (b) b.click(); }, 50);
+    }
+  });
+
   const _perfilP = window.perfil;
   window.perfil = function () {
     const p = plan(), q = QUOTA[p.tier];
     const card = `<div class="row2" style="display:block;margin-top:12px"><div class="kv"><span>Meu plano</span><b>${p.tier === 'anual' ? 'Anual' : 'Gratuito'}</b></div>
       <div class="kv"><span>Anúncios neste mês</span><b>${p.ads}/${q.ads}</b></div>
+      <div class="kv"><span>Anúncios extras (vídeos)</span><b>${wallet().adc} • ${wallet().adv}/${VIDEOS_PER_AD}</b></div>
       ${p.tier === 'anual' ? `<div class="kv"><span>Destaque grátis do mês</span><b>${p.boosts < q.boosts ? 'disponível' : 'usado'}</b></div><div class="kv"><span>Válido até</span><b>${fmtDate(p.until)}</b></div>` : ''}
       <button class="ghost" data-plans style="margin-top:8px">Ver planos</button>
       <button class="ghost" data-spnew style="margin-top:8px">Anunciar meu negócio (patrocinado)</button></div>`;
@@ -655,9 +698,11 @@
     else act = `<button class="cta52" disabled style="margin-top:10px">Pagamento por Pix em breve</button>`;
     act += `<br>${SAFE_PAY}`;
     return `<div class="ov" data-planclose><div class="sheet" id="plansheet"><div class="handle"></div><button class="close" data-planclose>✕</button><div class="form"><h2>Planos</h2>
-      ${S.plansWhy === 'ads' ? `<div class="cardc"><b>Você já usou o anúncio deste mês</b><br><small>Assine o plano anual para publicar até 5 por mês.</small></div>` : ''}
-      <div class="cardc"><b>Gratuito</b><br><small>1 anúncio por mês. Destaque de 24 h assistindo 3 vídeos de 15 s.</small></div>
-      <div class="cardc" style="border:2px solid var(--red,#0F2E6B)"><b>Anual — R$ 9,90 por ano</b><br><small>5 anúncios por mês. 1 destaque de 24 h por mês, sem vídeo. Menos de R$ 1 por mês.</small>${act}</div></div></div></div>`;
+      ${S.plansWhy === 'ads' ? `<div class="cardc"><b>Você já usou os anúncios deste mês</b><br><small>Para publicar mais um, escolha: assistir ${VIDEOS_PER_AD} vídeos curtos (grátis) ou assinar o plano anual.</small></div>` : ''}
+      <div class="cardc"><b>Anúncio extra grátis</b><br><small>Assista ${VIDEOS_PER_AD} vídeos de 15 s e ganhe +1 anúncio, quantas vezes quiser. Você tem <b>${wallet().adc}</b> extra${wallet().adc === 1 ? '' : 's'} guardado${wallet().adc === 1 ? '' : 's'} • vídeos: ${wallet().adv}/${VIDEOS_PER_AD}.</small>
+        <button class="cta52" data-adwatch style="margin-top:10px">Assistir vídeos e ganhar anúncio</button></div>
+      <div class="cardc"><b>Gratuito</b><br><small>1 anúncio por mês. Quer mais? Cada ${VIDEOS_PER_AD} vídeos de 15 s = +1 anúncio. Destaque de 24 h assistindo 3 vídeos.</small></div>
+      <div class="cardc" style="border:2px solid var(--red,#0F2E6B)"><b>Anual — R$ 9,90 por ano</b><br><small>5 anúncios por mês, sem vídeo. 1 destaque de 24 h por mês. Menos de R$ 1 por mês.</small>${act}</div></div></div></div>`;
   }
   function planReqs() { return window.CLOUD_ON ? ((window.Cloud && Cloud.planReqs) || []) : (store.get('planReqs', []) || []); }
   function planReqHtml() {

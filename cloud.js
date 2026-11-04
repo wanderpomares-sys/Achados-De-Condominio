@@ -24,8 +24,8 @@
   const C = window.Cloud = { on: true, ready: false, isAdmin: false, uid: null, email: null };
   const clean = o => JSON.parse(JSON.stringify(o)); // remove undefined (Firestore não aceita)
   const slug = s => (s || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
-  const fail = e => { console.error('[Cloud]', e); if (window.toast) toast('Servidor indisponível: ' + (e && e.message ? e.message : e)); };
-  const bad = (t, e) => { console.error('[Cloud]', e); const m = (e && (e.code ? e.code + ': ' : '')) + (e && e.message ? e.message : e); if (window.showErr) showErr(t, m); else fail(e); };
+  const fail = e => { console.error('[Cloud]', e); C.lastErr = String((e && (e.code || e.message)) || e).slice(0, 90); if (window.toast) toast('Servidor indisponível: ' + (e && e.message ? e.message : e)); };
+  const bad = (t, e) => { console.error('[Cloud]', e); C.lastErr = String((e && (e.code || e.message)) || e).slice(0, 90); const m = (e && (e.code ? e.code + ': ' : '')) + (e && e.message ? e.message : e); if (window.showErr) showErr(t, m); else fail(e); };
   const cond = p => (p.building || '').split(' • ')[0];
   const distOf = name => { const c = CONDOS.find(x => x[0] === name); return c && c[1] > 0 ? c[1] : 1; };
   const status = name => { const r = window.CR && CR.find(c => c.name === name); return r ? r : null; };
@@ -55,6 +55,7 @@
     render();
   };
 
+  C.rawCount = () => raw.length; C.lastErr = '';
   C.more = false; C.planReqs = [];
   C.requestPlan = info => db && uid && db.collection('planRequests').doc(uid).set(clean({ ...info, uid })).catch(fail);
   let reqUnsub = null;

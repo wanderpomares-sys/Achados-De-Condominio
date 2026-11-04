@@ -668,7 +668,7 @@
     const fresh = p.month === monthKey();
     return { tier: p.tier === 'anual' && p.until > Date.now() ? 'anual' : 'free', until: p.until || 0, month: monthKey(), ads: fresh ? (p.ads | 0) : 0, boosts: fresh ? (p.boosts | 0) : 0 };
   }
-  const APP_VERSION = '2026-11-04.5';
+  const APP_VERSION = '2026-11-04.6';
   window.APP_VERSION = APP_VERSION;
   const savePlan = p => store.set('plan', p);
   window.refundAd = () => { const w = wallet(); const p = plan(); if (p.ads > 0) { p.ads--; savePlan(p); } };
@@ -737,6 +737,7 @@
       <div class="kv"><span>Anúncios extras (vídeos)</span><b>${wallet().adc} • ${wallet().adv}/${VIDEOS_PER_AD}</b></div>
       ${p.tier === 'anual' ? `<div class="kv"><span>Destaque grátis do mês</span><b>${p.boosts < q.boosts ? 'disponível' : 'usado'}</b></div><div class="kv"><span>Válido até</span><b>${fmtDate(p.until)}</b></div>` : ''}
       <div class="kv"><span>Versão do app</span><b>${APP_VERSION}</b></div>
+      ${window.CLOUD_ON && window.Cloud ? `<div class="kv"><span>Conta (código)</span><b>${esc(String(Cloud.uid || '—').slice(0, 6))}</b></div><div class="kv"><span>Anúncios no servidor</span><b>${Cloud.rawCount ? Cloud.rawCount() : 0}</b></div><div class="kv"><span>Último erro</span><b style="font-size:12px;word-break:break-word">${esc(Cloud.lastErr || 'nenhum')}</b></div>` : ''}
       <button class="ghost" data-plans style="margin-top:8px">Ver planos</button>
       <button class="ghost" data-spnew style="margin-top:8px">Anunciar meu negócio (patrocinado)</button></div>`;
     return _perfilP().replace('<button class="ghost" data-map=', card + '<button class="ghost" data-map=');

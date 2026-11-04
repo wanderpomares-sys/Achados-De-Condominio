@@ -55,6 +55,21 @@
     render();
   };
 
+  // teste de conexão: mede leitura e escrita no servidor e diz o que está acontecendo
+  C.ping = async () => {
+    const out = [];
+    const lim = (p, ms) => Promise.race([p, new Promise((_, r) => setTimeout(() => r(new Error('sem resposta em ' + ms / 1000 + ' s')), ms))]);
+    if (!db || !uid) return 'Ainda conectando (sem conta). Tente de novo em alguns segundos.';
+    const t0 = Date.now();
+    try { await lim(db.collection('condos').limit(1).get({ source: 'server' }), 10000); out.push('Leitura no servidor: OK (' + (Date.now() - t0) + ' ms)'); }
+    catch (e) { out.push('Leitura no servidor: FALHOU (' + ((e && (e.code || e.message)) || e) + ')'); }
+    const t1 = Date.now();
+    try { await lim(db.collection('users').doc(uid).set({ ping: Date.now() }, { merge: true }), 10000); out.push('Escrita no servidor: OK (' + (Date.now() - t1) + ' ms)'); }
+    catch (e) { out.push('Escrita no servidor: FALHOU (' + ((e && (e.code || e.message)) || e) + ')'); }
+    try { await lim(db.waitForPendingWrites(), 6000); out.push('Alterações pendentes: nenhuma'); } catch (e) { out.push('Alterações pendentes: AINDA AGUARDANDO O SERVIDOR'); }
+    out.push('Rede do aparelho: ' + (navigator.onLine ? 'online' : 'OFFLINE'));
+    return out.join('\n');
+  };
   C.postsLoaded = false; C.rawCount = () => raw.length; C.lastErr = '';
   C.more = false; C.planReqs = [];
   C.requestPlan = info => db && uid && db.collection('planRequests').doc(uid).set(clean({ ...info, uid })).catch(fail);

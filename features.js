@@ -668,7 +668,7 @@
     const fresh = p.month === monthKey();
     return { tier: p.tier === 'anual' && p.until > Date.now() ? 'anual' : 'free', until: p.until || 0, month: monthKey(), ads: fresh ? (p.ads | 0) : 0, boosts: fresh ? (p.boosts | 0) : 0 };
   }
-  const APP_VERSION = '2026-11-04.4';
+  const APP_VERSION = '2026-11-04.5';
   window.APP_VERSION = APP_VERSION;
   const savePlan = p => store.set('plan', p);
   window.refundAd = () => { const w = wallet(); const p = plan(); if (p.ads > 0) { p.ads--; savePlan(p); } };
@@ -969,8 +969,9 @@
       const f = S.form, p = S.posts.find(x => x.id === f.editId); if (!p || !f.title.trim()) return;
       p.title = f.title.trim(); p.type = f.type; p.price = f.free ? 0 : (f.price === '' || f.price == null ? null : Number(f.price));
       p.description = f.desc.trim(); p.imageUrl = f.img || null; p.reach = LOCK_PRED.includes(f.type) ? 'pred' : f.reach; p.emoji = DEFAULT_EMOJI[f.type];
-      if (window.CLOUD_ON) Cloud.update(p); else save();
-      S.newPost = false; S.form = null; S.detail = null; render(); toast('Anúncio atualizado ✓');
+      S.newPost = false; S.form = null; S.detail = null; render();
+      if (window.CLOUD_ON) { toast('Salvando…'); Promise.resolve(Cloud.update(p)).then(ok => { if (ok) toast('Anúncio atualizado ✓'); }); }
+      else { save(); toast('Anúncio atualizado ✓'); }
     }
   }, true);
   document.addEventListener('click', e => {

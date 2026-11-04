@@ -25,6 +25,7 @@
   const clean = o => JSON.parse(JSON.stringify(o)); // remove undefined (Firestore não aceita)
   const slug = s => (s || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
   const fail = e => { console.error('[Cloud]', e); if (window.toast) toast('Servidor indisponível: ' + (e && e.message ? e.message : e)); };
+  const bad = (t, e) => { console.error('[Cloud]', e); const m = (e && (e.code ? e.code + ': ' : '')) + (e && e.message ? e.message : e); if (window.showErr) showErr(t, m); else fail(e); };
   const cond = p => (p.building || '').split(' • ')[0];
   const distOf = name => { const c = CONDOS.find(x => x[0] === name); return c && c[1] > 0 ? c[1] : 1; };
   const status = name => { const r = window.CR && CR.find(c => c.name === name); return r ? r : null; };
@@ -87,7 +88,7 @@
     if (interest) db.collection('interests').add({ postId: p.id, userId: uid, ts: interest.ts }).catch(fail);
   };
   C.boost = p => db && db.collection('posts').doc(p.id).update({ boostedUntil: p.boostedUntil }).catch(fail);
-  C.renew = p => db && db.collection('posts').doc(p.id).update({ expiresAt: p.expiresAt, warnedAt: null }).catch(fail);
+  C.renew = p => db && db.collection('posts').doc(p.id).update({ expiresAt: p.expiresAt, warnedAt: null }).catch(e => bad('Não foi possível renovar o anúncio.', e));
   C.report = async p => { // uma denúncia por pessoa por anúncio; o contador sobe junto (rules validam)
     if (!db || !uid) return;
     try {
@@ -99,14 +100,15 @@
   };
   // o dono encerra ou altera o próprio anúncio
   C.remove = async p => {
-    if (!db) return;
+    if (!db) return false;
     try {
       await db.collection('posts').doc(p.id).delete();
       if (st) ['webp', 'jpg'].forEach(x => st.ref(`posts/${uid}/${p.id}.${x}`).delete().catch(noop)); // apaga a foto, se houver
-    } catch (e) { fail(e); }
+      return true;
+    } catch (e) { bad('Não foi possível encerrar o anúncio.', e); C.apply(); return false; }
   };
   C.update = async p => {
-    if (!db) return;
+    if (!db) return false;
     try {
       let url = p.imageUrl || null;
       if (url && url.startsWith('data:')) {
@@ -116,7 +118,8 @@
         } catch (e) { url = null; if (window.toast) toast('Alterações salvas sem a foto nova (armazenamento de fotos ainda não ativado)'); }
       }
       await db.collection('posts').doc(p.id).update(clean({ title: p.title, price: p.price === undefined ? null : p.price, type: p.type, description: p.description, imageUrl: url, reach: p.reach }));
-    } catch (e) { fail(e); }
+      return true;
+    } catch (e) { bad('Não foi possível salvar a alteração. O anúncio voltou ao original.', e); C.apply(); return false; }
   };
   C.purge = list => db && list.forEach(p => db.collection('posts').doc(p.id).delete().catch(noop)); // dono apaga os próprios vencidos
   const undoAdd = p => { // não deixa um anúncio "fantasma" (só no aparelho) nem gasta a cota do mês

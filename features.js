@@ -536,6 +536,16 @@
     return h.replace(/(<button class="pill" data-map="[^"]*">[^<]*<\/button>)/, `<div class="hbtns">${btn}$1</div>`);
   };
 
+  /* ---------- aviso "Carregando anúncios…" enquanto o servidor responde ---------- */
+  (function () { const s = document.createElement('style'); s.textContent = '.ldg{display:flex;align-items:center;justify-content:center;gap:10px;margin:10px 0;padding:12px;border-radius:14px;background:var(--panel,#EEF3FB);color:var(--gray,#5B6B80);font-weight:700;font-size:14px}.ldg i{width:16px;height:16px;border-radius:50%;border:3px solid var(--border,#D6E0EE);border-top-color:var(--red,#0F2E6B);animation:ldgspin .8s linear infinite}@keyframes ldgspin{to{transform:rotate(360deg)}}'; document.head.appendChild(s); })();
+  const _feedL = window.feed;
+  window.feed = function () {
+    const h = _feedL();
+    if (!(window.CLOUD_ON && window.Cloud && S.user && !Cloud.postsLoaded)) return h;
+    const bar = '<div class="ldg"><i></i>Carregando anúncios…</div>';
+    return /<div class="scopes">.*?<\/div>/s.test(h) ? h.replace(/(<div class="scopes">.*?<\/div>)/s, '$1' + bar) : bar + h;
+  };
+
   /* ---------- distância: tocar em "Vizinhos" abre as opções (1 a 20 km) ---------- */
   const RAD_LIST = [1, 2, 5, 10, 15, 20];
   const _feedR = window.feed;
@@ -668,7 +678,7 @@
     const fresh = p.month === monthKey();
     return { tier: p.tier === 'anual' && p.until > Date.now() ? 'anual' : 'free', until: p.until || 0, month: monthKey(), ads: fresh ? (p.ads | 0) : 0, boosts: fresh ? (p.boosts | 0) : 0 };
   }
-  const APP_VERSION = '2026-11-04.7';
+  const APP_VERSION = '2026-11-04.8';
   window.APP_VERSION = APP_VERSION;
   const savePlan = p => store.set('plan', p);
   window.refundAd = () => { const w = wallet(); const p = plan(); if (p.ads > 0) { p.ads--; savePlan(p); } };
@@ -971,7 +981,14 @@
       p.title = f.title.trim(); p.type = f.type; p.price = f.free ? 0 : (f.price === '' || f.price == null ? null : Number(f.price));
       p.description = f.desc.trim(); p.imageUrl = f.img || null; p.reach = LOCK_PRED.includes(f.type) ? 'pred' : f.reach; p.emoji = DEFAULT_EMOJI[f.type];
       S.newPost = false; S.form = null; S.detail = null; render();
-      if (window.CLOUD_ON) { toast('Salvando…'); Promise.resolve(Cloud.update(p)).then(ok => { if (ok) toast('Anúncio atualizado ✓'); }); }
+      if (window.CLOUD_ON) {
+        toast('Salvando…');
+        Promise.race([Promise.resolve(Cloud.update(p)), new Promise(r => setTimeout(() => r('timeout'), 12000))]).then(ok => {
+          if (ok === true) toast('Anúncio atualizado ✓');
+          else if (ok === 'timeout') { showErr('O servidor não respondeu em 12 segundos.', 'Seu anúncio NÃO foi alterado. Verifique a internet e tente de novo.'); if (Cloud.lastErr === '') Cloud.lastErr = 'sem resposta (12 s)'; }
+          else if (ok === false && !S.errMsg) showErr('Não foi possível salvar.', Cloud.lastErr || 'sem detalhe');
+        });
+      }
       else { save(); toast('Anúncio atualizado ✓'); }
     }
   }, true);

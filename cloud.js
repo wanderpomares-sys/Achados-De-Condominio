@@ -55,7 +55,7 @@
     render();
   };
 
-  C.rawCount = () => raw.length; C.lastErr = '';
+  C.postsLoaded = false; C.rawCount = () => raw.length; C.lastErr = '';
   C.more = false; C.planReqs = [];
   C.requestPlan = info => db && uid && db.collection('planRequests').doc(uid).set(clean({ ...info, uid })).catch(fail);
   let reqUnsub = null;
@@ -282,10 +282,11 @@
   function listenPosts() {
     if (unsubPosts) unsubPosts();
     unsubPosts = db.collection('posts').orderBy('ts', 'desc').limit(postLimit).onSnapshot(snap => {
+      C.postsLoaded = true;
       raw = snap.docs.map(d => ({ id: d.id, ...d.data() }));
       C.more = snap.docs.length >= postLimit;
       C.apply();
-    }, fail);
+    }, e => { C.postsLoaded = true; fail(e); });
   }
 
   (async () => {

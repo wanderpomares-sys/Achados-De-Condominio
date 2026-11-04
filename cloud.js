@@ -294,6 +294,10 @@
       if (!window.firebase) for (const u of LIBS) await loadScript(u);
       firebase.initializeApp(cfg);
       db = firebase.firestore(); st = firebase.storage();
+      // redes móveis às vezes seguram a conexão em tempo real do Firestore: detecta e troca para o modo compatível
+      try { db.settings({ experimentalAutoDetectLongPolling: true, useFetchStreams: false, merge: true }); } catch (e) { console.warn('[Cloud] settings', e); }
+      // guarda os anúncios no aparelho: abre na hora e não perde alterações se o app for fechado antes do servidor confirmar
+      try { await db.enablePersistence({ synchronizeTabs: true }); } catch (e) { console.warn('[Cloud] persistência', e && e.code); }
       await firebase.auth().signInAnonymously();
       uid = firebase.auth().currentUser.uid; C.uid = uid;
       C.ready = true;

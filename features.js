@@ -677,7 +677,7 @@
     const fresh = p.month === monthKey();
     return { tier: p.tier === 'anual' && p.until > Date.now() ? 'anual' : 'free', until: p.until || 0, month: monthKey(), ads: fresh ? (p.ads | 0) : 0, boosts: fresh ? (p.boosts | 0) : 0 };
   }
-  const APP_VERSION = '2026-11-04.9';
+  const APP_VERSION = '2026-11-04.10';
   window.APP_VERSION = APP_VERSION;
   const savePlan = p => store.set('plan', p);
   window.refundAd = () => { const w = wallet(); const p = plan(); if (p.ads > 0) { p.ads--; savePlan(p); } };
@@ -982,9 +982,9 @@
       S.newPost = false; S.form = null; S.detail = null; render();
       if (window.CLOUD_ON) {
         toast('Salvando…');
-        Promise.race([Promise.resolve(Cloud.update(p)), new Promise(r => setTimeout(() => r('timeout'), 12000))]).then(ok => {
+        Promise.race([Promise.resolve(Cloud.update(p)), new Promise(r => setTimeout(() => r('timeout'), 20000))]).then(ok => {
           if (ok === true) toast('Anúncio atualizado ✓');
-          else if (ok === 'timeout') { showErr('O servidor não respondeu em 12 segundos.', 'Seu anúncio NÃO foi alterado. Verifique a internet e tente de novo.'); if (Cloud.lastErr === '') Cloud.lastErr = 'sem resposta (12 s)'; }
+          else if (ok === 'timeout') { showErr('O servidor não respondeu em 20 segundos.', 'Seu anúncio NÃO foi alterado. Verifique a internet e tente de novo.'); if (Cloud.lastErr === '') Cloud.lastErr = 'sem resposta (20 s)'; }
           else if (ok === false && !S.errMsg) showErr('Não foi possível salvar.', Cloud.lastErr || 'sem detalhe');
         });
       }

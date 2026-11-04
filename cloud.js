@@ -5,7 +5,7 @@
   const cfg = window.FIREBASE_CONFIG;
   const noop = () => {};
   if (!window.CLOUD_ON) {
-    window.Cloud = { on: false, view: noop, want: noop, boost: noop, add: noop, renew: noop, purge: noop, saveUser: noop, saveCondo: noop, report: noop, loadMore: noop, more: false, requestSponsor: noop, reported: [], repLoaded: false, expired: [], expLoaded: false, remove: noop, update: noop, checkout: noop, sponsors: [], requestPlan: noop, planReqs: [] };
+    window.Cloud = { on: false, view: noop, want: noop, boost: noop, add: noop, renew: noop, purge: noop, saveUser: noop, saveCondo: noop, report: noop, loadMore: noop, more: false, requestSponsor: noop, freshCondos: noop, reported: [], repLoaded: false, expired: [], expLoaded: false, remove: noop, update: noop, checkout: noop, sponsors: [], requestPlan: noop, planReqs: [] };
     return;
   }
 
@@ -149,6 +149,16 @@
     u.id = uid;
     db.collection('users').doc(uid).set(clean({ id: uid, name: u.name, apt: u.apt, email: u.email || null, building: u.condo, buildingId: slug(u.condo || '') }), { merge: true }).catch(fail);
     C.apply();
+  };
+  // lista fresca do servidor antes de cadastrar (a lista guardada pode ter até 6 h)
+  C.freshCondos = async () => {
+    if (!db || !uid) return;
+    try {
+      const snap = await db.collection('condos').get();
+      const l = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+      try { cacheSet(l); } catch (e) {}
+      CR.length = 0; l.forEach(x => CR.push(x)); if (window.rebuildCondos) rebuildCondos();
+    } catch (e) {}
   };
   C.saveCondo = rec => {
     if (!db || !uid) return;

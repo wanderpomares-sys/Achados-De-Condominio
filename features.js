@@ -257,6 +257,12 @@
     if (!name || !end || !bairro || !cidade) return toast('Preencha nome, endereço, bairro e cidade');
     if (String(g.cep || '').replace(/\D/g, '').length !== 8) return toast('Informe o CEP (8 números)');
     if (!/\d/.test(end)) return toast('Inclua o número no endereço (ex.: Rua das Flores, 120)');
+    if (window.CLOUD_ON && window.Cloud && Cloud.freshCondos) { toast('Conferindo condomínios já cadastrados…'); await Cloud.freshCondos(); }
+    if (CR.some(c => c.status !== 'rejected' && norm(c.name) === norm(name))) { // o nome é a chave: não pode repetir
+      const same = CR.filter(c => c.status !== 'rejected' && norm(c.name) === norm(name)).map(c => ({ rec: c, why: 'mesmo nome', score: 4, hard: true }));
+      g.matches = same.slice(0, 4); g.hard = true; g.confirmNew = false; render();
+      return toast('Já existe um condomínio com esse nome. Use o da lista.');
+    }
     if (g.lat == null) { // coordenadas: pelo CEP ou pelo endereço (ajuda a achar o mesmo local)
       toast('Localizando o endereço…');
       const geo = await geocode(end, bairro, cidade);

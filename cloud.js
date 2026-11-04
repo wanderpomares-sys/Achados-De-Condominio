@@ -159,19 +159,21 @@
 
   /* ---------- administrador ---------- */
   async function checkAdmin() {
-    try { const d = await db.collection('admins').doc(uid).get(); C.isAdmin = !!d.exists; C.role = d.exists && d.data() && d.data().role === 'mod' ? 'mod' : 'admin'; } catch (e) { C.isAdmin = false; C.role = null; }
+    try { const d = await db.collection('admins').doc(uid).get(); C.admErr = ''; C.isAdmin = !!d.exists; C.role = d.exists && d.data() && d.data().role === 'mod' ? 'mod' : 'admin'; } catch (e) { C.isAdmin = false; C.role = null; C.admErr = (e && (e.code || e.message)) || 'erro'; }
     if (window.rebuildCondos) rebuildCondos();
     watchPlanReqs();
     loadSponsors();
     render();
   }
+  C.recheck = async () => { try { await checkAdmin(); } catch (e) { fail(e); } };
   C.adminLogin = async () => {
     try {
       const prov = new firebase.auth.GoogleAuthProvider();
       const cu = firebase.auth().currentUser;
       try { await cu.linkWithPopup(prov); }
       catch (e) {
-        if (e.credential && (e.code === 'auth/credential-already-in-use' || e.code === 'auth/email-already-in-use')) await firebase.auth().signInWithCredential(e.credential);
+        if (e.code === 'auth/provider-already-linked') { /* já vinculado: só confere de novo */ }
+        else if (e.credential && (e.code === 'auth/credential-already-in-use' || e.code === 'auth/email-already-in-use')) await firebase.auth().signInWithCredential(e.credential);
         else throw e;
       }
       const u = firebase.auth().currentUser;

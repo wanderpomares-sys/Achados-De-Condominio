@@ -677,7 +677,7 @@
     const fresh = p.month === monthKey();
     return { tier: p.tier === 'anual' && p.until > Date.now() ? 'anual' : 'free', until: p.until || 0, month: monthKey(), ads: fresh ? (p.ads | 0) : 0, boosts: fresh ? (p.boosts | 0) : 0 };
   }
-  const APP_VERSION = '2026-11-04.11';
+  const APP_VERSION = '2026-11-04.12';
   window.APP_VERSION = APP_VERSION;
   const savePlan = p => store.set('plan', p);
   window.refundAd = () => { const w = wallet(); const p = plan(); if (p.ads > 0) { p.ads--; savePlan(p); } };
@@ -746,7 +746,7 @@
       <div class="kv"><span>Anúncios extras (vídeos)</span><b>${wallet().adc} • ${wallet().adv}/${VIDEOS_PER_AD}</b></div>
       ${p.tier === 'anual' ? `<div class="kv"><span>Destaque grátis do mês</span><b>${p.boosts < q.boosts ? 'disponível' : 'usado'}</b></div><div class="kv"><span>Válido até</span><b>${fmtDate(p.until)}</b></div>` : ''}
       <div class="kv"><span>Versão do app</span><b>${APP_VERSION}</b></div>
-      ${window.CLOUD_ON && window.Cloud ? `<div class="kv"><span>Conta (código)</span><b>${esc(String(Cloud.uid || '—').slice(0, 6))}</b></div><div class="kv"><span>Anúncios no servidor</span><b>${Cloud.rawCount ? Cloud.rawCount() : 0}</b></div><div class="kv"><span>Último erro</span><b style="font-size:12px;word-break:break-word">${esc(Cloud.lastErr || 'nenhum')}</b></div>` : ''}
+      ${window.CLOUD_ON && window.Cloud ? `<div class="kv"><span>Conta (código)</span><b>${esc(String(Cloud.uid || '—').slice(0, 6))}</b></div><div class="kv"><span>Anúncios no servidor</span><b>${Cloud.rawCount ? Cloud.rawCount() : 0}</b></div><div class="kv"><span>Último erro</span><b style="font-size:12px;word-break:break-word">${esc(Cloud.lastErr || 'nenhum')}</b></div><button class="ghost" data-ping style="margin-top:8px">Testar conexão com o servidor</button>` : ''}
       <button class="ghost" data-plans style="margin-top:8px">Ver planos</button>
       <button class="ghost" data-spnew style="margin-top:8px">Anunciar meu negócio (patrocinado)</button></div>`;
     return _perfilP().replace('<button class="ghost" data-map=', card + '<button class="ghost" data-map=');
@@ -1063,7 +1063,7 @@
     if (S.spOpen) document.getElementById('root').insertAdjacentHTML('beforeend', spSheet());
     if (S.safeOpen) document.getElementById('root').insertAdjacentHTML('beforeend', safeSheet());
     if (S.endFor) document.getElementById('root').insertAdjacentHTML('beforeend', endSheet());
-    if (S.errMsg) document.getElementById('root').insertAdjacentHTML('beforeend', `<div class="ov" data-errclose><div class="sheet"><div class="handle"></div><button class="close" data-errclose>✕</button><div class="form"><h2>Algo deu errado</h2><div class="cardc"><b>${esc(S.errMsg.t)}</b><small style="word-break:break-word;white-space:pre-line">${esc(S.errMsg.d)}</small><small>Versão ${window.APP_VERSION}</small></div><small>Tire um print desta tela e envie para o suporte.</small><button class="cta52" data-errclose style="margin-top:10px">Entendi</button></div></div></div>`);
+    if (S.errMsg) document.getElementById('root').insertAdjacentHTML('beforeend', `<div class="ov" data-errclose><div class="sheet"><div class="handle"></div><button class="close" data-errclose>✕</button><div class="form"><h2>${esc(S.errMsg.t === 'Teste de conexão' ? 'Resultado' : 'Algo deu errado')}</h2><div class="cardc"><b>${esc(S.errMsg.t)}</b><small style="word-break:break-word;white-space:pre-line">${esc(S.errMsg.d)}</small><small>Versão ${window.APP_VERSION}</small></div><small>Tire um print desta tela e envie para o suporte.</small><button class="cta52" data-errclose style="margin-top:10px">Entendi</button></div></div></div>`);
   };
 
   async function admAct(act, id) {
@@ -1131,6 +1131,13 @@
     const u = Cloud.uid || '';
     const ok = () => toast('Código copiado. Cole no Firestore.');
     try { navigator.clipboard.writeText(u).then(ok, () => { prompt('Copie o código:', u); }); } catch (x) { prompt('Copie o código:', u); }
+  });
+  document.addEventListener('click', async e => {
+    if (!e.target.closest('[data-ping]') || !window.Cloud || !Cloud.ping) return;
+    toast('Testando… (até 30 s)');
+    const r = await Cloud.ping();
+    S.errMsg = { t: 'Teste de conexão', d: r };
+    render();
   });
   window.showErr = (t, d) => { S.errMsg = { t, d: d || '' }; render(); };
   document.addEventListener('click', e => {

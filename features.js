@@ -666,6 +666,8 @@
     return { tier: p.tier === 'anual' && p.until > Date.now() ? 'anual' : 'free', until: p.until || 0, month: monthKey(), ads: fresh ? (p.ads | 0) : 0, boosts: fresh ? (p.boosts | 0) : 0 };
   }
   const savePlan = p => store.set('plan', p);
+  window.refundAd = () => { const w = wallet(); const p = plan(); if (p.ads > 0) { p.ads--; savePlan(p); } };
+  if (window.CLOUD_ON && !store.get('fixAds1', false)) { const p = plan(); p.ads = 0; savePlan(p); store.set('fixAds1', true); } // devolve a cota gasta por anúncios que não chegaram a ser salvos
   window.applyCloudPlan = d => { const cur = plan(); savePlan({ ...cur, tier: d && d.tier === 'anual' ? 'anual' : 'free', until: d && d.until ? d.until : 0 }); render(); };
 
   // publicar: gratuito = 1 anúncio por mês; anual = 5

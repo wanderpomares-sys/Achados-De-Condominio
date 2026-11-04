@@ -119,8 +119,14 @@
     } catch (e) { fail(e); }
   };
   C.purge = list => db && list.forEach(p => db.collection('posts').doc(p.id).delete().catch(noop)); // dono apaga os próprios vencidos
+  const undoAdd = p => { // não deixa um anúncio "fantasma" (só no aparelho) nem gasta a cota do mês
+    S.posts = S.posts.filter(x => x.id !== p.id);
+    if (window.refundAd) refundAd();
+    render();
+  };
   C.add = async p => {
-    if (!db) return fail(new Error('ainda conectando, tente de novo em instantes'));
+    if (!db) { undoAdd(p); return fail(new Error('ainda conectando, tente de novo em instantes')); }
+    if (!p.expiresAt) p.expiresAt = (p.ts || Date.now()) + 30 * 864e5;   // as regras exigem a validade
     try {
       let url = p.imageUrl || null;
       if (url && url.startsWith('data:')) {
@@ -142,7 +148,7 @@
         expiresAt: p.expiresAt, warnedAt: null
       });
       await db.collection('posts').doc(p.id).set(d);
-    } catch (e) { fail(e); }
+    } catch (e) { undoAdd(p); fail(e); }
   };
   C.saveUser = u => {
     if (!db || !uid) return;

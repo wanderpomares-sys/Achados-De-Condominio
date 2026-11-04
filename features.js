@@ -22,8 +22,7 @@
   html[data-theme=dark] .bub{background:#3A2A08;color:#FFE9B0;border-color:#F59E0B}
   html[data-theme=dark] .bub.here{background:#0F3322;color:#C8F5DA;border-color:#22C55E}
   html[data-theme=dark] .bub button{background:#1B2230;color:#fff;border-color:rgba(255,255,255,.18)}
-  html,body{overscroll-behavior-y:none}
-  *{overscroll-behavior:contain}
+  html{overscroll-behavior-y:none}
   .rad span{flex:none}
   .rad{display:flex;align-items:center;gap:6px;margin:8px 0 4px;font-size:13px;font-weight:700;color:var(--gray,#5B6B80)}
   .rad button{height:32px;flex:1;min-width:0;white-space:nowrap;padding:0 4px;border-radius:16px;border:1px solid var(--border,#D6E0EE);background:transparent;color:var(--dark,#12263F);font-weight:700;font-size:13px;cursor:pointer;font-family:inherit}
@@ -678,7 +677,7 @@
     const fresh = p.month === monthKey();
     return { tier: p.tier === 'anual' && p.until > Date.now() ? 'anual' : 'free', until: p.until || 0, month: monthKey(), ads: fresh ? (p.ads | 0) : 0, boosts: fresh ? (p.boosts | 0) : 0 };
   }
-  const APP_VERSION = '2026-11-04.8';
+  const APP_VERSION = '2026-11-04.9';
   window.APP_VERSION = APP_VERSION;
   const savePlan = p => store.set('plan', p);
   window.refundAd = () => { const w = wallet(); const p = plan(); if (p.ads > 0) { p.ads--; savePlan(p); } };

@@ -148,7 +148,7 @@
         expiresAt: p.expiresAt, warnedAt: null
       });
       await db.collection('posts').doc(p.id).set(d);
-    } catch (e) { undoAdd(p); fail(e); }
+    } catch (e) { undoAdd(p); console.error('[Cloud]', e); if (window.showErr) showErr('Não foi possível publicar o anúncio.', (e && (e.code ? e.code + ': ' : '')) + (e && e.message ? e.message : e)); else fail(e); }
   };
   C.saveUser = u => {
     if (!db || !uid) return;

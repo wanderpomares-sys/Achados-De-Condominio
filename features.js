@@ -1041,6 +1041,7 @@
     if (S.spOpen) document.getElementById('root').insertAdjacentHTML('beforeend', spSheet());
     if (S.safeOpen) document.getElementById('root').insertAdjacentHTML('beforeend', safeSheet());
     if (S.endFor) document.getElementById('root').insertAdjacentHTML('beforeend', endSheet());
+    if (S.errMsg) document.getElementById('root').insertAdjacentHTML('beforeend', `<div class="ov" data-errclose><div class="sheet"><div class="handle"></div><button class="close" data-errclose>✕</button><div class="form"><h2>Algo deu errado</h2><div class="cardc"><b>${esc(S.errMsg.t)}</b><small style="word-break:break-word">${esc(S.errMsg.d)}</small></div><small>Tire um print desta tela e envie para o suporte.</small><button class="cta52" data-errclose style="margin-top:10px">Entendi</button></div></div></div>`);
   };
 
   async function admAct(act, id) {
@@ -1108,6 +1109,11 @@
     const u = Cloud.uid || '';
     const ok = () => toast('Código copiado. Cole no Firestore.');
     try { navigator.clipboard.writeText(u).then(ok, () => { prompt('Copie o código:', u); }); } catch (x) { prompt('Copie o código:', u); }
+  });
+  window.showErr = (t, d) => { S.errMsg = { t, d: d || '' }; render(); };
+  document.addEventListener('click', e => {
+    const c = e.target.closest('[data-errclose]');
+    if (c && (c.matches('button') || e.target === c)) { S.errMsg = null; render(); }
   });
   /* ---------- eventos ---------- */
   document.addEventListener('click', e => {

@@ -384,7 +384,7 @@
   function adminSheet() {
     if (window.CLOUD_ON && !isAdmin()) {
       return `<div class="ov" data-admclose><div class="sheet adm" id="admsheet"><div class="handle"></div><button class="close" data-admclose>✕</button><div class="form"><h2>Administrador</h2>
-        ${Cloud.email ? `<div class="cardc"><b>Conectado como ${esc(Cloud.email)}</b><small>Esta conta ainda não é administradora. No Firestore, crie o documento <b>admins/${esc(Cloud.uid)}</b> (pode ser vazio) e volte aqui.</small></div>` : `<div class="cardc"><small>Entre com a sua conta Google para aprovar, renomear e mesclar condomínios.</small></div>`}
+        ${Cloud.email ? `<div class="cardc"><b>Conectado como ${esc(Cloud.email)}</b><small>Esta conta ainda não é administradora. No Firestore, crie o documento <b>admins/${esc(Cloud.uid)}</b> (pode ser vazio) e volte aqui.</small><button class="ghost" data-copyuid style="margin-top:8px">Copiar código</button></div>` : `<div class="cardc"><small>Entre com a sua conta Google para aprovar, renomear e mesclar condomínios.</small></div>`}
         <button class="cta52" data-adminlogin>Entrar com Google</button></div></div></div>`;
     }
     const pend = CR.filter(c => c.status === 'pending'), appr = CR.filter(c => c.status === 'approved');
@@ -1051,6 +1051,12 @@
     render();
   });
 
+  document.addEventListener('click', e => {
+    if (!e.target.closest('[data-copyuid]') || !window.Cloud) return;
+    const u = Cloud.uid || '';
+    const ok = () => toast('Código copiado. Cole no Firestore.');
+    try { navigator.clipboard.writeText(u).then(ok, () => { prompt('Copie o código:', u); }); } catch (x) { prompt('Copie o código:', u); }
+  });
   /* ---------- eventos ---------- */
   document.addEventListener('click', e => {
     const t = e.target.closest('[data-renew],[data-geosug],[data-usecondo],[data-regnew],[data-regopen],[data-regcancel],[data-saveemail],[data-adminopen],[data-admclose],[data-adminlogin],[data-admact]');

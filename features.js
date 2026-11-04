@@ -31,7 +31,8 @@
   .hbtns{display:flex;align-items:center;gap:8px;flex:none}
   .themebtn{width:40px;height:40px;border-radius:50%;border:1px solid var(--border,#D6E0EE);background:transparent;color:var(--red,#0F2E6B);display:flex;align-items:center;justify-content:center;padding:0;cursor:pointer;flex:none}
   .themebtn svg{width:20px;height:20px}
-  .av{flex:none;aspect-ratio:1/1}
+  .av,.row2 .av{flex:none;aspect-ratio:1/1}
+  .row2 .av{min-width:0}
   .safe{background:#FFF8E1;border:1px solid #FFE082;color:#4A3205;border-radius:12px;padding:10px 12px;margin:0 0 10px;font-size:13px;line-height:1.4}
   .safe b{color:inherit}.safe a,.safe button.lk{color:#B45309;font-weight:700;text-decoration:underline;background:none;border:0;padding:0;font:inherit;font-weight:700;cursor:pointer}
   html[data-theme=dark] .safe{background:rgba(255,176,32,.12);border-color:rgba(255,176,32,.35);color:#FFD27A}
@@ -667,6 +668,8 @@
     const fresh = p.month === monthKey();
     return { tier: p.tier === 'anual' && p.until > Date.now() ? 'anual' : 'free', until: p.until || 0, month: monthKey(), ads: fresh ? (p.ads | 0) : 0, boosts: fresh ? (p.boosts | 0) : 0 };
   }
+  const APP_VERSION = '2026-11-04.4';
+  window.APP_VERSION = APP_VERSION;
   const savePlan = p => store.set('plan', p);
   window.refundAd = () => { const w = wallet(); const p = plan(); if (p.ads > 0) { p.ads--; savePlan(p); } };
   if (window.CLOUD_ON && !store.get('fixAds1', false)) { const p = plan(); p.ads = 0; savePlan(p); store.set('fixAds1', true); } // devolve a cota gasta por anúncios que não chegaram a ser salvos
@@ -733,6 +736,7 @@
       <div class="kv"><span>Anúncios neste mês</span><b>${p.ads}/${q.ads}</b></div>
       <div class="kv"><span>Anúncios extras (vídeos)</span><b>${wallet().adc} • ${wallet().adv}/${VIDEOS_PER_AD}</b></div>
       ${p.tier === 'anual' ? `<div class="kv"><span>Destaque grátis do mês</span><b>${p.boosts < q.boosts ? 'disponível' : 'usado'}</b></div><div class="kv"><span>Válido até</span><b>${fmtDate(p.until)}</b></div>` : ''}
+      <div class="kv"><span>Versão do app</span><b>${APP_VERSION}</b></div>
       <button class="ghost" data-plans style="margin-top:8px">Ver planos</button>
       <button class="ghost" data-spnew style="margin-top:8px">Anunciar meu negócio (patrocinado)</button></div>`;
     return _perfilP().replace('<button class="ghost" data-map=', card + '<button class="ghost" data-map=');
@@ -1041,7 +1045,7 @@
     if (S.spOpen) document.getElementById('root').insertAdjacentHTML('beforeend', spSheet());
     if (S.safeOpen) document.getElementById('root').insertAdjacentHTML('beforeend', safeSheet());
     if (S.endFor) document.getElementById('root').insertAdjacentHTML('beforeend', endSheet());
-    if (S.errMsg) document.getElementById('root').insertAdjacentHTML('beforeend', `<div class="ov" data-errclose><div class="sheet"><div class="handle"></div><button class="close" data-errclose>✕</button><div class="form"><h2>Algo deu errado</h2><div class="cardc"><b>${esc(S.errMsg.t)}</b><small style="word-break:break-word">${esc(S.errMsg.d)}</small></div><small>Tire um print desta tela e envie para o suporte.</small><button class="cta52" data-errclose style="margin-top:10px">Entendi</button></div></div></div>`);
+    if (S.errMsg) document.getElementById('root').insertAdjacentHTML('beforeend', `<div class="ov" data-errclose><div class="sheet"><div class="handle"></div><button class="close" data-errclose>✕</button><div class="form"><h2>Algo deu errado</h2><div class="cardc"><b>${esc(S.errMsg.t)}</b><small style="word-break:break-word">${esc(S.errMsg.d)}</small><small>Versão ${window.APP_VERSION}</small></div><small>Tire um print desta tela e envie para o suporte.</small><button class="cta52" data-errclose style="margin-top:10px">Entendi</button></div></div></div>`);
   };
 
   async function admAct(act, id) {

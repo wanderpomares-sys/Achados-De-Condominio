@@ -540,7 +540,7 @@
   const _feedL = window.feed;
   window.feed = function () {
     const h = _feedL();
-    if (!(window.CLOUD_ON && window.Cloud && S.user && !Cloud.postsLoaded)) return h;
+    if (!(window.CLOUD_ON && S.user && !(window.Cloud && Cloud.postsLoaded))) return h;
     const bar = '<div class="ldg"><i></i>Carregando anúncios…</div>';
     return /<div class="scopes">.*?<\/div>/s.test(h) ? h.replace(/(<div class="scopes">.*?<\/div>)/s, '$1' + bar) : bar + h;
   };
@@ -677,7 +677,7 @@
     const fresh = p.month === monthKey();
     return { tier: p.tier === 'anual' && p.until > Date.now() ? 'anual' : 'free', until: p.until || 0, month: monthKey(), ads: fresh ? (p.ads | 0) : 0, boosts: fresh ? (p.boosts | 0) : 0 };
   }
-  const APP_VERSION = '2026-11-04.10';
+  const APP_VERSION = '2026-11-04.11';
   window.APP_VERSION = APP_VERSION;
   const savePlan = p => store.set('plan', p);
   window.refundAd = () => { const w = wallet(); const p = plan(); if (p.ads > 0) { p.ads--; savePlan(p); } };

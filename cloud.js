@@ -291,7 +291,7 @@
 
   (async () => {
     try {
-      if (!window.firebase) for (const u of LIBS) await loadScript(u);
+      if (!window.firebase) { await loadScript(LIBS[0]); await Promise.all(LIBS.slice(1).map(loadScript)); } // o primeiro (app) antes; os outros juntos
       firebase.initializeApp(cfg);
       db = firebase.firestore(); st = firebase.storage();
       // redes móveis às vezes seguram a conexão em tempo real do Firestore: detecta e troca para o modo compatível
@@ -301,6 +301,7 @@
       await firebase.auth().signInAnonymously();
       uid = firebase.auth().currentUser.uid; C.uid = uid;
       C.ready = true;
+      listenPosts();                       // começa a buscar os anúncios já, sem esperar o resto
       await checkAdmin();
       if (S.user) { S.user.id = uid; C.saveUser(S.user); }
 
@@ -322,7 +323,6 @@
         if (x && S.user && x.building && x.building !== S.user.condo) { S.user.condo = x.building; save(); C.apply(); }
       }, noop);
 
-      listenPosts();
     } catch (e) { fail(e); }
   })();
 })();

@@ -127,12 +127,7 @@
     if (!db) return false;
     try {
       let url = p.imageUrl || null;
-      if (url && url.startsWith('data:')) {
-        try {
-          const ref = st.ref(`posts/${uid}/${p.id}.${url.startsWith('data:image/webp') ? 'webp' : 'jpg'}`);
-          await ref.putString(url, 'data_url'); url = await ref.getDownloadURL();
-        } catch (e) { url = null; if (window.toast) toast('Alterações salvas sem a foto nova (armazenamento de fotos ainda não ativado)'); }
-      }
+      if (url && url.startsWith('data:') && url.length > 300000) { url = null; if (window.toast) toast('Foto grande demais: alterações salvas sem a foto nova'); }
       await db.collection('posts').doc(p.id).update(clean({ title: p.title, price: p.price === undefined ? null : p.price, type: p.type, description: p.description, imageUrl: url, reach: p.reach }));
       const back = await db.collection('posts').doc(p.id).get({ source: 'server' }); // confere o que o servidor guardou
       if (!back.exists) throw new Error('o servidor não encontrou este anúncio (id ' + p.id + ')');
@@ -151,17 +146,8 @@
     if (!p.expiresAt) p.expiresAt = (p.ts || Date.now()) + 30 * 864e5;   // as regras exigem a validade
     try {
       let url = p.imageUrl || null;
-      if (url && url.startsWith('data:')) {
-        try {
-          const ref = st.ref(`posts/${uid}/${p.id}.${url.startsWith('data:image/webp') ? 'webp' : 'jpg'}`);
-          await ref.putString(url, 'data_url');
-          url = await ref.getDownloadURL();
-        } catch (e) { // Storage ainda não ativado (plano grátis): publica sem foto
-          console.warn('[Cloud] foto não enviada', e);
-          url = null;
-          if (window.toast) toast('Anúncio publicado sem foto (armazenamento de fotos ainda não ativado)');
-        }
-      }
+      // Fotos ficam dentro do próprio anúncio (já reduzidas pelo app); o Storage exige plano pago e deixava o envio travado
+      if (url && url.startsWith('data:') && url.length > 300000) { url = null; if (window.toast) toast('Foto grande demais: anúncio publicado sem foto'); }
       const d = clean({
         id: p.id, title: p.title, price: p.price, originalPrice: p.originalPrice, type: p.type,
         building: p.building, buildingId: slug(cond(p)), ts: p.ts, seller: p.seller, apt: p.apt,

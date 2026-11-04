@@ -816,7 +816,7 @@ function share(id){
  window.open('https://wa.me/?text='+encodeURIComponent(text),'_blank');
 }
 function resizeImg(file,cb){
- const fr=new FileReader();fr.onload=()=>{const im=new Image();im.onload=()=>{const m=640,s=Math.min(1,m/Math.max(im.width,im.height));const c=document.createElement('canvas');c.width=im.width*s;c.height=im.height*s;c.getContext('2d').drawImage(im,0,0,c.width,c.height);cb(c.toDataURL('image/jpeg',.7))};im.src=fr.result};fr.readAsDataURL(file);
+ const fr=new FileReader();fr.onload=()=>{const im=new Image();im.onload=()=>{const m=520,s=Math.min(1,m/Math.max(im.width,im.height));const c=document.createElement('canvas');c.width=im.width*s;c.height=im.height*s;c.getContext('2d').drawImage(im,0,0,c.width,c.height);let q=.62,u=c.toDataURL('image/jpeg',q);while(u.length>170000&&q>.3){q-=.1;u=c.toDataURL('image/jpeg',q)}cb(u)};im.src=fr.result};fr.readAsDataURL(file);
 }
 function simulatePush(){
  clearTimeout(mem.push);

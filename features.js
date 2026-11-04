@@ -13,6 +13,15 @@
   /* ---------- estilos ---------- */
   const st = document.createElement('style');
   st.textContent = `
+  .bub{background:#FFF1C9;border:2px solid #F59E0B;border-radius:18px;padding:12px;margin:10px 0;color:#12263F;box-shadow:0 2px 10px rgba(245,158,11,.25)}
+  .bub.here{background:#D9F6E5;border-color:#16A34A;box-shadow:0 2px 10px rgba(22,163,74,.25)}
+  .bub>b{display:block;font-size:14px;margin-bottom:6px}
+  .bub p{margin:4px 0;font-size:12.5px;line-height:1.35}
+  .bub button{display:block;width:100%;text-align:left;margin-top:6px;padding:10px 12px;border-radius:12px;border:1.5px solid rgba(0,0,0,.12);background:#fff;color:#12263F;font-weight:700;font-size:14px;cursor:pointer}
+  .bub button small{display:block;font-weight:400;font-size:12px;color:#5B6B80;margin-top:2px}
+  html[data-theme=dark] .bub{background:#3A2A08;color:#FFE9B0;border-color:#F59E0B}
+  html[data-theme=dark] .bub.here{background:#0F3322;color:#C8F5DA;border-color:#22C55E}
+  html[data-theme=dark] .bub button{background:#1B2230;color:#fff;border-color:rgba(255,255,255,.18)}
   .rad span{flex:none}
   .rad{display:flex;align-items:center;gap:6px;margin:8px 0 4px;font-size:13px;font-weight:700;color:var(--gray,#5B6B80)}
   .rad button{height:32px;flex:1;min-width:0;white-space:nowrap;padding:0 4px;border-radius:16px;border:1px solid var(--border,#D6E0EE);background:transparent;color:var(--dark,#12263F);font-weight:700;font-size:13px;cursor:pointer;font-family:inherit}
@@ -194,21 +203,49 @@
   }
   const nearbyOsm = (lat, lng, rad) => overpass(`[out:json][timeout:15];nwr["name"~"${OSM_NAME}",i](around:${rad || 250},${lat},${lng});out center tags 20;`);
   const sugHtml = () => {
-    const l = (S.reg && S.reg.sugs) || [];
-    return l.length ? `<small class="req">Encontrado no mapa — toque para preencher tudo:</small><div class="sug">${l.map((s, i) => `<button data-geosug="${i}">${esc(s.name)}<small>${esc([s.end, s.bairro].filter(Boolean).join(' • ') || 'sem endereço no mapa')}</small></button>`).join('')}</div>` : '';
+    const g = S.reg || {}, here = g.here || [], l = g.sugs || [];
+    if (here.length) return `<div class="bub here"><b>Este endereço já está cadastrado</b><p>Toque para usar o nome que já existe (assim todos os vizinhos ficam juntos):</p>${here.map(m => `<button data-usecondo="${esc(m.rec.name)}">Usar «${esc(m.rec.name)}»<small>${esc(m.rec.endereco || '')}${m.rec.bairro ? ' • ' + esc(m.rec.bairro) : ''}</small></button>`).join('')}</div>`;
+    if (l.length) return `<div class="bub"><b>${g.sugKind === 'name' ? 'Encontrado no mapa' : 'É este o seu condomínio?'}</b><p>Toque no nome certo e o resto é preenchido sozinho:</p>${l.map((s, i) => `<button data-geosug="${i}">${esc(s.name)}<small>${esc([s.end, s.bairro].filter(Boolean).join(' • ') || 'sem endereço no mapa')}</small></button>`).join('')}</div>`;
+    if (g.sugBusy) return `<div class="bub"><b>Procurando o nome do condomínio…</b><p>Só um instante.</p></div>`;
+    if (g.sugMsg) return `<div class="bub"><b>${esc(g.sugMsg)}</b></div>`;
+    return '';
   };
   const updSug = () => { const el = $('#r-sug'); if (el) el.innerHTML = sugHtml(); };
   let nameT;
   function searchName(q) {
     clearTimeout(nameT);
-    if (q.trim().length < 4) { S.reg.sugs = []; updSug(); return; }
+    if (q.trim().length < 4) { if (S.reg.sugKind === 'name') S.reg.sugs = []; updSug(); return; }
     nameT = setTimeout(async () => {
       try {
         const r = await fetch('https://nominatim.openstreetmap.org/search?format=json&addressdetails=1&limit=6&countrycodes=br&q=' + encodeURIComponent(q + ', ' + (S.reg.cidade || '')), { headers: { 'Accept-Language': 'pt-BR' } });
         const j = await r.json(); if (S.reg.name !== q) return;
-        S.reg.sugs = j.map(fromNom).filter(Boolean); updSug();
+        S.reg.sugs = j.map(fromNom).filter(Boolean); S.reg.sugKind = 'name'; S.reg.here = []; updSug();
       } catch (e) {}
     }, 700);
+  }
+  const splitEnd = e => { const m = String(e || '').match(/^(.*?)[,\s]+(\d+\w?)\s*$/); return m ? { street: m[1].trim(), num: m[2] } : { street: String(e || '').trim(), num: '' }; };
+  const setEnd = g => { g.end = g.street ? (g.street.trim() + (g.num ? ', ' + g.num.trim() : '')) : ''; };
+  let placeT;
+  function placeLookup() { // CEP + número completos: acha cadastro igual ou sugere o nome no mapa
+    clearTimeout(placeT);
+    const g = S.reg;
+    if (g.cep.length !== 9 || !/\d/.test(g.num || '') || !g.street.trim()) { g.here = []; g.sugs = []; g.sugBusy = false; g.sugMsg = ''; updSug(); return; }
+    g.sugBusy = true; g.sugMsg = ''; g.here = []; g.sugs = []; g.sugKind = 'place'; updSug();
+    const snap = g.cep + '|' + g.num + '|' + g.street;
+    placeT = setTimeout(async () => {
+      const same = () => snap === g.cep + '|' + g.num + '|' + g.street;
+      const here = findMatches({ name: '', end: g.end, cidade: g.cidade, cep: g.cep, bairro: g.bairro, lat: g.lat, lng: g.lng }).filter(m => m.why === 'mesmo endereço');
+      if (here.length) { g.here = here; g.sugBusy = false; return updSug(); }
+      const c = await geocode(g.end, g.bairro, g.cidade);
+      if (!same()) return;
+      if (c && isFinite(c.lat)) { g.lat = c.lat; g.lng = c.lng; }
+      let l = [];
+      if (g.lat != null) { try { l = await nearbyOsm(g.lat, g.lng, 100); if (!l.length) l = await nearbyOsm(g.lat, g.lng, 250); } catch (e) {} }
+      if (!same()) return;
+      g.sugBusy = false; g.sugs = l.slice(0, 5);
+      if (!l.length) g.sugMsg = 'Não achei o nome no mapa. Digite o nome do condomínio abaixo.';
+      updSug();
+    }, 500);
   }
   async function suggestByPlace(lat, lng, cepNow, rad) {
     try { const l = await nearbyOsm(lat, lng, rad); if (S.reg.cep !== cepNow || !l.length) return; S.reg.sugs = l.slice(0, 6); updSug(); } catch (e) {}
@@ -235,10 +272,12 @@
     return `<input type="text" id="${onb ? 'o-q' : 'c-q'}" value="${esc(onb ? S.onb.q : S.cq)}" placeholder="Buscar condomínio..." autocomplete="off" style="margin-bottom:8px">
     <div class="sug">${list.map(c => `<button class="${sel === c[0] ? 'on' : ''}" ${onb ? 'data-condo' : 'data-condopick'}="${esc(c[0])}">${esc(c[0])}<small>${label(c)}</small></button>`).join('') || '<button disabled>Nenhum condomínio encontrado</button>'}</div>
     ${g.open && g.mode === mode ? `<div class="regbox"><b>Cadastrar meu condomínio</b>
-      <input type="text" id="r-name" value="${esc(g.name)}" placeholder="Nome do condomínio * (digite para buscar no mapa)" autocomplete="off">
+      <small class="req">1) CEP, 2) número. Em seguida sugerimos o nome do condomínio.</small>
+      <input type="text" id="r-cep" inputmode="numeric" maxlength="9" value="${esc(g.cep || '')}" placeholder="1) CEP *" autocomplete="postal-code">
+      <input type="text" id="r-street" value="${esc(g.street || '')}" placeholder="Rua (preenchida pelo CEP) *">
+      <input type="text" id="r-num" inputmode="numeric" value="${esc(g.num || '')}" placeholder="2) Número *" autocomplete="off">
       <div id="r-sug">${sugHtml()}</div>
-      <input type="text" id="r-cep" inputmode="numeric" maxlength="9" value="${esc(g.cep || '')}" placeholder="CEP * (preenche o endereço)" autocomplete="postal-code">
-      <input type="text" id="r-end" value="${esc(g.end)}" placeholder="Endereço: rua e número *">
+      <input type="text" id="r-name" value="${esc(g.name)}" placeholder="3) Nome do condomínio *" autocomplete="off">
       <input type="text" id="r-bairro" value="${esc(g.bairro)}" placeholder="Bairro *">
       <input type="text" id="r-cidade" value="${esc(g.cidade)}" placeholder="Cidade *">
       <small class="req">${g.geoMsg ? esc(g.geoMsg) + ' ' : ''}Todos os campos são obrigatórios; o CEP serve para calcular a distância até os vizinhos. Cadastros parecidos com um já existente passam por aprovação.</small>
@@ -247,7 +286,7 @@
       : `<button class="ghost" data-regopen="${mode}">＋ Cadastrar meu condomínio</button>`}`;
   };
 
-  const resetReg = mode => { S.reg = { open: false, mode, name: '', cep: '', end: '', bairro: '', cidade: 'Mogi das Cruzes', lat: null, lng: null, geoMsg: '', matches: null, hard: false, sugs: [], confirmNew: false }; };
+  const resetReg = mode => { S.reg = { open: false, mode, name: '', cep: '', end: '', street: '', num: '', here: [], sugKind: '', sugBusy: false, sugMsg: '', bairro: '', cidade: 'Mogi das Cruzes', lat: null, lng: null, geoMsg: '', matches: null, hard: false, sugs: [], confirmNew: false }; };
   function chooseCondo(name) {
     if (S.reg.mode === 'onb') { S.onb.condo = name; S.onb.q = ''; }
     else { S.user.condo = name; S.condoSheet = false; save(); rebuildCondos(); window.Cloud && Cloud.saveUser(S.user); }
@@ -1073,9 +1112,14 @@
     if (d.renew) return renew(d.renew);
     if (d.geosug != null) {
       const s = (S.reg.sugs || [])[+d.geosug]; if (!s) return;
-      const g = S.reg; g.name = s.name; if (s.end) g.end = s.end; if (s.cep) g.cep = fmtCep(s.cep); if (s.bairro) g.bairro = s.bairro; if (s.cidade) g.cidade = s.cidade;
-      g.lat = s.lat; g.lng = s.lng; g.sugs = []; g.matches = null; g.hard = false;
-      g.geoMsg = /\d/.test(g.end) ? 'Conferido no mapa. Falta só salvar.' : 'Complete o número do endereço' + (g.cep ? '.' : ' e o CEP.');
+      const g = S.reg; g.name = s.name;
+      if (g.sugKind === 'name') { // veio da busca pelo nome: preenche tudo
+        if (s.end) { const p = splitEnd(s.end); g.street = p.street || g.street; g.num = p.num || g.num; setEnd(g); }
+        if (s.cep) g.cep = fmtCep(s.cep); if (s.bairro) g.bairro = s.bairro; if (s.cidade) g.cidade = s.cidade;
+        g.lat = s.lat; g.lng = s.lng;
+      } else if (g.lat == null) { g.lat = s.lat; g.lng = s.lng; }
+      g.sugs = []; g.matches = null; g.hard = false; g.here = [];
+      g.geoMsg = /\d/.test(g.end) && g.cep ? 'Conferido. Falta só salvar.' : 'Complete o CEP e o número.';
       return render();
     }
     if (d.usecondo) { chooseCondo(d.usecondo); resetReg(S.reg.mode); return render(); }
@@ -1104,24 +1148,24 @@
     else if (id === 'o-name' || id === 'o-apt') refreshGo();
     else if (id === 'r-cep') {
       const v = fmtCep(e.target.value); e.target.value = v; S.reg.cep = v; S.reg.lat = S.reg.lng = null; S.reg.geoMsg = '';
+      S.reg.matches = null; S.reg.hard = false; placeLookup();
       if (v.length === 9) lookupCep(v).then(r => {
-        if (!r || S.reg.cep !== v) { if (!r) { S.reg.geoMsg = 'CEP não encontrado agora; preencha o endereço.'; render(); } return; }
-        if (r.street && !S.reg.end.trim()) S.reg.end = r.street + ', ';
+        if (!r || S.reg.cep !== v) { if (!r) { S.reg.geoMsg = 'CEP não encontrado agora; preencha a rua.'; render(); } return; }
+        if (r.street) S.reg.street = r.street;
         if (r.bairro) S.reg.bairro = r.bairro;
         if (r.cidade) S.reg.cidade = r.cidade;
-        S.reg.lat = r.lat; S.reg.lng = r.lng;
-        S.reg.geoMsg = 'Endereço preenchido. Complete o número.';
-        render();
-        (r.lat != null ? Promise.resolve({ lat: r.lat, lng: r.lng }) : geocode(r.street, r.bairro, r.cidade)).then(c => { if (c && isFinite(c.lat)) suggestByPlace(c.lat, c.lng, v, 300); });
+        S.reg.lat = r.lat; S.reg.lng = r.lng; setEnd(S.reg);
+        S.reg.geoMsg = 'Rua preenchida. Agora digite o número.';
+        render(); const n = $('#r-num'); if (n) n.focus();
+        placeLookup();
       });
     }
+    else if (id === 'r-street' || id === 'r-num') {
+      const g = S.reg; if (id === 'r-street') g.street = e.target.value; else g.num = e.target.value.replace(/[^\d\w -]/g, '');
+      setEnd(g); g.matches = null; g.hard = false; g.confirmNew = false; const b = $('.dupbox'); if (b) b.remove();
+      g.lat = g.lat; placeLookup();
+    }
     else if (/^r-(name|end|bairro|cidade)$/.test(id)) { S.reg.matches = null; S.reg.hard = false; S.reg.confirmNew = false; const b = $('.dupbox'); if (b) b.remove(); if (id === 'r-name') searchName(S.reg.name = e.target.value); }
-  });
-  document.addEventListener('change', async e => { // endereço completo → procura o nome do condomínio ali perto
-    if (e.target.id !== 'r-end' || !/\d/.test(e.target.value)) return;
-    const g = S.reg, v = g.cep; if (g.name.trim()) return;
-    const c = await geocode(g.end, g.bairro, g.cidade);
-    if (c && isFinite(c.lat)) { if (g.lat == null) { g.lat = c.lat; g.lng = c.lng; } suggestByPlace(c.lat, c.lng, v, 120); }
   });
   resetReg('onb');
   if (S.onb && S.onb.email == null) S.onb.email = '';

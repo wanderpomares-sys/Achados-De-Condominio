@@ -119,6 +119,9 @@
         } catch (e) { url = null; if (window.toast) toast('Alterações salvas sem a foto nova (armazenamento de fotos ainda não ativado)'); }
       }
       await db.collection('posts').doc(p.id).update(clean({ title: p.title, price: p.price === undefined ? null : p.price, type: p.type, description: p.description, imageUrl: url, reach: p.reach }));
+      const back = await db.collection('posts').doc(p.id).get({ source: 'server' }); // confere o que o servidor guardou
+      if (!back.exists) throw new Error('o servidor não encontrou este anúncio (id ' + p.id + ')');
+      if (back.data().title !== p.title) throw new Error('o servidor ainda tem o título antigo: ' + back.data().title);
       return true;
     } catch (e) { bad('Não foi possível salvar a alteração. O anúncio voltou ao original.', e); C.apply(); return false; }
   };

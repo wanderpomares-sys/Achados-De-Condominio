@@ -108,16 +108,17 @@
   };
   const hasGeo = c => c && typeof c.lat === 'number' && typeof c.lng === 'number' && isFinite(c.lat) && isFinite(c.lng);
   const fmtCep = v => { const d = String(v || '').replace(/\D/g, '').slice(0, 8); return d.length > 5 ? d.slice(0, 5) + '-' + d.slice(5) : d; };
+  const fetchT = (url, opt, ms) => { const c = new AbortController(), t = setTimeout(() => c.abort(), ms || 8000); return fetch(url, { ...(opt || {}), signal: c.signal }).finally(() => clearTimeout(t)); };
   async function lookupCep(cep) { // BrasilAPI (traz coordenadas quando tem); ViaCEP como reserva
     const d = String(cep || '').replace(/\D/g, ''); if (d.length !== 8) return null;
     try {
-      const r = await fetch('https://brasilapi.com.br/api/cep/v2/' + d); if (!r.ok) throw new Error('cep');
+      const r = await fetchT('https://brasilapi.com.br/api/cep/v2/' + d, null, 7000); if (!r.ok) throw new Error('cep');
       const j = await r.json(), c = (j.location && j.location.coordinates) || {};
       const lat = Number(c.latitude), lng = Number(c.longitude);
       return { street: j.street || '', bairro: j.neighborhood || '', cidade: j.city || '', lat: isFinite(lat) && c.latitude != null ? lat : null, lng: isFinite(lng) && c.longitude != null ? lng : null };
     } catch (e) {
       try {
-        const r = await fetch('https://viacep.com.br/ws/' + d + '/json/'); const j = await r.json(); if (j.erro) return null;
+        const r = await fetchT('https://viacep.com.br/ws/' + d + '/json/', null, 7000); const j = await r.json(); if (j.erro) return null;
         return { street: j.logradouro || '', bairro: j.bairro || '', cidade: j.localidade || '', lat: null, lng: null };
       } catch (e2) { return null; }
     }
@@ -125,7 +126,7 @@
   async function geocode(end, bairro, cidade) { // OpenStreetMap/Nominatim (uso leve, 1 consulta por cadastro)
     try {
       const q = encodeURIComponent([end, bairro, cidade, 'Brasil'].filter(Boolean).join(', '));
-      const r = await fetch('https://nominatim.openstreetmap.org/search?format=json&limit=1&countrycodes=br&q=' + q, { headers: { 'Accept-Language': 'pt-BR' } });
+      const r = await fetchT('https://nominatim.openstreetmap.org/search?format=json&limit=1&countrycodes=br&q=' + q, { headers: { 'Accept-Language': 'pt-BR' } }, 8000);
       const j = await r.json();
       return j && j[0] ? { lat: Number(j[0].lat), lng: Number(j[0].lon) } : null;
     } catch (e) { return null; }
@@ -198,7 +199,7 @@
   };
   const OSM_NAME = 'condom[ií]nio|residencial|edif[ií]cio|^res[. ]';
   async function overpass(q) {
-    const r = await fetch('https://overpass-api.de/api/interpreter', { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: 'data=' + encodeURIComponent(q) });
+    const r = await fetchT('https://overpass-api.de/api/interpreter', { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: 'data=' + encodeURIComponent(q) }, q.includes('around:15000') ? 70000 : 9000);
     const j = await r.json(); return (j.elements || []).map(fromOsm).filter(Boolean);
   }
   const nearbyOsm = (lat, lng, rad) => overpass(`[out:json][timeout:15];nwr["name"~"${OSM_NAME}",i](around:${rad || 250},${lat},${lng});out center tags 20;`);
@@ -217,7 +218,7 @@
     if (q.trim().length < 4) { if (S.reg.sugKind === 'name') S.reg.sugs = []; updSug(); return; }
     nameT = setTimeout(async () => {
       try {
-        const r = await fetch('https://nominatim.openstreetmap.org/search?format=json&addressdetails=1&limit=6&countrycodes=br&q=' + encodeURIComponent(q + ', ' + (S.reg.cidade || '')), { headers: { 'Accept-Language': 'pt-BR' } });
+        const r = await fetchT('https://nominatim.openstreetmap.org/search?format=json&addressdetails=1&limit=6&countrycodes=br&q=' + encodeURIComponent(q + ', ' + (S.reg.cidade || '')), { headers: { 'Accept-Language': 'pt-BR' } }, 8000);
         const j = await r.json(); if (S.reg.name !== q) return;
         S.reg.sugs = j.map(fromNom).filter(Boolean); S.reg.sugKind = 'name'; S.reg.here = []; updSug();
       } catch (e) {}
@@ -233,6 +234,7 @@
     g.sugBusy = true; g.sugMsg = ''; g.here = []; g.sugs = []; g.sugKind = 'place'; updSug();
     const snap = g.cep + '|' + g.num + '|' + g.street;
     placeT = setTimeout(async () => {
+      setTimeout(() => { if (g.sugBusy && snap === g.cep + '|' + g.num + '|' + g.street) { g.sugBusy = false; g.sugMsg = 'O mapa demorou a responder. Digite o nome do condomínio abaixo.'; updSug(); } }, 14000);
       const same = () => snap === g.cep + '|' + g.num + '|' + g.street;
       const here = findMatches({ name: '', end: g.end, cidade: g.cidade, cep: g.cep, bairro: g.bairro, lat: g.lat, lng: g.lng }).filter(m => m.why === 'mesmo endereço');
       if (here.length) { g.here = here; g.sugBusy = false; return updSug(); }

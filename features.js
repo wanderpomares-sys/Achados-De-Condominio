@@ -679,7 +679,7 @@
     const fresh = p.month === monthKey();
     return { tier: p.tier === 'anual' && p.until > Date.now() ? 'anual' : 'free', until: p.until || 0, month: monthKey(), ads: fresh ? (p.ads | 0) : 0, boosts: fresh ? (p.boosts | 0) : 0 };
   }
-  const APP_VERSION = '2026-11-04.17';
+  const APP_VERSION = '2026-11-04.18';
   window.APP_VERSION = APP_VERSION;
   const savePlan = p => store.set('plan', p);
   window.refundAd = () => { const w = wallet(); const p = plan(); if (p.ads > 0) { p.ads--; savePlan(p); } };
@@ -790,6 +790,83 @@
   };
   const _finishV = window.finishReward;
   window.finishReward = function () { if (VIDS().length) { vidIdx++; store.set('vidIdx', vidIdx); } return _finishV.apply(this, arguments); };
+
+
+  /* ---------- vídeo premiado automático (Google Ad Manager / GPT) ---------- */
+  const ADU = () => window.REWARD_ADUNIT || '';
+  let adSlot = null, adEv = null, adListen = false, adGptP = null;
+  function loadGpt() {
+    if (adGptP) return adGptP;
+    adGptP = new Promise((res, rej) => {
+      window.googletag = window.googletag || { cmd: [] };
+      const s = document.createElement('script'); s.async = true;
+      s.src = 'https://securepubads.g.doubleclick.net/tag/js/gpt.js';
+      s.onload = () => res(); s.onerror = () => { adGptP = null; rej(new Error('gpt')); };
+      document.head.appendChild(s);
+    });
+    return adGptP;
+  }
+  function adCleanup() {
+    try { if (adSlot && window.googletag && googletag.destroySlots) googletag.destroySlots([adSlot]); } catch (e) {}
+    adSlot = null; adEv = null;
+  }
+  function demoTimer() {
+    clearInterval(mem.rw);
+    mem.rw = setInterval(() => {
+      if (!S.reward) { clearInterval(mem.rw); return; }
+      S.reward.left--;
+      if (S.reward.left <= 0) { clearInterval(mem.rw); finishReward(); render(); }
+      else if (window.rwTick) rwTick(); else render();
+    }, 1000);
+  }
+  function adFallback() {          // sem anúncio disponível: usa seus vídeos / demonstração
+    adCleanup();
+    if (!S.reward || S.reward.net === 'granted') return;
+    S.reward.net = 'demo'; S.reward.left = REWARD_SECS; render(); demoTimer();
+  }
+  const _startA = window.startReward;
+  window.startReward = function () {
+    _startA.apply(this, arguments);
+    if (!ADU() || !S.reward) return;
+    clearInterval(mem.rw);                       // pausa o relógio: quem manda agora é o anúncio
+    const r = S.reward; r.net = 'load'; adCleanup(); render();
+    const alive = () => S.reward === r && r.net !== 'granted' && r.net !== 'demo';
+    const wait = setTimeout(() => { if (alive() && r.net === 'load') adFallback(); }, window.REWARD_ADWAIT || 10000);
+    loadGpt().then(() => {
+      googletag.cmd.push(() => {
+        if (!alive()) return;
+        adSlot = googletag.defineOutOfPageSlot(ADU(), googletag.enums.OutOfPageFormat.REWARDED);
+        if (!adSlot) { clearTimeout(wait); return adFallback(); }
+        adSlot.addService(googletag.pubads());
+        if (!adListen) {
+          adListen = true;
+          const ps = googletag.pubads();
+          ps.addEventListener('rewardedSlotReady', e => { if (e.slot !== adSlot || !S.reward || S.reward.net !== 'load') return; adEv = e; S.reward.net = 'ready'; render(); });
+          ps.addEventListener('rewardedSlotGranted', e => { if (e.slot !== adSlot || !S.reward) return; S.reward.net = 'granted'; S.reward.left = 0; finishReward(); render(); });
+          ps.addEventListener('rewardedSlotClosed', e => {
+            if (e.slot !== adSlot) return;
+            const was = S.reward && S.reward.net; adCleanup();
+            if (S.reward && was !== 'granted') { S.reward = null; render(); toast('Assista até o fim para ganhar a recompensa'); }
+          });
+        }
+        googletag.enableServices(); googletag.display(adSlot);
+      });
+    }).catch(() => { clearTimeout(wait); if (alive()) adFallback(); });
+  };
+  document.addEventListener('click', e => {
+    const b = e.target.closest && e.target.closest('[data-adnet]'); if (!b) return;
+    if (adEv && S.reward && S.reward.net === 'ready') { S.reward.net = 'showing'; try { adEv.makeRewardedVisible(); } catch (x) { adFallback(); } }
+  });
+  const _rewardA = window.reward;
+  window.reward = function () {
+    const h = _rewardA();
+    const r = S.reward;
+    if (!ADU() || !r || r.left <= 0 || !['load', 'ready', 'showing'].includes(r.net)) return h;
+    const box = r.net === 'ready'
+      ? `<div class="tv" style="height:auto;padding:22px"><button class="cta52" data-adnet>▶ Assistir vídeo</button></div>`
+      : `<div class="tv" style="height:auto;padding:30px">${r.net === 'load' ? 'Carregando vídeo…' : 'Assistindo…'}</div>`;
+    return h.replace(/<div class="tv"[^>]*>[\s\S]*?<\/div>/, box).replace(/<div class="prog">[\s\S]*?<\/div>/, '');
+  };
 
   const _perfilP = window.perfil;
   window.perfil = function () {

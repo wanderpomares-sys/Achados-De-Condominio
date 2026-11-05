@@ -20,3 +20,7 @@ window.PAY_WORKER = "https://achados-pagamentos.wanderpomares.workers.dev";
 // Coloque os arquivos .mp4 na pasta assets/videos/ e liste aqui. Lista vazia = tela de demonstração.
 // Exemplo: window.REWARD_VIDEOS = [{ src: "assets/videos/padaria.mp4", brand: "Padaria do Zé" }];
 window.REWARD_VIDEOS = [];
+
+// Vídeo premiado automático (Google Ad Manager). Cole aqui o caminho da unidade de anúncio premiado,
+// ex.: "/12345678/achados_recompensa". Vazio = usa seus vídeos (REWARD_VIDEOS) ou a demonstração.
+window.REWARD_ADUNIT = "";

@@ -737,13 +737,13 @@ function feed(){
  const boosted=l.filter(isBoost);const rest=l.filter(p=>!isBoost(p));
  if(boosted.length)sections.push(['⚡','Em destaque','Anúncios impulsionados',boosted,'#F59E0B']);
  const mine=rest.filter(p=>p.isMy),viz=rest.filter(p=>!p.isMy);
- if(mine.length)sections.push(['🏢','No seu prédio',esc(short(S.user.condo))+' • seus vizinhos de porta',mine,'#0F2E6B']);
+ if(mine.length)sections.push(['🏢','No seu condomínio',esc(short(S.user.condo))+' • seus vizinhos de porta',mine,'#0F2E6B']);
  if(viz.length&&S.scope!=='pred')sections.push(['📍','Nos vizinhos','Condomínios em até '+RAD()+' km',viz,'#0EA5A4']);
  sections.forEach(([ic,t,sub,arr,col],si2)=>{
   out+=`<section class="blk">${secHead(ic,t,sub,arr.length,col)}`;
   arr.forEach(p=>{
    out+=card(p);n++;
-   if(n===2&&S.promo&&!promoDone){promoDone=true;out+=`<div class="promo"><span class="ic">✨</span><p>Destaque seu anúncio por 24h nos 5 prédios</p><button class="go" data-boostpromo>Destacar (15s)</button><button class="x" data-dismiss aria-label="Fechar">✕</button></div>`}
+   if(n===2&&S.promo&&!promoDone){promoDone=true;out+=`<div class="promo"><span class="ic">✨</span><p>Destaque seu anúncio por 24h nos 5 condomínios</p><button class="go" data-boostpromo>Destacar (15s)</button><button class="x" data-dismiss aria-label="Fechar">✕</button></div>`}
    if(n%4===0)out+=sponsorCard(SPONSORS[si++%SPONSORS.length]);
   });
   out+='</section>';
@@ -754,7 +754,7 @@ function feed(){
   <div class="greet"><div>Olá, <b>${esc(S.user.name.split(' ')[0])}</b> 👋</div><span>${esc(short(S.user.condo))} • Apto ${esc(S.user.apt)}</span></div>
   <div class="search"><span>🔍</span><input id="q" value="${esc(S.q)}" placeholder="Buscar sofá, vaga, feirinha..." autocomplete="off"></div>
   <div class="lab">Onde procurar</div>
-  <div class="scopes"><button class="${S.scope==='pred'?'on':''}" data-scope="pred">Meu Prédio • ${countMy()}</button><button class="${S.scope==='viz'?'on':''}" data-scope="viz">Vizinhos ${RAD()}km • ${countViz()}</button></div>
+  <div class="scopes"><button class="${S.scope==='pred'?'on':''}" data-scope="pred">Meu Condomínio • ${countMy()}</button><button class="${S.scope==='viz'?'on':''}" data-scope="viz">Vizinhos ${RAD()}km • ${countViz()}</button></div>
  </section>
 <div class="layout">
   <aside class="rail" aria-label="Atalhos">
@@ -781,7 +781,7 @@ function perfil(){
  <div class="row2" style="display:block"><div class="kv"><span>Dados</span><b>${window.CLOUD_ON?'Nuvem (Firebase)':'Só neste aparelho'}</b></div><div class="kv"><span>Meus anúncios</span><b>${mine}</b></div><div class="kv"><span>Favoritos</span><b>${S.favs.length}</b></div><div class="kv"><span>Interesses enviados</span><b>${S.interests.length}</b></div></div>
  <button class="ghost" data-map="${esc(u.condo)}">🗺️ Ver mapa do meu condomínio</button>
  <button class="ghost" data-condosheet>🏢 Trocar condomínio</button>
- <button class="ghost" data-pushtoggle>🔔 Notificar novos posts do meu prédio: <b>${S.push?'ON':'OFF'}</b></button>
+ <button class="ghost" data-pushtoggle>🔔 Notificar novos posts do meu condomínio: <b>${S.push?'ON':'OFF'}</b></button>
  <button class="ghost" data-reset style="color:var(--red)">Sair e refazer onboarding</button></div>`;
 }
 function condoPicker(mode){
@@ -802,7 +802,7 @@ function condoPicker(mode){
 function onboarding(){
  const o=S.onb;const ok=o.name.trim()&&o.apt.trim()&&o.condo;
  const list=CONDOS.filter(c=>c[0].toLowerCase().includes(o.q.toLowerCase()));
- return `<div class="onb"><img src="${LOGO}" alt="Achados"><div class="onbname">Achados<span>de Condomínios</span></div><h1>Tudo que rola no seu prédio e nos vizinhos</h1><p>Venda, doação e achados em um raio de até 20km.</p>
+ return `<div class="onb"><img src="${LOGO}" alt="Achados"><div class="onbname">Achados<span>de Condomínios</span></div><h1>Tudo que rola no seu condomínio e nos vizinhos</h1><p>Venda, doação e achados em um raio de até 20km.</p>
  <div class="form" style="padding:0">
   <div><label>Nome</label><input type="text" id="o-name" value="${esc(o.name)}" placeholder="Seu nome"></div>
   <div><label>Apto</label><input type="text" id="o-apt" value="${esc(o.apt)}" placeholder="Ex.: 204"></div>
@@ -816,7 +816,7 @@ function detail(){
  const t=TYPES[p.type];const bg=p.imageUrl?`background-image:url(${p.imageUrl})`:`background:${GRAD[p.type]}`;
  const fav=S.favs.includes(p.id);
  return `<div class="ov" data-ovclose><div class="sheet" id="sheet"><div class="handle"></div><button class="close" data-close>✕</button>
-  <div class="dimg" style="${bg}">${p.imageUrl?'':tileIcon(p)}<span class="badge" style="background:${t.c}">${t.l}</span><span class="dist">${p.distance===0?'No seu prédio':p.distance.toLocaleString('pt-BR')+' km'}</span></div>
+  <div class="dimg" style="${bg}">${p.imageUrl?'':tileIcon(p)}<span class="badge" style="background:${t.c}">${t.l}</span><span class="dist">${p.distance===0?'No seu condomínio':p.distance.toLocaleString('pt-BR')+' km'}</span></div>
   <div class="dbody"><h2>${esc(p.title)}</h2><div class="dprice">${priceHtml(p)}</div>
    <div class="desc">${esc(p.description||'Sem descrição.')}</div>
    <div class="box"><div>📍 ${esc(p.building)}${p.apt&&p.apt!=='—'?' • Apto '+esc(p.apt):''}</div><button class="mapbtn" data-map="${esc(condoOf(p))}">🗺️ Ver mapa • Como chegar</button><div>📦 ${esc(t.l[0]+t.l.slice(1).toLowerCase())} • ${ago(p.ts)}</div><div>👁️ ${p.views} visualizações</div></div>
@@ -864,7 +864,7 @@ function newPost(){
    ${f.free?'':`<input type="number" inputmode="decimal" id="f-price" value="${esc(f.price)}" placeholder="R$" style="margin-top:8px">`}</div>
   <div><label>Foto</label><label class="up" style="${f.img?`background-image:url(${f.img});color:transparent`:''}">📷 Toque para enviar<input type="file" accept="image/*" id="f-img" hidden></label></div>
   <div><label>Descrição</label><textarea id="f-desc" placeholder="Estado, medidas, como retirar...">${esc(f.desc)}</textarea></div>
-  <div><label>Alcance</label><div class="row"><button class="opt ${f.reach==='pred'?'on':''}" data-reach="pred">🏢 Só meu prédio</button><button class="opt ${f.reach==='viz'?'on':''}" data-reach="viz">📍 Vizinhos ${RAD()}km</button></div></div>
+  <div><label>Alcance</label><div class="row"><button class="opt ${f.reach==='pred'?'on':''}" data-reach="pred">🏢 Só meu condomínio</button><button class="opt ${f.reach==='viz'?'on':''}" data-reach="viz">📍 Vizinhos ${RAD()}km</button></div></div>
   <button class="cta52" id="f-go" ${f.title.trim()?'':'disabled'}>Publicar</button></div></div></div>`;
 }
 function reward(){
@@ -872,7 +872,7 @@ function reward(){
  const titles={want:'Quero este item',whats:'Liberar WhatsApp',boost:'Destacar anúncio por 24h'};
  return `<div class="ov"><div class="sheet"><div class="handle"></div><div class="rw">
   ${done?`<div style="font-size:48px">🎉</div><h3>${r.kind==='boost'?'Anúncio em destaque por 24h!':'WhatsApp liberado!'}</h3>
-   <p>${r.kind==='boost'?'Seu anúncio aparece primeiro nos 5 prédios.':'Mensagem pronta copiada. É só colar na conversa.'}</p>
+   <p>${r.kind==='boost'?'Seu anúncio aparece primeiro nos 5 condomínios.':'Mensagem pronta copiada. É só colar na conversa.'}</p>
    ${r.kind==='boost'?'':`<div class="row2" style="margin:16px 0 0;text-align:left"><div><small>${esc(r.msg)}</small></div></div>`}
    <button class="cta52" style="margin-top:16px" data-rwdone>${r.kind==='boost'?'Ver no feed':'Abrir WhatsApp'}</button>`
   :`<h3>${titles[r.kind]}</h3><p>Ajude o app continuar grátis 💛</p>
@@ -890,7 +890,7 @@ function render(){
  const root=document.getElementById('root');
  if(!S.user){root.innerHTML=deEmoji(onboarding());restore(keepQ,sel);return}
  const body={feed,agenda,chats,perfil}[S.tab]();
- root.innerHTML=deEmoji(`<div class="app ${S.tab==='feed'?'feedpage':''}">${body}</div>${nav()}${S.detail?detail():''}${S.newPost?newPost():''}${S.condoSheet?condoSheet():''}${S.mapFor?mapSheet():''}${S.reward?reward():''}${S.toast?`<div class="toast">${esc(S.toast)}</div>`:''}${S.pushMsg?`<div class="push" data-pushopen="${S.pushMsg.id}"><img src="${LOGO}" alt=""><div><b>Achados • novo no seu prédio</b><small>${esc(S.pushMsg.title)}</small></div></div>`:''}`);
+ root.innerHTML=deEmoji(`<div class="app ${S.tab==='feed'?'feedpage':''}">${body}</div>${nav()}${S.detail?detail():''}${S.newPost?newPost():''}${S.condoSheet?condoSheet():''}${S.mapFor?mapSheet():''}${S.reward?reward():''}${S.toast?`<div class="toast">${esc(S.toast)}</div>`:''}${S.pushMsg?`<div class="push" data-pushopen="${S.pushMsg.id}"><img src="${LOGO}" alt=""><div><b>Achados • novo no seu condomínio</b><small>${esc(S.pushMsg.title)}</small></div></div>`:''}`);
  restore(keepQ,sel);
 }
 function restore(id,pos){if(!id)return;const el=document.getElementById(id);if(el&&el.focus){el.focus();try{if(pos!=null)el.setSelectionRange(pos,pos)}catch(e){}}}

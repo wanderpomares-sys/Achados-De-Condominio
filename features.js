@@ -638,7 +638,7 @@
          <div class="prog"><i style="width:${(1 - r.left / REWARD_SECS) * 100}%"></i></div>
          <button class="ghost" data-rwcancel>Cancelar</button>`
       : r.got
-        ? `<div style="font-size:48px">🎉</div><h3>Você ganhou 1 destaque!</h3><p>Seu anúncio fica no topo, nos 5 prédios, por 24 horas.</p>
+        ? `<div style="font-size:48px">🎉</div><h3>Você ganhou 1 destaque!</h3><p>Seu anúncio fica no topo, nos 5 condomínios, por 24 horas.</p>
            <button class="cta52" style="margin-top:16px" data-usecredit>Destacar agora</button>
            <button class="ghost" data-rwcancel style="margin-top:8px">Guardar para depois</button>`
         : `<h3>Vídeo ${w.videos} de ${VIDEOS_PER_CREDIT} concluído</h3><div>${dots}</div>
@@ -679,7 +679,7 @@
     const fresh = p.month === monthKey();
     return { tier: p.tier === 'anual' && p.until > Date.now() ? 'anual' : 'free', until: p.until || 0, month: monthKey(), ads: fresh ? (p.ads | 0) : 0, boosts: fresh ? (p.boosts | 0) : 0 };
   }
-  const APP_VERSION = '2026-11-05.28';
+  const APP_VERSION = '2026-11-05.29';
   window.APP_VERSION = APP_VERSION;
   const savePlan = p => store.set('plan', p);
   window.refundAd = () => { const w = wallet(); const p = plan(); if (p.ads > 0) { p.ads--; savePlan(p); } };
@@ -1045,19 +1045,19 @@
     }
   });
 
-  /* ---------- alcance: tipos que ficam só no prédio (vaga de garagem) ---------- */
+  /* ---------- alcance: tipos que ficam só no condomínio (vaga de garagem) ---------- */
   const LOCK_PRED = ['vaga', 'aviso'];
   const _newPostL = window.newPost;
   window.newPost = function () {
     let h = _newPostL();
     if (S.form && LOCK_PRED.includes(S.form.type)) {
       S.form.reach = 'pred';
-      h = h.replace(/<div><label>Alcance<\/label>[\s\S]*?<\/div><\/div>/, `<div><label>Alcance</label><div class="cardc"><b>🏢 Só meu prédio</b><br><small>${S.form.type === 'aviso' ? 'Avisos só aparecem para moradores do seu condomínio. Não são oficiais e não podem pedir pagamento nem dados pessoais.' : 'Este tipo só aparece para moradores do seu condomínio.'}</small></div></div>`);
+      h = h.replace(/<div><label>Alcance<\/label>[\s\S]*?<\/div><\/div>/, `<div><label>Alcance</label><div class="cardc"><b>🏢 Só meu condomínio</b><br><small>${S.form.type === 'aviso' ? 'Avisos só aparecem para moradores do seu condomínio. Não são oficiais e não podem pedir pagamento nem dados pessoais.' : 'Este tipo só aparece para moradores do seu condomínio.'}</small></div></div>`);
     }
     return h;
   };
   document.addEventListener('click', e => {
-    if (e.target.closest('[data-reach]') && S.form && LOCK_PRED.includes(S.form.type)) { e.stopImmediatePropagation(); e.preventDefault(); toast('Esse tipo fica só no seu prédio'); }
+    if (e.target.closest('[data-reach]') && S.form && LOCK_PRED.includes(S.form.type)) { e.stopImmediatePropagation(); e.preventDefault(); toast('Esse tipo fica só no seu condomínio'); }
   }, true);
   document.addEventListener('click', e => {
     if (e.target.id === 'f-go' && S.form && LOCK_PRED.includes(S.form.type)) S.form.reach = 'pred';

@@ -41,7 +41,7 @@
     p.views = p.views || 0; p.wants = p.wants || 0;
     return p;
   }
-  // aplica a lista bruta: esconde vencidos, "só meu prédio" e condomínios ainda em análise
+  // aplica a lista bruta: esconde vencidos, "só meu condomínio" e condomínios ainda em análise
   C.apply = () => {
     if (window.rebuildCondos) rebuildCondos(); // distâncias a partir do MEU condomínio
     const now = Date.now();

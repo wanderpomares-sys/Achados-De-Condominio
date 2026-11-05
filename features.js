@@ -679,7 +679,7 @@
     const fresh = p.month === monthKey();
     return { tier: p.tier === 'anual' && p.until > Date.now() ? 'anual' : 'free', until: p.until || 0, month: monthKey(), ads: fresh ? (p.ads | 0) : 0, boosts: fresh ? (p.boosts | 0) : 0 };
   }
-  const APP_VERSION = '2026-11-05.24';
+  const APP_VERSION = '2026-11-05.25';
   window.APP_VERSION = APP_VERSION;
   const savePlan = p => store.set('plan', p);
   window.refundAd = () => { const w = wallet(); const p = plan(); if (p.ads > 0) { p.ads--; savePlan(p); } };
@@ -866,6 +866,86 @@
       ? `<div class="tv" style="height:auto;padding:22px"><button class="cta52" data-adnet>▶ Assistir vídeo</button></div>`
       : `<div class="tv" style="height:auto;padding:30px">${r.net === 'load' ? 'Carregando vídeo…' : 'Assistindo…'}</div>`;
     return h.replace(/<div class="tv"[^>]*>[\s\S]*?<\/div>/, box).replace(/<div class="prog">[\s\S]*?<\/div>/, '');
+  };
+
+
+  /* ---------- conversas privadas no app (substitui "Quero" -> vídeo -> WhatsApp) ---------- */
+  const chatOn = () => !!(window.CLOUD_ON && window.Cloud && Cloud.ready);
+  const hhmm = ts => { const d = new Date(ts || Date.now()); return d.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }); };
+  const unreadCount = () => (window.Cloud && Cloud.chats ? Cloud.chats.filter(c => Cloud.unreadOf(c)).length : 0);
+  function chatOf(id) { return (Cloud.chats || []).find(c => c.id === id); }
+  function otherName(ch) { return Cloud.uid === ch.sellerUid ? (ch.buyerName || 'Vizinho') : (ch.sellerName || 'Vizinho'); }
+  function msgsHtml() {
+    const ms = Cloud.chatMsgs || [];
+    if (!ms.length) return '<p style="text-align:center;color:var(--gray);font-size:14px;margin:30px 12px">Comece a conversa. Diga o que você precisa e combine tudo por aqui.</p>';
+    return ms.map(m => { const me = m.from === Cloud.uid; return `<div style="display:flex;justify-content:${me ? 'flex-end' : 'flex-start'};margin:4px 0"><div style="max-width:78%;padding:8px 12px;border-radius:14px;${me ? 'background:#0F2E6B;color:#fff;border-bottom-right-radius:4px' : 'background:rgba(120,140,170,.18);border-bottom-left-radius:4px'};white-space:pre-wrap;word-break:break-word">${esc(m.text)}<div style="font-size:10px;opacity:.65;text-align:right;margin-top:2px">${hhmm(m.ts)}</div></div></div>`; }).join('');
+  }
+  function chatSheet() {
+    const ch = chatOf(S.chatId) || S.chatTmp || {};
+    return `<div class="ov" data-chatclose><div class="sheet" id="chatsheet" style="height:86vh;display:flex;flex-direction:column;overflow:hidden"><div class="handle"></div><button class="close" data-chatclose>✕</button>
+      <div style="padding:2px 18px 8px"><h2 style="margin:0 0 2px;font-size:18px">${esc(ch.title || 'Conversa')}</h2><small style="color:var(--gray)">Com ${esc(ch.id ? otherName(ch) : 'vizinho')} • conversa privada</small><div style="font-size:12px;color:#B45309;margin-top:4px">🛡️ Não pague antecipado nem envie códigos. Combine a entrega pessoalmente.</div></div>
+      <div id="cmsgs" style="flex:1;overflow-y:auto;padding:4px 14px">${msgsHtml()}</div>
+      <div style="display:flex;gap:8px;padding:10px 12px;border-top:1px solid rgba(120,140,170,.25)"><input id="cin" maxlength="500" placeholder="Escreva sua mensagem" autocomplete="off" style="flex:1;min-width:0;height:44px;border-radius:22px;border:1.5px solid rgba(120,140,170,.4);padding:0 14px;font:inherit;background:transparent;color:inherit"><button class="cta52" data-chatsend style="width:auto;padding:0 18px;height:44px;margin:0">Enviar</button></div></div></div>`;
+  }
+  function listSheet() {
+    const list = Cloud.chats || [];
+    const rows = list.length ? list.map(ch => { const un = Cloud.unreadOf(ch); return `<button class="cardc" data-chatopen="${esc(ch.id)}" style="display:block;width:100%;text-align:left;margin:8px 0"><b>${un ? '🔴 ' : ''}${esc(ch.title || 'Anúncio')}</b><br><small style="color:var(--gray)">${esc(otherName(ch))}${ch.lastMsg ? ' • ' + esc(ch.lastMsg) : ' • sem mensagens'}</small></button>`; }).join('')
+      : '<p style="text-align:center;color:var(--gray);margin:24px 0">Você ainda não tem conversas. Toque em <b>Quero</b> em um anúncio para falar com o vizinho.</p>';
+    return `<div class="ov" data-chatlistclose><div class="sheet" style="max-height:86vh"><div class="handle"></div><button class="close" data-chatlistclose>✕</button><div class="form"><h2>Minhas conversas</h2>${rows}</div></div></div>`;
+  }
+  function chatScroll() { const m = document.getElementById('cmsgs'); if (m) m.scrollTop = m.scrollHeight; }
+  function updateChat() {
+    if (!S.chatId) return;
+    const m = document.getElementById('cmsgs'); if (!m) return;
+    const atEnd = m.scrollHeight - m.scrollTop - m.clientHeight < 80;
+    m.innerHTML = msgsHtml(); if (atEnd) chatScroll();
+    Cloud.markSeen(S.chatId);
+  }
+  window.openChatFor = async function (postId) {
+    const p = S.posts.find(x => x.id === postId); if (!p) return;
+    if (p.mine) return toast('Este anúncio é seu');
+    if (!chatOn() || !p.sellerUid) return startReward('whats', postId);   // sem servidor: mantém o contato antigo
+    // registra o interesse uma vez (contador "querem")
+    if (!S.interests.find(i => i.postId === p.id)) { p.wants++; const it = { postId: p.id, userId: S.user.id, ts: Date.now() }; S.interests.push(it); try { Cloud.want(p, it); } catch (e) {} save(); }
+    const id = await Cloud.openChat(p); if (!id) return;
+    S.detail = null; openChat(id, { title: p.title });
+  };
+  function openChat(id, tmp) {
+    S.chatId = id; S.chatTmp = tmp ? { title: tmp.title } : null; S.chatList = false;
+    Cloud.onMsgs = updateChat; Cloud.watchMsgs(id); render(); chatScroll();
+    setTimeout(() => { const i = document.getElementById('cin'); i && i.focus(); chatScroll(); }, 300);
+    Cloud.markSeen(id);
+  }
+  function closeChat() { S.chatId = null; S.chatTmp = null; Cloud.stopMsgs(); Cloud.onMsgs = null; render(); }
+  window.chatNotify = ch => { if (S.chatId === ch.id) return; toast('💬 Nova mensagem de ' + otherName(ch)); };
+  (function hook() { if (window.Cloud && Cloud.on === false) return; if (window.Cloud && 'onChats' in Cloud) Cloud.onChats = () => { if (S.chatId) { updateChat(); return; } const o = document.querySelector('.ov'); if (!o) render(); else if (S.chatList) { render(); } }; else setTimeout(hook, 500); })();
+  async function sendNow() {
+    const i = document.getElementById('cin'); if (!i || !S.chatId) return;
+    const t = i.value.trim(); if (!t) return;
+    i.value = ''; const ok = await Cloud.send(S.chatId, t); if (!ok) i.value = t; else i.focus();
+  }
+  document.addEventListener('click', e => {
+    const t = e.target.closest('[data-quero],[data-chat],[data-chatclose],[data-chatsend],[data-chatopen],[data-chatlist],[data-chatlistclose]'); if (!t) return;
+    if (t.hasAttribute('data-chatclose')) { if (e.target !== t) return; e.stopImmediatePropagation(); closeChat(); return; }
+    if (t.hasAttribute('data-chatlistclose')) { if (e.target !== t) return; e.stopImmediatePropagation(); S.chatList = false; render(); return; }
+    e.stopImmediatePropagation(); e.preventDefault();
+    if (t.dataset.quero) openChatFor(t.dataset.quero);
+    else if (t.dataset.chat) openChatFor(t.dataset.chat);
+    else if (t.hasAttribute('data-chatsend')) sendNow();
+    else if (t.dataset.chatopen) openChat(t.dataset.chatopen);
+    else if (t.hasAttribute('data-chatlist')) { S.chatList = true; render(); }
+  }, true);
+  document.addEventListener('keydown', e => { if (e.key === 'Enter' && e.target && e.target.id === 'cin') { e.preventDefault(); sendNow(); } });
+  const _detailCh = window.detail;
+  window.detail = function () {
+    const h = _detailCh(); const p = S.posts.find(x => x.id === S.detail);
+    if (!p || p.mine || !chatOn() || !p.sellerUid) return h;
+    return h.replace(/<button class="big" data-whats="[^"]*">[^<]*<\/button>/, `<button class="big" data-chat="${p.id}">💬 Conversar com o vizinho</button>`);
+  };
+  const _perfilCh = window.perfil;
+  window.perfil = function () {
+    const n = unreadCount();
+    return _perfilCh().replace('<button class="ghost" data-map=', `<button class="ghost" data-chatlist style="margin-top:8px">💬 Minhas conversas${n ? ' <b style="color:#DC2626">(' + n + ' nova' + (n > 1 ? 's' : '') + ')</b>' : ''}</button><button class="ghost" data-map=`);
   };
 
   const _perfilP = window.perfil;
@@ -1184,6 +1264,7 @@
   });
   const _render = window.render;
   window.render = function () {
+    const oi = S.chatId && document.getElementById('cin'); const keepIn = oi ? { v: oi.value, f: document.activeElement === oi, s: oi.selectionStart } : null;
     purgeExpired(); syncSponsors();
     const all = S.posts;
     S.posts = all.filter(p => !hiddenFor(p));
@@ -1194,6 +1275,8 @@
     if (S.spOpen) document.getElementById('root').insertAdjacentHTML('beforeend', spSheet());
     if (S.safeOpen) document.getElementById('root').insertAdjacentHTML('beforeend', safeSheet());
     if (S.endFor) document.getElementById('root').insertAdjacentHTML('beforeend', endSheet());
+    if (S.chatList) document.getElementById('root').insertAdjacentHTML('beforeend', listSheet());
+    if (S.chatId) { document.getElementById('root').insertAdjacentHTML('beforeend', chatSheet()); const ni = document.getElementById('cin'); if (ni && keepIn) { ni.value = keepIn.v; if (keepIn.f) { ni.focus(); try { ni.setSelectionRange(keepIn.s, keepIn.s); } catch (e) {} } } chatScroll(); }
     if (window.placeVideo) placeVideo();
     if (S.errMsg) document.getElementById('root').insertAdjacentHTML('beforeend', `<div class="ov" data-errclose><div class="sheet"><div class="handle"></div><button class="close" data-errclose>✕</button><div class="form"><h2>${esc(S.errMsg.t === 'Teste de conexão' ? 'Resultado' : 'Algo deu errado')}</h2><div class="cardc"><b>${esc(S.errMsg.t)}</b><small style="word-break:break-word;white-space:pre-line">${esc(S.errMsg.d)}</small><small>Versão ${window.APP_VERSION}</small></div><small>Tire um print desta tela e envie para o suporte.</small><button class="cta52" data-errclose style="margin-top:10px">Entendi</button></div></div></div>`);
   };

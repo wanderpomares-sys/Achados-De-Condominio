@@ -94,5 +94,27 @@ service cloud.firestore {
 
     // Fila de e-mails (extensão "Trigger Email"): só o servidor escreve.
     match /mail/{id} { allow read, write: if false; }
+
+    // conversas privadas entre vizinhos: só os dois participantes leem e escrevem
+    match /chats/{cid} {
+      allow read: if signedIn() && request.auth.uid in resource.data.members;
+      allow create: if signedIn()
+        && request.resource.data.members.size() == 2
+        && request.auth.uid in request.resource.data.members
+        && request.resource.data.buyerUid == request.auth.uid
+        && cid == request.resource.data.postId + '_' + request.auth.uid;
+      allow update: if signedIn()
+        && request.auth.uid in resource.data.members
+        && request.resource.data.members == resource.data.members;
+      match /messages/{mid} {
+        allow read: if signedIn() && request.auth.uid in get(/databases/$(database)/documents/chats/$(cid)).data.members;
+        allow create: if signedIn()
+          && request.auth.uid in get(/databases/$(database)/documents/chats/$(cid)).data.members
+          && request.resource.data.from == request.auth.uid
+          && request.resource.data.text is string
+          && request.resource.data.text.size() > 0
+          && request.resource.data.text.size() <= 500;
+      }
+    }
   }
 }

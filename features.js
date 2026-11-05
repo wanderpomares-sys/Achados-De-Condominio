@@ -690,7 +690,7 @@
     const fresh = p.month === monthKey();
     return { tier: p.tier === 'anual' && p.until > Date.now() ? 'anual' : 'free', until: p.until || 0, month: monthKey(), ads: fresh ? (p.ads | 0) : 0, boosts: fresh ? (p.boosts | 0) : 0 };
   }
-  const APP_VERSION = '2026-11-05.33';
+  const APP_VERSION = '2026-11-05.34';
   window.APP_VERSION = APP_VERSION;
   const savePlan = p => store.set('plan', p);
   window.refundAd = () => { const w = wallet(); const p = plan(); if (p.ads > 0) { p.ads--; savePlan(p); } };
@@ -1316,10 +1316,10 @@
   }
   // busca por pedaços (círculos de 5 km cobrindo 20 km): cada pedaço aparece na lista assim que chega
   async function ovTile(q) {
-    const urls = ['https://overpass-api.de/api/interpreter', 'https://overpass.kumi.systems/api/interpreter', 'https://maps.mail.ru/osm/tools/overpass/api/interpreter'];
+    const urls = ['https://overpass-api.de/api/interpreter', 'https://overpass.kumi.systems/api/interpreter'];
     let last;
     for (const u of urls) {
-      const c = new AbortController(), t = setTimeout(() => c.abort(), 25000);   // o relógio vale também para a leitura da resposta
+      const c = new AbortController(), t = setTimeout(() => c.abort(), 12000);   // o relógio vale também para a leitura da resposta
       try {
         const r = await fetch(u, { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: 'data=' + encodeURIComponent(q), signal: c.signal });
         if (!r.ok) throw new Error('HTTP ' + r.status);
@@ -1327,6 +1327,21 @@
       } catch (e) { clearTimeout(t); last = e; }
     }
     throw last;
+  }
+  const NOM_RE = new RegExp(OSM_NAME, 'i');
+  async function nomTile(pt) {
+    const dLat = 3.3 / 111.2, dLng = 3.3 / (111.2 * Math.cos(pt[0] * Math.PI / 180)), out = [];
+    for (const term of ['condomínio', 'residencial', 'edifício']) {
+      const c = new AbortController(), t = setTimeout(() => c.abort(), 12000);
+      try {
+        const r = await fetch('https://nominatim.openstreetmap.org/search?format=json&addressdetails=1&limit=50&countrycodes=br&bounded=1&viewbox=' + [pt[1] - dLng, pt[0] + dLat, pt[1] + dLng, pt[0] - dLat].join(',') + '&q=' + encodeURIComponent(term), { headers: { 'Accept-Language': 'pt-BR' }, signal: c.signal });
+        if (!r.ok) throw new Error('HTTP ' + r.status);
+        const j = await r.json(); clearTimeout(t);
+        j.forEach(x => { const f = fromNom(x); if (f && NOM_RE.test(f.name)) { f.osm = (x.osm_type || 'n')[0] + x.osm_id; out.push(f); } });
+      } catch (e) { clearTimeout(t); if (!out.length && term === 'edifício') throw e; }
+      await new Promise(r => setTimeout(r, 1100));
+    }
+    return out;
   }
   function tilePoints(lat0, lng0, maxKm, stepKm) {
     const pts = [[lat0, lng0]], dLat = stepKm / 111.2, dLng = stepKm / (111.2 * Math.cos(lat0 * Math.PI / 180)), n = Math.ceil(maxKm / stepKm);
@@ -1341,12 +1356,14 @@
     if (S.impBusy) return;
     S.impBusy = true; S.impMsg = 'Começando…'; render();
     const me = (window.Cloud && Cloud.uid) || null, pts = tilePoints(-23.5228, -46.1883, 20, 6);
-    let done = 0, found = 0, added = 0, fails = 0, last = 0;
+    let done = 0, found = 0, added = 0, fails = 0, last = 0, useNom = false, ovFail = 0;
     const seen = new Set(), pending = [];
     const upd = force => { const n = Date.now(); if (!force && n - last < 1500) return; last = n; S.impMsg = `Buscando… ${done}/${pts.length} áreas • ${found} no mapa • ${added} novos em análise` + (fails ? ` • ${fails} área(s) sem resposta` : ''); render(); };
     async function one(pt) {
       try {
-        const list = await ovTile(`[out:json][timeout:20];nwr["name"~"${OSM_NAME}",i](around:6000,${pt[0].toFixed(5)},${pt[1].toFixed(5)});out center tags 400;`);
+        let list;
+        if (useNom) list = await nomTile(pt);
+        else { try { list = await ovTile(`[out:json][timeout:20];nwr["name"~"${OSM_NAME}",i](around:6000,${pt[0].toFixed(5)},${pt[1].toFixed(5)});out center tags 400;`); ovFail = 0; } catch (e) { if (++ovFail >= 2) useNom = true; list = await nomTile(pt); } }
         const add = [];
         list.forEach(x => {
           if (seen.has(x.osm)) return; seen.add(x.osm); found++;
@@ -1363,7 +1380,7 @@
       done++; upd(false);
     }
     try {
-      const q = pts.slice(); await Promise.all([0, 1].map(async () => { while (q.length && !(fails >= 6 && !found)) await one(q.shift()); }));
+      const q = pts.slice(); await Promise.all([0].map(async () => { while (q.length && !(fails >= 6 && !found)) await one(q.shift()); }));
       S.impMsg = `Pronto: ${found} no mapa • ${added} novos em análise (role a lista abaixo) • ${found - added} já existiam ou eram repetidos.` + (fails ? ` ${fails} de ${pts.length} áreas não responderam; toque de novo para completar.` : '');
     } catch (e) { S.impMsg = 'Não consegui consultar o mapa agora. Tente de novo em alguns minutos.'; }
     S.impBusy = false; render();

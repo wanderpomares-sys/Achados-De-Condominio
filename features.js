@@ -679,7 +679,7 @@
     const fresh = p.month === monthKey();
     return { tier: p.tier === 'anual' && p.until > Date.now() ? 'anual' : 'free', until: p.until || 0, month: monthKey(), ads: fresh ? (p.ads | 0) : 0, boosts: fresh ? (p.boosts | 0) : 0 };
   }
-  const APP_VERSION = '2026-11-05.20';
+  const APP_VERSION = '2026-11-05.21';
   window.APP_VERSION = APP_VERSION;
   const savePlan = p => store.set('plan', p);
   window.refundAd = () => { const w = wallet(); const p = plan(); if (p.ads > 0) { p.ads--; savePlan(p); } };
@@ -1040,6 +1040,7 @@
       <div class="cardc"><b>Ao comprar ou vender</b><br><small>• Combine a entrega <b>pessoalmente</b>, dentro do condomínio.<br>• <b>Não pague antecipado</b> nem faça Pix para "reservar" um item.<br>• Confira o item antes de pagar.<br>• Nunca envie códigos recebidos por SMS, senhas ou fotos de documentos.<br>• Desconfie de preço bom demais, pressa e histórias complicadas.<br>• Algo estranho? Use <b>Denunciar anúncio</b>.</small></div>
       <div class="cardc"><b>Cobranças do Achados</b><br><small>O Achados só cobra (plano anual, destaque e patrocinado) <b>dentro do app</b>, pelo botão <b>Pagar</b>, em um pagamento do Mercado Pago aberto a partir do app. <b>Não cobramos por WhatsApp, e-mail, ligação ou mensagem</b>, e nunca pedimos senha ou código. Endereço oficial: <b>achadosdecondominios.com.br</b>. Se alguém cobrar em nosso nome fora do app, é golpe.</small></div>
       <div class="cardc"><b>Avisos importantes</b><br><small>O Achados é um mural entre vizinhos. Ele <b>não participa, não intermedia e não garante</b> nenhuma negociação, entrega, pagamento ou aviso publicado. Cada usuário é responsável pelo que anuncia e pelo que combina. Avisos de síndico ou administração publicados por moradores <b>não são oficiais</b>: confirme com a administração do condomínio. Anúncios proibidos ou enganosos podem ser removidos.</small></div>
+      <p style="text-align:center;margin:8px 0 0"><a href="sobre.html" target="_blank" rel="noopener">Sobre o app, termos completos e política de privacidade</a></p>
     </div></div></div>`;
   }
   const _detailS = window.detail;
@@ -1052,7 +1053,7 @@
   const _perfilS = window.perfil;
   window.perfil = function () { return _perfilS().replace('<button class="ghost" data-map=', '<button class="ghost" data-safe style="margin-top:8px">🛡️ Segurança e termos</button><button class="ghost" data-map='); };
   const _onbS = window.onboarding;
-  window.onboarding = function () { return _onbS().replace('<button class="cta48" id="o-go"', '<small style="display:block;text-align:center;color:var(--gray);margin:0 0 8px">Ao entrar, você concorda com as regras do app. <button class="lk" data-safe style="color:var(--red,#0F2E6B);background:none;border:0;padding:0;font:inherit;text-decoration:underline">Segurança e termos</button></small><button class="cta48" id="o-go"'); };
+  window.onboarding = function () { return _onbS().replace('<button class="cta48" id="o-go"', '<small style="display:block;text-align:center;color:var(--gray);margin:0 0 8px">Ao entrar, você concorda com as regras do app. <button class="lk" data-safe style="color:var(--red,#0F2E6B);background:none;border:0;padding:0;font:inherit;text-decoration:underline">Segurança e termos</button> · <a href="sobre.html" target="_blank" rel="noopener" style="color:inherit">Sobre e privacidade</a></small><button class="cta48" id="o-go"'); };
   const _newPostS = window.newPost;
   window.newPost = function () { return _newPostS().replace('<button class="cta52" id="f-go"', '<small style="color:var(--gray);font-size:13px">Não peça nem aceite pagamento antecipado. Combine a entrega pessoalmente.</small>\n  <button class="cta52" id="f-go"'); };
   document.addEventListener('click', e => {

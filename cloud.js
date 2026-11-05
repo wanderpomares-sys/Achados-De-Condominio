@@ -225,6 +225,7 @@
   }
   C.recheck = async () => { try { await checkAdmin(); } catch (e) { fail(e); } };
   C.adminLogin = async () => {
+    try { localStorage.setItem('admReturn', '1'); } catch (x) {}   // se o app recarregar após o login, reabre o painel
     try {
       const prov = new firebase.auth.GoogleAuthProvider();
       const cu = firebase.auth().currentUser;
@@ -340,6 +341,7 @@
       C.ready = true;
       listenPosts();                       // começa a buscar os anúncios já, sem esperar o resto
       await checkAdmin();
+      try { if (localStorage.getItem('admReturn')) { localStorage.removeItem('admReturn'); S.adminOpen = true; render(); } } catch (x) {}
       if (S.user) { S.user.id = uid; C.saveUser(S.user); }
 
       // condomínios: admin acompanha ao vivo; os demais usam a lista guardada (6 h) ou leem uma vez

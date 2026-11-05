@@ -679,7 +679,7 @@
     const fresh = p.month === monthKey();
     return { tier: p.tier === 'anual' && p.until > Date.now() ? 'anual' : 'free', until: p.until || 0, month: monthKey(), ads: fresh ? (p.ads | 0) : 0, boosts: fresh ? (p.boosts | 0) : 0 };
   }
-  const APP_VERSION = '2026-11-05.30';
+  const APP_VERSION = '2026-11-05.31';
   window.APP_VERSION = APP_VERSION;
   const savePlan = p => store.set('plan', p);
   window.refundAd = () => { const w = wallet(); const p = plan(); if (p.ads > 0) { p.ads--; savePlan(p); } };
@@ -906,6 +906,35 @@
     if (!waNum(S.user.whats)) { e.stopImmediatePropagation(); e.preventDefault(); toast('Informe seu WhatsApp com DDD'); return; }
     S.user.whats = waNum(S.user.whats); save();
   }, true);
+
+  /* ---------- entrar com Google (opcional): recupera cadastro e anúncios em qualquer aparelho ---------- */
+  const _onbG = window.onboarding;
+  window.onboarding = function () {
+    const h = _onbG();
+    if (!window.CLOUD_ON) return h;
+    return h.replace('<div class="form" style="padding:0">', '<button class="ghost" data-glogin style="margin:4px 0 12px">🔐 Já tenho cadastro — entrar com Google</button><div class="form" style="padding:0">');
+  };
+  const _perfilG = window.perfil;
+  window.perfil = function () {
+    const h = _perfilG();
+    if (!window.CLOUD_ON || !window.Cloud) return h;
+    const row = Cloud.linked()
+      ? `<div class="cardc" style="margin-top:8px"><b>🔐 Conta Google conectada ✓</b><br><small>Seu cadastro e seus anúncios ficam salvos nesta conta. Em outro aparelho, toque em "Entrar com Google".</small></div>`
+      : `<button class="ghost" data-glogin style="margin-top:8px">🔐 Guardar minha conta com o Google</button><small style="display:block;color:var(--gray);margin:4px 2px 0">Assim você não perde seus anúncios ao trocar de aparelho ou limpar o navegador.</small>`;
+    return h.replace('<button class="ghost" data-map=', row + '<button class="ghost" data-map=');
+  };
+  document.addEventListener('click', async e => {
+    const t = e.target.closest('[data-glogin]'); if (!t) return;
+    e.stopImmediatePropagation(); e.preventDefault();
+    const r = await Cloud.googleLogin(); if (!r) return;
+    const pr = r.profile;
+    if (pr && pr.building) {                                   // cadastro encontrado: volta tudo
+      S.user = { id: Cloud.uid, name: pr.name || r.name, apt: pr.apt || '', condo: pr.building, email: pr.email || r.email || '', cityShort: 'Mogi' };
+      save(); render(); toast('Bem-vindo de volta! 🎉');
+    } else if (S.user) { Cloud.saveUser(S.user); render(); toast('Conta Google conectada ✓'); }
+    else { S.onb.name = S.onb.name || r.name || ''; render(); toast('Conta conectada. Complete o cadastro.'); }
+  }, true);
+
   const _perfilP = window.perfil;
   window.perfil = function () {
     const p = plan(), q = QUOTA[p.tier];

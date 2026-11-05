@@ -5,7 +5,7 @@
   const cfg = window.FIREBASE_CONFIG;
   const noop = () => {};
   if (!window.CLOUD_ON) {
-    window.Cloud = { on: false, view: noop, want: noop, boost: noop, add: noop, renew: noop, purge: noop, saveUser: noop, saveCondo: noop, report: noop, loadMore: noop, more: false, requestSponsor: noop, freshCondos: noop, reported: [], repLoaded: false, expired: [], expLoaded: false, remove: noop, update: noop, checkout: noop, sponsors: [], requestPlan: noop, planReqs: [] };
+    window.Cloud = { on: false, view: noop, want: noop, boost: noop, add: noop, renew: noop, purge: noop, saveUser: noop, saveCondo: noop, report: noop, loadMore: noop, more: false, requestSponsor: noop, freshCondos: noop, reported: [], repLoaded: false, expired: [], expLoaded: false, remove: noop, update: noop, checkout: noop, sponsors: [], requestPlan: noop, planReqs: [], googleLogin: noop, linked: () => false };
     return;
   }
 
@@ -53,6 +53,34 @@
       return true;
     });
     render();
+  };
+
+
+  // ---------- conta Google do morador (opcional): mantém o mesmo código em qualquer aparelho ----------
+  C.linked = () => { const u = window.firebase && firebase.auth && firebase.auth().currentUser; return !!(u && u.providerData && u.providerData.some(x => x.providerId === 'google.com')); };
+  C.googleLogin = async () => {
+    try {
+      const prov = new firebase.auth.GoogleAuthProvider();
+      const cu = firebase.auth().currentUser;
+      let restored = false;
+      try { await cu.linkWithPopup(prov); }
+      catch (e) {
+        if (e.code === 'auth/provider-already-linked') { /* já vinculado */ }
+        else if (e.credential && (e.code === 'auth/credential-already-in-use' || e.code === 'auth/email-already-in-use')) { await firebase.auth().signInWithCredential(e.credential); restored = true; }
+        else throw e;
+      }
+      const u = firebase.auth().currentUser;
+      uid = u.uid; C.uid = uid;
+      const g = u.providerData.find(x => x.providerId === 'google.com') || {};
+      C.email = g.email || u.email || null;
+      let profile = null;
+      try { const d = await db.collection('users').doc(uid).get(); if (d.exists) profile = d.data(); } catch (e) { /* sem perfil guardado */ }
+      await checkAdmin(); C.apply();
+      return { restored, profile, name: g.displayName || '', email: C.email };
+    } catch (e) {
+      if (e && (e.code === 'auth/popup-closed-by-user' || e.code === 'auth/cancelled-popup-request')) return null;
+      bad('Não foi possível entrar com o Google', e); return null;
+    }
   };
 
   // teste de conexão: mede leitura e escrita no servidor e diz o que está acontecendo

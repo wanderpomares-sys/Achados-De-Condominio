@@ -679,7 +679,7 @@
     const fresh = p.month === monthKey();
     return { tier: p.tier === 'anual' && p.until > Date.now() ? 'anual' : 'free', until: p.until || 0, month: monthKey(), ads: fresh ? (p.ads | 0) : 0, boosts: fresh ? (p.boosts | 0) : 0 };
   }
-  const APP_VERSION = '2026-11-04.16';
+  const APP_VERSION = '2026-11-04.17';
   window.APP_VERSION = APP_VERSION;
   const savePlan = p => store.set('plan', p);
   window.refundAd = () => { const w = wallet(); const p = plan(); if (p.ads > 0) { p.ads--; savePlan(p); } };
@@ -780,6 +780,14 @@
     if (!vidRaf) vidRaf = requestAnimationFrame(trackVideo);
   }
   window.placeVideo = placeVideo;
+  // tique do relógio: atualiza só o número e a barra (sem redesenhar a tela inteira)
+  window.rwTick = function () {
+    const r = S.reward, tv = document.querySelector('.ov .tv b, .rw .tv b'), pr = document.querySelector('.ov .prog i, .rw .prog i');
+    if (!r || !pr || (!tv && !VIDS().length)) return render();
+    if (tv) tv.textContent = r.left + 's';
+    pr.style.width = ((1 - r.left / REWARD_SECS) * 100) + '%';
+    const lb = lblEl.querySelector('span:last-child'); if (lb) lb.textContent = Math.max(0, r.left) + 's';
+  };
   const _finishV = window.finishReward;
   window.finishReward = function () { if (VIDS().length) { vidIdx++; store.set('vidIdx', vidIdx); } return _finishV.apply(this, arguments); };
 

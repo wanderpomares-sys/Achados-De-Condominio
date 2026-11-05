@@ -797,7 +797,7 @@ function startReward(kind,postId){
  const p=S.posts.find(x=>x.id===postId);
  S.reward={kind,postId,left:REWARD_SECS,msg:p?msgFor(p):''};render();
  clearInterval(mem.rw);
- mem.rw=setInterval(()=>{if(!S.reward){clearInterval(mem.rw);return}S.reward.left--;if(S.reward.left<=0){clearInterval(mem.rw);finishReward()}render()},1000);
+ mem.rw=setInterval(()=>{if(!S.reward){clearInterval(mem.rw);return}S.reward.left--;if(S.reward.left<=0){clearInterval(mem.rw);finishReward();render()}else if(window.rwTick)rwTick();else render()},1000);
 }
 function finishReward(){
  const r=S.reward;const p=S.posts.find(x=>x.id===r.postId);

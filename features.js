@@ -203,8 +203,16 @@
   };
   const OSM_NAME = 'condom[ií]nio|residencial|edif[ií]cio|^res[. ]';
   async function overpass(q) {
-    const r = await fetchT('https://overpass-api.de/api/interpreter', { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: 'data=' + encodeURIComponent(q) }, q.includes('around:15000') ? 70000 : 9000);
-    const j = await r.json(); return (j.elements || []).map(fromOsm).filter(Boolean);
+    const big = q.includes('around:20000'), mirrors = ['https://overpass-api.de/api/interpreter', 'https://overpass.kumi.systems/api/interpreter'];
+    let last;
+    for (const u of (big ? mirrors : mirrors.slice(0, 1))) {
+      try {
+        const r = await fetchT(u, { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: 'data=' + encodeURIComponent(q) }, big ? 100000 : 9000);
+        if (!r.ok) throw new Error('HTTP ' + r.status);
+        const j = await r.json(); return (j.elements || []).map(fromOsm).filter(Boolean);
+      } catch (e) { last = e; }
+    }
+    throw last;
   }
   const nearbyOsm = (lat, lng, rad) => overpass(`[out:json][timeout:15];nwr["name"~"${OSM_NAME}",i](around:${rad || 250},${lat},${lng});out center tags 20;`);
   const sugHtml = () => {
@@ -438,7 +446,9 @@
         ${Cloud.email ? `<div class="cardc"><b>Conectado como ${esc(Cloud.email)}</b><small>Esta conta ainda não é administradora. No Firestore, crie o documento <b>admins/${esc(Cloud.uid)}</b> (pode ser vazio) e volte aqui.</small><button class="ghost" data-copyuid style="margin-top:8px">Copiar código</button>${Cloud.admErr ? `<small style="display:block;margin-top:6px;color:#B42318">Não consegui ler o documento (${esc(Cloud.admErr)}). Republique as regras do Firestore.</small>` : ''}<button class="cta52" data-admrecheck style="margin-top:8px">Já criei o documento: verificar</button></div>` : `<div class="cardc"><small>Entre com a sua conta Google para aprovar, renomear e mesclar condomínios.</small></div>`}
         <button class="cta52" data-adminlogin>Entrar com Google</button></div></div></div>`;
     }
-    const pend = CR.filter(c => c.status === 'pending'), appr = CR.filter(c => c.status === 'approved');
+    const pendAll = CR.filter(c => c.status === 'pending'), apprAll = CR.filter(c => c.status === 'approved');
+    const pend = pendAll.slice(0, S.admPend || 15), appr = apprAll.slice(0, S.admAppr || 15);
+    const more = (n, tot, k) => tot > n ? `<button class="ghost" data-admmore="${k}">Mostrar mais (${tot - n} restantes)</button>` : '';
     const others = rec => CR.filter(c => c !== rec && c.status !== 'rejected');
     const row = rec => {
       if (isMod()) return `<div class="cardc"><b>${esc(rec.name)}</b><small>${esc([rec.endereco || 'sem endereço', rec.cep, rec.bairro, rec.cidade].filter(Boolean).join(' • '))}</small>${rec.status === 'pending' ? `<div class="grid2"><button class="ok" data-admact="approve" data-id="${esc(rec.id)}">Aprovar</button><button class="no" data-admact="remove" data-id="${esc(rec.id)}">Recusar</button></div>` : ''}</div>`;
@@ -448,6 +458,7 @@
         <small>${esc([rec.endereco || 'sem endereço', rec.cep, rec.bairro, rec.cidade, hasGeo(rec) ? '' : 'sem coordenadas'].filter(Boolean).join(' • '))}</small>
         ${rec.status === 'pending' && sug.length ? `<div class="sim">Parecido com: ${sug.map(m => esc(m.rec.name) + ' (' + m.why + ')').join('; ')}</div>` : ''}
         <div class="grid2">
+          ${rec.status === 'pending' && sug.length ? `<button class="ok" style="grid-column:1/3" data-admact="mergesug" data-id="${esc(rec.id)}">Mesclar em «${esc(sug[0].rec.name)}»</button>` : ''}
           <button data-admact="rename" data-id="${esc(rec.id)}">Salvar nome</button>
           <a class="lnk" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent([rec.endereco, rec.bairro, rec.cidade].filter(Boolean).join(', '))}">Ver mapa</a>
           <select data-admtarget="${esc(rec.id)}"><option value="">Mesclar em…</option>${others(rec).map(c => `<option value="${esc(c.id)}">${esc(c.name)}</option>`).join('')}</select>
@@ -463,8 +474,8 @@
       ${importHtml()}
       ${reportedHtml()}
       ${expiredHtml()}
-      <h3>Em análise (${pend.length})</h3>${pend.map(row).join('') || '<div class="cardc"><small>Nenhum cadastro esperando aprovação.</small></div>'}
-      <h3>Aprovados (${appr.length})</h3>${appr.map(row).join('') || '<div class="cardc"><small>Nenhum condomínio ainda.</small></div>'}
+      <h3>Em análise (${pendAll.length})</h3>${pend.map(row).join('') || '<div class="cardc"><small>Nenhum cadastro esperando aprovação.</small></div>'}${more(pend.length, pendAll.length, 'pend')}
+      <h3>Aprovados (${apprAll.length})</h3>${appr.map(row).join('') || '<div class="cardc"><small>Nenhum condomínio ainda.</small></div>'}${more(appr.length, apprAll.length, 'appr')}
       <small style="color:var(--gray)">Mesclar move moradores e anúncios para o condomínio escolhido e apaga este cadastro.</small></div></div></div>`;
   }
 
@@ -679,7 +690,7 @@
     const fresh = p.month === monthKey();
     return { tier: p.tier === 'anual' && p.until > Date.now() ? 'anual' : 'free', until: p.until || 0, month: monthKey(), ads: fresh ? (p.ads | 0) : 0, boosts: fresh ? (p.boosts | 0) : 0 };
   }
-  const APP_VERSION = '2026-11-05.31';
+  const APP_VERSION = '2026-11-05.32';
   window.APP_VERSION = APP_VERSION;
   const savePlan = p => store.set('plan', p);
   window.refundAd = () => { const w = wallet(); const p = plan(); if (p.ads > 0) { p.ads--; savePlan(p); } };
@@ -1255,9 +1266,10 @@
     purgeExpired(); syncSponsors();
     const all = S.posts;
     S.posts = all.filter(p => !hiddenFor(p));
+    const _sh = document.getElementById('admsheet'), _top = _sh ? _sh.scrollTop : 0;
     try { _render(); } finally { S.posts = all; }
     if (S.adminOpen && window.CLOUD_ON && window.Cloud && Cloud.isAdmin) { if (!Cloud.expLoaded) Cloud.adm.loadExpired(); if (!Cloud.repLoaded) Cloud.adm.loadReported(); }
-    if (S.adminOpen) document.getElementById('root').insertAdjacentHTML('beforeend', adminSheet());
+    if (S.adminOpen) { document.getElementById('root').insertAdjacentHTML('beforeend', adminSheet()); const n = document.getElementById('admsheet'); if (n && _sh) { n.style.animation = 'none'; n.parentElement.style.animation = 'none'; n.scrollTop = _top; } }
     if (S.plansOpen) document.getElementById('root').insertAdjacentHTML('beforeend', plansSheet());
     if (S.spOpen) document.getElementById('root').insertAdjacentHTML('beforeend', spSheet());
     if (S.safeOpen) document.getElementById('root').insertAdjacentHTML('beforeend', safeSheet());
@@ -1276,6 +1288,10 @@
         if (!n) return toast('Informe o nome');
         if (CR.some(c => c !== rec && c.status !== 'rejected' && norm(c.name) === norm(n))) return toast('Já existe um condomínio com esse nome');
         await ops().rename(rec, n);
+      } else if (act === 'mergesug') {
+        const m = findMatches({ name: rec.name, end: rec.endereco || '', cidade: rec.cidade }).filter(x => x.rec !== rec)[0];
+        if (!m) return toast('Sem sugestão para mesclar');
+        await ops().merge(rec, m.rec);
       } else if (act === 'merge') {
         const sel = document.querySelector(`[data-admtarget="${CSS.escape(id)}"]`);
         const target = CR.find(c => c.id === (sel && sel.value));
@@ -1292,7 +1308,7 @@
   /* ---------- importar condomínios do mapa (administrador) ---------- */
   function importHtml() {
     const pend = CR.filter(c => c.status === 'pending').length;
-    return `<h3>Carregar condomínios do mapa</h3><div class="cardc"><small>Busca no OpenStreetMap os condomínios num raio de 15 km do centro de Mogi das Cruzes. Eles entram <b>em análise</b> (sem duplicar os que já existem) e você aprova.</small>
+    return `<h3>Carregar condomínios do mapa</h3><div class="cardc"><small>Busca no OpenStreetMap os condomínios num raio de 20 km do centro de Mogi das Cruzes. Eles entram <b>em análise</b> (sem duplicar os que já existem) e você aprova.</small>
       <button class="ghost" data-admimport ${S.impBusy ? 'disabled' : ''}>${S.impBusy ? 'Buscando…' : 'Importar condomínios da região'}</button>
       ${S.impMsg ? `<small>${esc(S.impMsg)}</small>` : ''}
       ${pend ? `<button class="${S.apConfirm ? 'no' : 'ok'}" data-admapproveall>${S.apConfirm ? `Confirmar: aprovar os ${pend}` : `Aprovar todos em análise (${pend})`}</button>` : ''}</div>`;
@@ -1301,7 +1317,7 @@
     if (S.impBusy) return;
     S.impBusy = true; S.impMsg = ''; render();
     try {
-      const list = await overpass(`[out:json][timeout:60];nwr["name"~"${OSM_NAME}",i](around:15000,-23.5228,-46.1883);out center tags 1500;`);
+      const list = await overpass(`[out:json][timeout:90];nwr["name"~"${OSM_NAME}",i](around:20000,-23.5228,-46.1883);out center tags 3000;`);
       const add = [], me = (window.Cloud && Cloud.uid) || null;
       list.forEach(s => {
         if (!core(s.name).length) return;
@@ -1346,7 +1362,7 @@
   });
   /* ---------- eventos ---------- */
   document.addEventListener('click', e => {
-    const t = e.target.closest('[data-renew],[data-geosug],[data-usecondo],[data-regnew],[data-regopen],[data-regcancel],[data-saveemail],[data-adminopen],[data-admclose],[data-adminlogin],[data-admact]');
+    const t = e.target.closest('[data-renew],[data-geosug],[data-usecondo],[data-regnew],[data-regopen],[data-regcancel],[data-saveemail],[data-adminopen],[data-admclose],[data-adminlogin],[data-admact],[data-admmore]');
     if (e.target.id === 'o-go' && S.user) { S.user.email = (S.onb.email || '').trim(); save(); window.Cloud && Cloud.saveUser(S.user); }
     if (!t) return;
     const d = t.dataset;
@@ -1371,7 +1387,8 @@
       S.user.email = v.trim(); save(); window.Cloud && Cloud.saveUser(S.user); return toast('E-mail salvo');
     }
     if (t.hasAttribute('data-adminopen')) { S.adminOpen = true; return render(); }
-    if (t.hasAttribute('data-admclose')) { if (e.target.closest('.sheet') && !t.matches('button.close')) return; S.adminOpen = false; return render(); }
+    if (t.hasAttribute('data-admmore')) { const k = t.dataset.admmore === 'pend' ? 'admPend' : 'admAppr'; S[k] = (S[k] || 15) + 30; return render(); }
+    if (t.hasAttribute('data-admclose')) { if (e.target.closest('.sheet') && !t.matches('button.close')) return; S.adminOpen = false; S.admPend = S.admAppr = 0; return render(); }
     if (t.hasAttribute('data-adminlogin')) return window.Cloud && Cloud.adminLogin();
     if (d.admact) return admAct(d.admact, d.id);
   });

@@ -335,7 +335,8 @@
       if (S.user) { S.user.id = uid; C.saveUser(S.user); }
 
       // condomínios: admin acompanha ao vivo; os demais usam a lista guardada (6 h) ou leem uma vez
-      const fillCondos = list => { CR.length = 0; list.forEach(x => CR.push(x)); rebuildCondos(); C.apply(); };
+      let fcT = 0, fcL = null;
+      const fillCondos = list => { fcL = list; clearTimeout(fcT); fcT = setTimeout(() => { CR.length = 0; fcL.forEach(x => CR.push(x)); rebuildCondos(); C.apply(); }, 350); };
       if (C.isAdmin) {
         db.collection('condos').onSnapshot(snap => fillCondos(snap.docs.map(d => ({ id: d.id, ...d.data() }))), fail);
       } else {

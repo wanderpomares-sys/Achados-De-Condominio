@@ -201,7 +201,7 @@
     return { name: t.name, end: [t['addr:street'], t['addr:housenumber']].filter(Boolean).join(', '), cep: t['addr:postcode'] || '', bairro: t['addr:suburb'] || t['addr:neighbourhood'] || '',
       cidade: t['addr:city'] || '', lat: la, lng: ln, osm: (e.type || 'n')[0] + e.id };
   };
-  const OSM_NAME = 'condom[ií]nio|residencial|edif[ií]cio|^res[. ]';
+  const OSM_NAME = 'condom[ií]nio|residencial|edif[ií]cio|^res[. ]|^ed[. ]|residence|torre|village|villa[gl]|spazio|reserva|solar d|parque d';
   async function overpass(q) {
     const big = q.includes('around:20000'), mirrors = ['https://overpass-api.de/api/interpreter', 'https://overpass.kumi.systems/api/interpreter'];
     let last;
@@ -690,7 +690,7 @@
     const fresh = p.month === monthKey();
     return { tier: p.tier === 'anual' && p.until > Date.now() ? 'anual' : 'free', until: p.until || 0, month: monthKey(), ads: fresh ? (p.ads | 0) : 0, boosts: fresh ? (p.boosts | 0) : 0 };
   }
-  const APP_VERSION = '2026-11-05.34';
+  const APP_VERSION = '2026-11-05.35';
   window.APP_VERSION = APP_VERSION;
   const savePlan = p => store.set('plan', p);
   window.refundAd = () => { const w = wallet(); const p = plan(); if (p.ads > 0) { p.ads--; savePlan(p); } };
@@ -1331,13 +1331,13 @@
   const NOM_RE = new RegExp(OSM_NAME, 'i');
   async function nomTile(pt) {
     const dLat = 3.3 / 111.2, dLng = 3.3 / (111.2 * Math.cos(pt[0] * Math.PI / 180)), out = [];
-    for (const term of ['condomínio', 'residencial', 'edifício']) {
+    for (const term of ['condomínio', 'residencial', 'torre', 'residence', 'edifício']) {
       const c = new AbortController(), t = setTimeout(() => c.abort(), 12000);
       try {
         const r = await fetch('https://nominatim.openstreetmap.org/search?format=json&addressdetails=1&limit=50&countrycodes=br&bounded=1&viewbox=' + [pt[1] - dLng, pt[0] + dLat, pt[1] + dLng, pt[0] - dLat].join(',') + '&q=' + encodeURIComponent(term), { headers: { 'Accept-Language': 'pt-BR' }, signal: c.signal });
         if (!r.ok) throw new Error('HTTP ' + r.status);
         const j = await r.json(); clearTimeout(t);
-        j.forEach(x => { const f = fromNom(x); if (f && NOM_RE.test(f.name)) { f.osm = (x.osm_type || 'n')[0] + x.osm_id; out.push(f); } });
+        j.forEach(x => { const f = fromNom(x); if (f && (NOM_RE.test(f.name) || /^(building|apartments|residential)$/.test(x.type || ''))) { f.osm = (x.osm_type || 'n')[0] + x.osm_id; out.push(f); } });
       } catch (e) { clearTimeout(t); if (!out.length && term === 'edifício') throw e; }
       await new Promise(r => setTimeout(r, 1100));
     }
@@ -1363,7 +1363,7 @@
       try {
         let list;
         if (useNom) list = await nomTile(pt);
-        else { try { list = await ovTile(`[out:json][timeout:20];nwr["name"~"${OSM_NAME}",i](around:6000,${pt[0].toFixed(5)},${pt[1].toFixed(5)});out center tags 400;`); ovFail = 0; } catch (e) { if (++ovFail >= 2) useNom = true; list = await nomTile(pt); } }
+        else { try { list = await ovTile(`[out:json][timeout:20];(nwr["name"~"${OSM_NAME}",i](around:6000,${pt[0].toFixed(5)},${pt[1].toFixed(5)});nwr["building"="apartments"]["name"](around:6000,${pt[0].toFixed(5)},${pt[1].toFixed(5)});nwr["landuse"="residential"]["residential"~"apartments|gated"]["name"](around:6000,${pt[0].toFixed(5)},${pt[1].toFixed(5)}););out center tags 600;`); ovFail = 0; } catch (e) { if (++ovFail >= 2) useNom = true; list = await nomTile(pt); } }
         const add = [];
         list.forEach(x => {
           if (seen.has(x.osm)) return; seen.add(x.osm); found++;

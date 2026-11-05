@@ -679,7 +679,7 @@
     const fresh = p.month === monthKey();
     return { tier: p.tier === 'anual' && p.until > Date.now() ? 'anual' : 'free', until: p.until || 0, month: monthKey(), ads: fresh ? (p.ads | 0) : 0, boosts: fresh ? (p.boosts | 0) : 0 };
   }
-  const APP_VERSION = '2026-11-05.24';
+  const APP_VERSION = '2026-11-05.26';
   window.APP_VERSION = APP_VERSION;
   const savePlan = p => store.set('plan', p);
   window.refundAd = () => { const w = wallet(); const p = plan(); if (p.ads > 0) { p.ads--; savePlan(p); } };
@@ -867,6 +867,27 @@
       : `<div class="tv" style="height:auto;padding:30px">${r.net === 'load' ? 'Carregando vídeo…' : 'Assistindo…'}</div>`;
     return h.replace(/<div class="tv"[^>]*>[\s\S]*?<\/div>/, box).replace(/<div class="prog">[\s\S]*?<\/div>/, '');
   };
+
+
+  /* ---------- contato direto: "Quero" e "WhatsApp" abrem o WhatsApp na hora (sem vídeo) ---------- */
+  function contactNow(postId) {
+    const p = S.posts.find(x => x.id === postId); if (!p) return;
+    if (p.mine) return toast('Este anúncio é seu');
+    if (!S.interests.find(i => i.postId === p.id)) {      // conta o interesse uma vez
+      p.wants++; const it = { postId: p.id, userId: S.user.id, ts: Date.now() }; S.interests.push(it);
+      try { window.Cloud && Cloud.want(p, it); } catch (e) {} save();
+    }
+    const msg = msgFor(p);
+    try { navigator.clipboard && navigator.clipboard.writeText(msg).catch(() => {}); } catch (e) {}
+    window.open('https://wa.me/?text=' + encodeURIComponent(msg), '_blank');
+  }
+  document.addEventListener('click', e => {
+    const t = e.target.closest('[data-quero],[data-whats]'); if (!t) return;
+    e.stopImmediatePropagation(); e.preventDefault();
+    contactNow(t.dataset.quero || t.dataset.whats);
+  }, true);
+  const _detailW = window.detail;
+  window.detail = function () { return _detailW().replace(/(<button class="big" data-whats="[^"]*">)[^<]*(<\/button>)/, '$1💬 Chamar no WhatsApp$2'); };
 
   const _perfilP = window.perfil;
   window.perfil = function () {

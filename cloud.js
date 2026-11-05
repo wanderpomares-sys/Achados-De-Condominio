@@ -209,6 +209,12 @@
     db.collection('condos').doc(rec.id).set(clean({ name: rec.name, endereco: rec.endereco, cep: rec.cep, lat: rec.lat, lng: rec.lng, bairro: rec.bairro, cidade: rec.cidade, status: rec.status, createdBy: uid, ts: rec.ts })).catch(fail);
   };
 
+  // confirma no servidor que o condomínio realmente sumiu (senão avisa em vez de dizer "Feito")
+  async function checkGone(id) {
+    try { const d = await db.collection('condos').doc(id).get({ source: 'server' }); if (d.exists) throw new Error('O servidor não apagou este condomínio. Verifique se sua conta é administradora.'); }
+    catch (e) { if (e && e.message && e.message.indexOf('servidor não apagou') >= 0) throw e; }
+  }
+
   /* ---------- administrador ---------- */
   async function checkAdmin() {
     try { const d = await db.collection('admins').doc(uid).get(); C.admErr = ''; C.isAdmin = !!d.exists; C.role = d.exists && d.data() && d.data().role === 'mod' ? 'mod' : 'admin'; } catch (e) { C.isAdmin = false; C.role = null; C.admErr = (e && (e.code || e.message)) || 'erro'; }
@@ -300,11 +306,13 @@
     merge: async (rec, target) => {
       await moveUsers(rec.name, target.name); await movePosts(rec.name, target.name);
       await db.collection('condos').doc(rec.id).delete();
+      await checkGone(rec.id);
     },
     remove: async rec => {
       const u = await db.collection('users').where('building', '==', rec.name).limit(1).get();
       if (!u.empty) throw new Error('Há moradores nesse condomínio. Use "Mesclar em…".');
       await db.collection('condos').doc(rec.id).delete();
+      await checkGone(rec.id);
     }
   };
 

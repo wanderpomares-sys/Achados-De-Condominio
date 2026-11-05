@@ -690,7 +690,7 @@
     const fresh = p.month === monthKey();
     return { tier: p.tier === 'anual' && p.until > Date.now() ? 'anual' : 'free', until: p.until || 0, month: monthKey(), ads: fresh ? (p.ads | 0) : 0, boosts: fresh ? (p.boosts | 0) : 0 };
   }
-  const APP_VERSION = '2026-11-05.32';
+  const APP_VERSION = '2026-11-05.33';
   window.APP_VERSION = APP_VERSION;
   const savePlan = p => store.set('plan', p);
   window.refundAd = () => { const w = wallet(); const p = plan(); if (p.ads > 0) { p.ads--; savePlan(p); } };
@@ -1298,6 +1298,7 @@
         if (!target) return toast('Escolha o condomínio de destino');
         await ops().merge(rec, target);
       } else if (act === 'remove') await ops().remove(rec);
+      if (window.CLOUD_ON && (act === 'remove' || act === 'merge' || act === 'mergesug')) { const i = CR.indexOf(rec); if (i >= 0) CR.splice(i, 1); }
       persistCR(); rebuildCondos(); if (!window.CLOUD_ON) save();
       render();
       toast('Feito');
@@ -1313,22 +1314,57 @@
       ${S.impMsg ? `<small>${esc(S.impMsg)}</small>` : ''}
       ${pend ? `<button class="${S.apConfirm ? 'no' : 'ok'}" data-admapproveall>${S.apConfirm ? `Confirmar: aprovar os ${pend}` : `Aprovar todos em análise (${pend})`}</button>` : ''}</div>`;
   }
+  // busca por pedaços (círculos de 5 km cobrindo 20 km): cada pedaço aparece na lista assim que chega
+  async function ovTile(q) {
+    const urls = ['https://overpass-api.de/api/interpreter', 'https://overpass.kumi.systems/api/interpreter', 'https://maps.mail.ru/osm/tools/overpass/api/interpreter'];
+    let last;
+    for (const u of urls) {
+      const c = new AbortController(), t = setTimeout(() => c.abort(), 25000);   // o relógio vale também para a leitura da resposta
+      try {
+        const r = await fetch(u, { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: 'data=' + encodeURIComponent(q), signal: c.signal });
+        if (!r.ok) throw new Error('HTTP ' + r.status);
+        const j = await r.json(); clearTimeout(t); return (j.elements || []).map(fromOsm).filter(Boolean);
+      } catch (e) { clearTimeout(t); last = e; }
+    }
+    throw last;
+  }
+  function tilePoints(lat0, lng0, maxKm, stepKm) {
+    const pts = [[lat0, lng0]], dLat = stepKm / 111.2, dLng = stepKm / (111.2 * Math.cos(lat0 * Math.PI / 180)), n = Math.ceil(maxKm / stepKm);
+    for (let i = -n; i <= n; i++) for (let j = -n; j <= n; j++) {
+      if (!i && !j) continue;
+      const la = lat0 + i * dLat, ln = lng0 + j * dLng;
+      if (haversine({ lat: lat0, lng: lng0 }, { lat: la, lng: ln }) <= maxKm + 2) pts.push([la, ln]);
+    }
+    return pts.sort((a, b) => haversine({ lat: lat0, lng: lng0 }, { lat: a[0], lng: a[1] }) - haversine({ lat: lat0, lng: lng0 }, { lat: b[0], lng: b[1] }));
+  }
   async function importOsm() {
     if (S.impBusy) return;
-    S.impBusy = true; S.impMsg = ''; render();
+    S.impBusy = true; S.impMsg = 'Começando…'; render();
+    const me = (window.Cloud && Cloud.uid) || null, pts = tilePoints(-23.5228, -46.1883, 20, 6);
+    let done = 0, found = 0, added = 0, fails = 0, last = 0;
+    const seen = new Set(), pending = [];
+    const upd = force => { const n = Date.now(); if (!force && n - last < 1500) return; last = n; S.impMsg = `Buscando… ${done}/${pts.length} áreas • ${found} no mapa • ${added} novos em análise` + (fails ? ` • ${fails} área(s) sem resposta` : ''); render(); };
+    async function one(pt) {
+      try {
+        const list = await ovTile(`[out:json][timeout:20];nwr["name"~"${OSM_NAME}",i](around:6000,${pt[0].toFixed(5)},${pt[1].toFixed(5)});out center tags 400;`);
+        const add = [];
+        list.forEach(x => {
+          if (seen.has(x.osm)) return; seen.add(x.osm); found++;
+          if (!core(x.name).length) return;
+          if (CR.concat(add).some(c => c.status !== 'rejected' && subsetName(c.name, x.name) && (!hasGeo(c) || haversine(c, x) < 0.6))) return;
+          add.push({ id: 'c-osm-' + x.osm, name: x.name.trim(), endereco: x.end || 'Endereço a confirmar', cep: x.cep ? fmtCep(x.cep) : '', bairro: x.bairro || 'Não informado',
+            cidade: x.cidade || 'Mogi das Cruzes', lat: x.lat, lng: x.lng, status: 'pending', createdBy: me, ts: Date.now() });
+        });
+        if (add.length) {
+          if (window.CLOUD_ON) await Cloud.adm.importCondos(add); else { add.forEach(r => CR.push(r)); persistCR(); rebuildCondos(); }
+          added += add.length;
+        }
+      } catch (e) { fails++; }
+      done++; upd(false);
+    }
     try {
-      const list = await overpass(`[out:json][timeout:90];nwr["name"~"${OSM_NAME}",i](around:20000,-23.5228,-46.1883);out center tags 3000;`);
-      const add = [], me = (window.Cloud && Cloud.uid) || null;
-      list.forEach(s => {
-        if (!core(s.name).length) return;
-        if (CR.concat(add).some(c => c.status !== 'rejected' && subsetName(c.name, s.name) && (!hasGeo(c) || haversine(c, s) < 0.6))) return;
-        add.push({ id: 'c-osm-' + s.osm, name: s.name.trim(), endereco: s.end || 'Endereço a confirmar', cep: s.cep ? fmtCep(s.cep) : '', bairro: s.bairro || 'Não informado',
-          cidade: s.cidade || 'Mogi das Cruzes', lat: s.lat, lng: s.lng, status: 'pending', createdBy: me, ts: Date.now() });
-      });
-      if (add.length) {
-        if (window.CLOUD_ON) await Cloud.adm.importCondos(add); else { add.forEach(r => CR.push(r)); persistCR(); rebuildCondos(); }
-      }
-      S.impMsg = `${list.length} no mapa • ${add.length} novos em análise • ${list.length - add.length} já existiam ou eram repetidos.`;
+      const q = pts.slice(); await Promise.all([0, 1].map(async () => { while (q.length && !(fails >= 6 && !found)) await one(q.shift()); }));
+      S.impMsg = `Pronto: ${found} no mapa • ${added} novos em análise (role a lista abaixo) • ${found - added} já existiam ou eram repetidos.` + (fails ? ` ${fails} de ${pts.length} áreas não responderam; toque de novo para completar.` : '');
     } catch (e) { S.impMsg = 'Não consegui consultar o mapa agora. Tente de novo em alguns minutos.'; }
     S.impBusy = false; render();
   }

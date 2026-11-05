@@ -15,3 +15,8 @@ window.PAY_SPONSOR = "https://mpago.li/1qy8VFx";
 
 // Endereço do Worker da Cloudflare (pagamento 100% automático). Vazio = modo manual (botão "Já paguei").
 window.PAY_WORKER = "https://achados-pagamentos.wanderpomares.workers.dev";
+
+// Vídeos patrocinados da tela de 15 segundos (anúncio extra, destaque, WhatsApp).
+// Coloque os arquivos .mp4 na pasta assets/videos/ e liste aqui. Lista vazia = tela de demonstração.
+// Exemplo: window.REWARD_VIDEOS = [{ src: "assets/videos/padaria.mp4", brand: "Padaria do Zé" }];
+window.REWARD_VIDEOS = [];

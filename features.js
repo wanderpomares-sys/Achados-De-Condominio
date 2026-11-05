@@ -679,7 +679,7 @@
     const fresh = p.month === monthKey();
     return { tier: p.tier === 'anual' && p.until > Date.now() ? 'anual' : 'free', until: p.until || 0, month: monthKey(), ads: fresh ? (p.ads | 0) : 0, boosts: fresh ? (p.boosts | 0) : 0 };
   }
-  const APP_VERSION = '2026-11-04.15';
+  const APP_VERSION = '2026-11-04.16';
   window.APP_VERSION = APP_VERSION;
   const savePlan = p => store.set('plan', p);
   window.refundAd = () => { const w = wallet(); const p = plan(); if (p.ads > 0) { p.ads--; savePlan(p); } };
@@ -739,6 +739,49 @@
       S.reward = null; render(); setTimeout(() => { const b = $('#f-go'); if (b) b.click(); }, 50);
     }
   });
+
+
+  /* ---------- vídeo patrocinado de verdade (arquivos próprios em assets/videos) ---------- */
+  const VIDS = () => (window.REWARD_VIDEOS || []).filter(v => v && v.src);
+  let vidIdx = store.get('vidIdx', 0) | 0, vidOK = true, vidRaf = 0;
+  const vidEl = document.createElement('video');
+  vidEl.muted = true; vidEl.loop = true; vidEl.preload = 'auto'; vidEl.controls = false; vidEl.setAttribute('playsinline', ''); vidEl.setAttribute('webkit-playsinline', '');
+  vidEl.style.cssText = 'position:fixed;z-index:99999;object-fit:cover;border-radius:16px;background:#000;display:none;pointer-events:none';
+  document.body.appendChild(vidEl);
+  const lblEl = document.createElement('div');
+  lblEl.style.cssText = 'position:fixed;z-index:100000;display:none;pointer-events:none;color:#fff;font:600 12px system-ui,sans-serif';
+  document.body.appendChild(lblEl);
+  vidEl.addEventListener('error', () => { vidOK = false; vidEl.style.display = 'none'; render(); }); // arquivo não carregou: volta para a demonstração
+  const _rewardV = window.reward;
+  window.reward = function () {
+    const h = _rewardV();
+    if (!VIDS().length || !vidOK) return h;
+    const v = VIDS()[vidIdx % VIDS().length];
+    return h.replace(/<div class="tv"><b>(\d+)s<\/b>vídeo patrocinado \(demo\)<\/div>/, (m, n) =>
+      `<div class="tv" id="rwph" style="height:240px;position:relative"></div>`);
+  };
+  function trackVideo() {
+    const ph = document.getElementById('rwph');
+    if (!ph || !VIDS().length || !vidOK) { vidRaf = 0; if (vidEl.style.display !== 'none') { vidEl.pause(); vidEl.style.display = 'none'; } lblEl.style.display = 'none'; return; }
+    const r = ph.getBoundingClientRect();
+    Object.assign(vidEl.style, { display: 'block', left: r.left + 'px', top: r.top + 'px', width: r.width + 'px', height: r.height + 'px' });
+    const v = VIDS()[vidIdx % VIDS().length], n = S.reward ? Math.max(0, S.reward.left) : 0;
+    const pill = 'background:rgba(0,0,0,.55);padding:3px 10px;border-radius:12px;position:absolute;';
+    lblEl.innerHTML = `<span style="${pill}left:8px;top:8px">Patrocinado${v.brand ? ' • ' + esc(v.brand) : ''}</span><span style="${pill}right:8px;top:${r.height - 34}px;font-size:14px">${n}s</span>`;
+    Object.assign(lblEl.style, { display: 'block', left: r.left + 'px', top: r.top + 'px', width: r.width + 'px', height: r.height + 'px' });
+    vidRaf = requestAnimationFrame(trackVideo);
+  }
+  function placeVideo() {
+    const ph = document.getElementById('rwph');
+    if (!ph || !VIDS().length || !vidOK) { if (vidEl.style.display !== 'none') { vidEl.pause(); vidEl.style.display = 'none'; } lblEl.style.display = 'none'; return; }
+    const src = VIDS()[vidIdx % VIDS().length].src;
+    if (vidEl.dataset.src !== src) { vidEl.dataset.src = src; vidEl.src = src; }
+    if (vidEl.paused) vidEl.play().catch(() => {});
+    if (!vidRaf) vidRaf = requestAnimationFrame(trackVideo);
+  }
+  window.placeVideo = placeVideo;
+  const _finishV = window.finishReward;
+  window.finishReward = function () { if (VIDS().length) { vidIdx++; store.set('vidIdx', vidIdx); } return _finishV.apply(this, arguments); };
 
   const _perfilP = window.perfil;
   window.perfil = function () {
@@ -1065,6 +1108,7 @@
     if (S.spOpen) document.getElementById('root').insertAdjacentHTML('beforeend', spSheet());
     if (S.safeOpen) document.getElementById('root').insertAdjacentHTML('beforeend', safeSheet());
     if (S.endFor) document.getElementById('root').insertAdjacentHTML('beforeend', endSheet());
+    if (window.placeVideo) placeVideo();
     if (S.errMsg) document.getElementById('root').insertAdjacentHTML('beforeend', `<div class="ov" data-errclose><div class="sheet"><div class="handle"></div><button class="close" data-errclose>✕</button><div class="form"><h2>${esc(S.errMsg.t === 'Teste de conexão' ? 'Resultado' : 'Algo deu errado')}</h2><div class="cardc"><b>${esc(S.errMsg.t)}</b><small style="word-break:break-word;white-space:pre-line">${esc(S.errMsg.d)}</small><small>Versão ${window.APP_VERSION}</small></div><small>Tire um print desta tela e envie para o suporte.</small><button class="cta52" data-errclose style="margin-top:10px">Entendi</button></div></div></div>`);
   };
 

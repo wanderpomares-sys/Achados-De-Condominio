@@ -607,13 +607,12 @@ function card(p){
  const bg=p.imageUrl?`background-image:url(${p.imageUrl})`:`background:${GRAD[p.type]}`;
  return `<article class="card ${isBoost(p)?'boost':''}">
   <div class="tile" style="${bg}" data-open="${p.id}"><span class="em">${p.imageUrl?'':tileIcon(p)}</span>
-   <span class="badge" style="background:${t.c}">${isBoost(p)?'⚡ ':''}${t.l}</span>
-   <span class="dist">${p.distance===0?'No prédio':p.distance.toLocaleString('pt-BR')+' km'}</span></div>
+   <span class="badge" style="background:${t.c}">${isBoost(p)?'⚡ ':''}${t.l}</span></div>
   <div class="main">
    <div data-open="${p.id}" style="cursor:pointer">
     <h3 class="title">${esc(p.title)}</h3>
     <div class="priceRow">${priceHtml(p)}</div>
-    <div class="meta">📍 ${esc(short(p.building))}</div>
+    <div class="meta">📍 ${esc(short(p.building))}${p.distance>0?' • '+p.distance.toLocaleString('pt-BR')+' km':''}</div>
     <div class="meta2">${esc(p.seller)}${p.verified?' <span style="color:#16A34A">✓</span>':''} • ${ago(p.ts)} • 👁️ ${p.views}</div>
    </div>
    <div class="bot"><span class="want" title="${p.wants} querem">💬 ${p.wants}</span><button class="quero" data-quero="${p.id}">Quero</button></div>

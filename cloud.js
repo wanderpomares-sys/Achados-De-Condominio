@@ -5,7 +5,7 @@
   const cfg = window.FIREBASE_CONFIG;
   const noop = () => {};
   if (!window.CLOUD_ON) {
-    window.Cloud = { on: false, view: noop, want: noop, boost: noop, add: noop, renew: noop, purge: noop, saveUser: noop, saveCondo: noop, report: noop, loadMore: noop, more: false, requestSponsor: noop, freshCondos: noop, reported: [], repLoaded: false, expired: [], expLoaded: false, remove: noop, update: noop, checkout: noop, sponsors: [], requestPlan: noop, planReqs: [], chats: [], chatMsgs: [], openChat: noop, watchMsgs: noop, stopMsgs: noop, send: noop, markSeen: noop };
+    window.Cloud = { on: false, view: noop, want: noop, boost: noop, add: noop, renew: noop, purge: noop, saveUser: noop, saveCondo: noop, report: noop, loadMore: noop, more: false, requestSponsor: noop, freshCondos: noop, reported: [], repLoaded: false, expired: [], expLoaded: false, remove: noop, update: noop, checkout: noop, sponsors: [], requestPlan: noop, planReqs: [] };
     return;
   }
 
@@ -54,51 +54,6 @@
     });
     render();
   };
-
-
-  // ---------- conversas privadas entre vizinhos (chats/{anúncio}_{comprador}) ----------
-  C.chats = []; C.chatMsgs = []; C.onMsgs = null; C.onChats = null;
-  let unChats = null, unMsgs = null, chatInit = false;
-  const unreadOf = ch => !!ch && ch.lastFrom && ch.lastFrom !== uid && ((ch.seen && ch.seen[uid]) || 0) < (ch.ts || 0);
-  C.unreadOf = unreadOf;
-  function listenChats() {
-    if (unChats || !uid) return;
-    unChats = db.collection('chats').where('members', 'array-contains', uid).onSnapshot(s => {
-      const before = new Map(C.chats.map(x => [x.id, x.ts]));
-      C.chats = s.docs.map(d => ({ id: d.id, ...d.data() })).sort((a, b) => (b.ts || 0) - (a.ts || 0));
-      if (chatInit) C.chats.forEach(ch => { if (unreadOf(ch) && before.get(ch.id) !== ch.ts && window.chatNotify) window.chatNotify(ch); });
-      chatInit = true;
-      if (C.onChats) C.onChats();
-    }, e => { C.chatErr = e && e.code; });
-  }
-  C.listenChats = listenChats;
-  C.openChat = async p => {
-    if (!uid || !p || !p.sellerUid || p.sellerUid === uid) return null;
-    const id = p.id + '_' + uid, ref = db.collection('chats').doc(id);
-    try {
-      const d = await ref.get();
-      if (!d.exists) await ref.set({ postId: p.id, title: String(p.title || '').slice(0, 120), sellerUid: p.sellerUid, buyerUid: uid, members: [p.sellerUid, uid], buyerName: (S.user && S.user.name) || 'Vizinho', sellerName: p.seller || 'Vizinho', ts: Date.now(), lastMsg: '', lastFrom: '' });
-      return id;
-    } catch (e) { bad('Não foi possível abrir a conversa', e); return null; }
-  };
-  C.watchMsgs = id => {
-    if (unMsgs) unMsgs(); C.chatMsgs = [];
-    unMsgs = db.collection('chats').doc(id).collection('messages').orderBy('ts').limitToLast(200).onSnapshot(s => {
-      C.chatMsgs = s.docs.map(d => ({ id: d.id, ...d.data() }));
-      if (C.onMsgs) C.onMsgs();
-    }, e => bad('Não foi possível carregar as mensagens', e));
-  };
-  C.stopMsgs = () => { if (unMsgs) unMsgs(); unMsgs = null; C.chatMsgs = []; };
-  C.send = async (id, text) => {
-    text = String(text || '').trim().slice(0, 500); if (!text || !uid) return false;
-    const ts = Date.now();
-    try {
-      await db.collection('chats').doc(id).collection('messages').add({ from: uid, text, ts });
-      await db.collection('chats').doc(id).update({ lastMsg: text.slice(0, 80), lastFrom: uid, ts, ['seen.' + uid]: ts });
-      return true;
-    } catch (e) { bad('Mensagem não enviada', e); return false; }
-  };
-  C.markSeen = id => { const ch = C.chats.find(x => x.id === id); if (!unreadOf(ch)) return; db.collection('chats').doc(id).update({ ['seen.' + uid]: Date.now() }).catch(() => {}); };
 
   // teste de conexão: mede leitura e escrita no servidor e diz o que está acontecendo
   C.ping = async () => {
@@ -348,7 +303,6 @@
       uid = firebase.auth().currentUser.uid; C.uid = uid;
       C.ready = true;
       listenPosts();                       // começa a buscar os anúncios já, sem esperar o resto
-      listenChats();
       await checkAdmin();
       if (S.user) { S.user.id = uid; C.saveUser(S.user); }
 

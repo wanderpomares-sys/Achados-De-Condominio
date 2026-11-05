@@ -679,7 +679,7 @@
     const fresh = p.month === monthKey();
     return { tier: p.tier === 'anual' && p.until > Date.now() ? 'anual' : 'free', until: p.until || 0, month: monthKey(), ads: fresh ? (p.ads | 0) : 0, boosts: fresh ? (p.boosts | 0) : 0 };
   }
-  const APP_VERSION = '2026-11-05.22';
+  const APP_VERSION = '2026-11-05.23';
   window.APP_VERSION = APP_VERSION;
   const savePlan = p => store.set('plan', p);
   window.refundAd = () => { const w = wallet(); const p = plan(); if (p.ads > 0) { p.ads--; savePlan(p); } };

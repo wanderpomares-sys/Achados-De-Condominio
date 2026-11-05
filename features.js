@@ -643,7 +643,7 @@
            <button class="ghost" data-rwcancel style="margin-top:8px">Guardar para depois</button>`
         : `<h3>Vídeo ${w.videos} de ${VIDEOS_PER_CREDIT} concluído</h3><div>${dots}</div>
            <p>Faltam ${VIDEOS_PER_CREDIT - w.videos} vídeo${VIDEOS_PER_CREDIT - w.videos > 1 ? 's' : ''} para ganhar 1 destaque de 24 h.</p>
-           <button class="cta52" style="margin-top:16px" data-credmore>Assistir o próximo</button>
+           <button class="cta52" style="margin-top:16px" data-credmore>Assistir próximo vídeo (${w.videos + 1}/${VIDEOS_PER_CREDIT})</button>
            <button class="ghost" data-rwcancel style="margin-top:8px">Agora não</button>`;
     return `<div class="ov"><div class="sheet"><div class="handle"></div><div class="rw">${body}</div></div></div>`;
   };
@@ -679,7 +679,7 @@
     const fresh = p.month === monthKey();
     return { tier: p.tier === 'anual' && p.until > Date.now() ? 'anual' : 'free', until: p.until || 0, month: monthKey(), ads: fresh ? (p.ads | 0) : 0, boosts: fresh ? (p.boosts | 0) : 0 };
   }
-  const APP_VERSION = '2026-11-04.18';
+  const APP_VERSION = '2026-11-05.19';
   window.APP_VERSION = APP_VERSION;
   const savePlan = p => store.set('plan', p);
   window.refundAd = () => { const w = wallet(); const p = plan(); if (p.ads > 0) { p.ads--; savePlan(p); } };
@@ -728,7 +728,7 @@
            <button class="ghost" data-rwcancel style="margin-top:8px">Guardar para depois</button>`
         : `<h3>Vídeo ${w.adv} de ${VIDEOS_PER_AD} concluído</h3><div>${dots}</div>
            <p>Faltam ${VIDEOS_PER_AD - w.adv} vídeo${VIDEOS_PER_AD - w.adv > 1 ? 's' : ''} para ganhar +1 anúncio.</p>
-           <button class="cta52" style="margin-top:16px" data-credmore>Assistir o próximo</button>
+           <button class="cta52" style="margin-top:16px" data-credmore>Assistir próximo vídeo (${w.adv + 1}/${VIDEOS_PER_AD})</button>
            <button class="ghost" data-rwcancel style="margin-top:8px">Agora não</button>`;
     return `<div class="ov"><div class="sheet"><div class="handle"></div><div class="rw">${body}</div></div></div>`;
   };

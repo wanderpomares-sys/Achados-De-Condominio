@@ -679,7 +679,7 @@
     const fresh = p.month === monthKey();
     return { tier: p.tier === 'anual' && p.until > Date.now() ? 'anual' : 'free', until: p.until || 0, month: monthKey(), ads: fresh ? (p.ads | 0) : 0, boosts: fresh ? (p.boosts | 0) : 0 };
   }
-  const APP_VERSION = '2026-11-05.26';
+  const APP_VERSION = '2026-11-05.27';
   window.APP_VERSION = APP_VERSION;
   const savePlan = p => store.set('plan', p);
   window.refundAd = () => { const w = wallet(); const p = plan(); if (p.ads > 0) { p.ads--; savePlan(p); } };
@@ -869,26 +869,42 @@
   };
 
 
-  /* ---------- contato direto: "Quero" e "WhatsApp" abrem o WhatsApp na hora (sem vídeo) ---------- */
+  /* ---------- contato: "Quero" abre o anúncio; "Falar com o anunciante" abre o WhatsApp dele (sem vídeo) ---------- */
+  const digits = s => String(s || '').replace(/\D/g, '');
+  const waNum = s => { const d = digits(s); return d.length >= 12 && d.startsWith('55') ? d : (d.length >= 10 ? '55' + d : ''); };
   function contactNow(postId) {
     const p = S.posts.find(x => x.id === postId); if (!p) return;
     if (p.mine) return toast('Este anúncio é seu');
+    const n = waNum(p.whats);
+    if (!n) return toast('O anunciante ainda não informou o WhatsApp');
     if (!S.interests.find(i => i.postId === p.id)) {      // conta o interesse uma vez
       p.wants++; const it = { postId: p.id, userId: S.user.id, ts: Date.now() }; S.interests.push(it);
       try { window.Cloud && Cloud.want(p, it); } catch (e) {} save();
     }
-    const msg = msgFor(p);
-    try { navigator.clipboard && navigator.clipboard.writeText(msg).catch(() => {}); } catch (e) {}
-    window.open('https://wa.me/?text=' + encodeURIComponent(msg), '_blank');
+    window.open('https://wa.me/' + n + '?text=' + encodeURIComponent(msgFor(p)), '_blank');
   }
   document.addEventListener('click', e => {
     const t = e.target.closest('[data-quero],[data-whats]'); if (!t) return;
     e.stopImmediatePropagation(); e.preventDefault();
-    contactNow(t.dataset.quero || t.dataset.whats);
+    if (t.dataset.quero) openPost(t.dataset.quero); else contactNow(t.dataset.whats);
   }, true);
   const _detailW = window.detail;
-  window.detail = function () { return _detailW().replace(/(<button class="big" data-whats="[^"]*">)[^<]*(<\/button>)/, '$1💬 Chamar no WhatsApp$2'); };
-
+  window.detail = function () {
+    const h = _detailW();
+    return h.replace(/(<button class="big" data-whats="[^"]*">)[^<]*(<\/button>)/, '$1💬 Falar com o anunciante$2');
+  };
+  // campo de WhatsApp ao publicar (guardado no perfil e usado nos próximos anúncios)
+  const _newPostW = window.newPost;
+  window.newPost = function () {
+    return _newPostW().replace('<button class="cta52" id="f-go"', `<div><label>Seu WhatsApp (com DDD)</label><input type="tel" inputmode="numeric" id="f-whats" maxlength="16" value="${esc((S.user && S.user.whats) || '')}" placeholder="(11) 99999-9999"><small style="color:var(--gray)">Os vizinhos usam este número para falar com você pelo anúncio.</small></div><button class="cta52" id="f-go"`);
+  };
+  document.addEventListener('input', e => { if (e.target && e.target.id === 'f-whats' && S.user) S.user.whats = digits(e.target.value); });
+  document.addEventListener('click', e => {
+    const t = e.target.closest('#f-go'); if (!t || !S.user) return;
+    const i = document.getElementById('f-whats'); if (i) S.user.whats = digits(i.value);
+    if (!waNum(S.user.whats)) { e.stopImmediatePropagation(); e.preventDefault(); toast('Informe seu WhatsApp com DDD'); return; }
+    S.user.whats = waNum(S.user.whats); save();
+  }, true);
   const _perfilP = window.perfil;
   window.perfil = function () {
     const p = plan(), q = QUOTA[p.tier];

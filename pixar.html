@@ -1008,7 +1008,7 @@ document.addEventListener('click',e=>{
  if(e.target.id==='f-go'){
   const f=S.form;if(!f.title.trim())return;
   const my=f.reach==='pred';
-  const p={id:'p'+now(),title:f.title.trim(),price:f.free?0:(f.price===''?null:Number(f.price)),type:f.type,emoji:DEFAULT_EMOJI[f.type],imageUrl:f.img||null,distance:0,building:S.user.condo,ts:now(),seller:S.user.name,apt:S.user.apt,verified:false,views:0,wants:0,description:f.desc.trim(),isMy:true,mine:true,reach:f.reach,boostedUntil:0,expiresAt:now()+30*864e5};
+  const p={id:'p'+now(),title:f.title.trim(),price:f.free?0:(f.price===''?null:Number(f.price)),type:f.type,emoji:DEFAULT_EMOJI[f.type],imageUrl:f.img||null,distance:0,building:S.user.condo,ts:now(),seller:S.user.name,apt:S.user.apt,verified:false,views:0,wants:0,description:f.desc.trim(),isMy:true,mine:true,reach:f.reach,whats:(S.user.whats||''),boostedUntil:0,expiresAt:now()+30*864e5};
   S.posts.unshift(p);window.Cloud&&Cloud.add(p);S.newPost=false;S.form=null;S.scope=my?'pred':'viz';S.filter='all';save();render();toast('Anúncio publicado! 🎉');
  }
 });

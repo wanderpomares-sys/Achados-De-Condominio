@@ -152,7 +152,7 @@
         id: p.id, title: p.title, price: p.price, originalPrice: p.originalPrice, type: p.type,
         building: p.building, buildingId: slug(cond(p)), ts: p.ts, seller: p.seller, apt: p.apt,
         verified: false, views: 0, wants: 0, description: p.description, imageUrl: url,
-        reach: p.reach, boostedUntil: 0, sellerUid: uid,
+        reach: p.reach, whats: String(p.whats || '').replace(/\D/g, '').slice(0, 13), boostedUntil: 0, sellerUid: uid,
         expiresAt: p.expiresAt, warnedAt: null
       });
       await db.collection('posts').doc(p.id).set(d);

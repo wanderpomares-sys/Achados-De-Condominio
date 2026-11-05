@@ -679,7 +679,7 @@
     const fresh = p.month === monthKey();
     return { tier: p.tier === 'anual' && p.until > Date.now() ? 'anual' : 'free', until: p.until || 0, month: monthKey(), ads: fresh ? (p.ads | 0) : 0, boosts: fresh ? (p.boosts | 0) : 0 };
   }
-  const APP_VERSION = '2026-11-05.29';
+  const APP_VERSION = '2026-11-05.30';
   window.APP_VERSION = APP_VERSION;
   const savePlan = p => store.set('plan', p);
   window.refundAd = () => { const w = wallet(); const p = plan(); if (p.ads > 0) { p.ads--; savePlan(p); } };
@@ -1126,6 +1126,7 @@
   const _detailE = window.detail;
   window.detail = function () {
     const h = _detailE(); const p = S.posts.find(x => x.id === S.detail);
+    if (p && !p.mine && window.Cloud && Cloud.isAdmin) return h.replace('<div class="proof">', `<div class="row" style="gap:8px;margin:0 0 10px"><button class="ghost" data-end="${p.id}" style="flex:1;margin:0;color:#C0392B">🗑️ Encerrar (administrador)</button></div><div class="proof">`);
     if (!p || !p.mine) return h;
     return h.replace('<div class="proof">', `<div class="row" style="gap:8px;margin:0 0 10px"><button class="ghost" data-edit="${p.id}" style="flex:1;margin:0">✏️ Editar</button><button class="ghost" data-end="${p.id}" style="flex:1;margin:0;color:#C0392B">🗑️ Encerrar</button></div><div class="proof">`);
   };
@@ -1170,7 +1171,7 @@
     if (t.hasAttribute('data-end')) { S.endFor = t.dataset.end; return render(); }
     if (t.hasAttribute('data-endclose')) { if (e.target.closest('.sheet') && !t.matches('button.close,.ghost')) return; S.endFor = null; return render(); }
     if (t.hasAttribute('data-endyes')) {
-      const p = S.posts.find(x => x.id === S.endFor); S.endFor = null; if (!p || !p.mine) return render();
+      const p = S.posts.find(x => x.id === S.endFor); S.endFor = null; if (!p || !(p.mine || (window.Cloud && Cloud.isAdmin))) return render();
       S.posts = S.posts.filter(x => x.id !== p.id); S.detail = null;
       if (window.CLOUD_ON) Cloud.remove(p); else save();
       render(); toast('Anúncio encerrado');

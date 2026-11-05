@@ -128,7 +128,7 @@
     try {
       let url = p.imageUrl || null;
       if (url && url.startsWith('data:') && url.length > 300000) { url = null; if (window.toast) toast('Foto grande demais: alterações salvas sem a foto nova'); }
-      await db.collection('posts').doc(p.id).update(clean({ title: p.title, price: p.price === undefined ? null : p.price, type: p.type, description: p.description, imageUrl: url, reach: p.reach }));
+      await db.collection('posts').doc(p.id).update(clean({ title: p.title, price: p.price === undefined ? null : p.price, type: p.type, description: p.description, imageUrl: url, reach: p.reach, whats: String(p.whats || '').replace(/\D/g, '').slice(0, 13) }));
       const back = await db.collection('posts').doc(p.id).get({ source: 'server' }); // confere o que o servidor guardou
       if (!back.exists) throw new Error('o servidor não encontrou este anúncio (id ' + p.id + ')');
       if (back.data().title !== p.title) throw new Error('o servidor ainda tem o título antigo: ' + back.data().title);

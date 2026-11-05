@@ -679,7 +679,7 @@
     const fresh = p.month === monthKey();
     return { tier: p.tier === 'anual' && p.until > Date.now() ? 'anual' : 'free', until: p.until || 0, month: monthKey(), ads: fresh ? (p.ads | 0) : 0, boosts: fresh ? (p.boosts | 0) : 0 };
   }
-  const APP_VERSION = '2026-11-05.27';
+  const APP_VERSION = '2026-11-05.28';
   window.APP_VERSION = APP_VERSION;
   const savePlan = p => store.set('plan', p);
   window.refundAd = () => { const w = wallet(); const p = plan(); if (p.ads > 0) { p.ads--; savePlan(p); } };
@@ -894,9 +894,10 @@
     return h.replace(/(<button class="big" data-whats="[^"]*">)[^<]*(<\/button>)/, '$1💬 Falar com o anunciante$2');
   };
   // campo de WhatsApp ao publicar (guardado no perfil e usado nos próximos anúncios)
+  const editW = () => { const ep = S.form && S.form.editId && S.posts.find(x => x.id === S.form.editId); return (ep && ep.whats) || (S.user && S.user.whats) || ''; };
   const _newPostW = window.newPost;
   window.newPost = function () {
-    return _newPostW().replace('<button class="cta52" id="f-go"', `<div><label>Seu WhatsApp (com DDD)</label><input type="tel" inputmode="numeric" id="f-whats" maxlength="16" value="${esc((S.user && S.user.whats) || '')}" placeholder="(11) 99999-9999"><small style="color:var(--gray)">Os vizinhos usam este número para falar com você pelo anúncio.</small></div><button class="cta52" id="f-go"`);
+    return _newPostW().replace('<button class="cta52" id="f-go"', `<div><label>Seu WhatsApp (com DDD)</label><input type="tel" inputmode="numeric" id="f-whats" maxlength="16" value="${esc(editW())}" placeholder="(11) 99999-9999"><small style="color:var(--gray)">Os vizinhos usam este número para falar com você pelo anúncio.</small></div><button class="cta52" id="f-go"`);
   };
   document.addEventListener('input', e => { if (e.target && e.target.id === 'f-whats' && S.user) S.user.whats = digits(e.target.value); });
   document.addEventListener('click', e => {
@@ -1146,7 +1147,7 @@
       e.stopImmediatePropagation(); e.preventDefault();
       const f = S.form, p = S.posts.find(x => x.id === f.editId); if (!p || !f.title.trim()) return;
       p.title = f.title.trim(); p.type = f.type; p.price = f.free ? 0 : (f.price === '' || f.price == null ? null : Number(f.price));
-      p.description = f.desc.trim(); p.imageUrl = f.img || null; p.reach = LOCK_PRED.includes(f.type) ? 'pred' : f.reach; p.emoji = DEFAULT_EMOJI[f.type];
+      p.description = f.desc.trim(); p.imageUrl = f.img || null; p.reach = LOCK_PRED.includes(f.type) ? 'pred' : f.reach; p.emoji = DEFAULT_EMOJI[f.type]; p.whats = waNum(S.user && S.user.whats) || p.whats || '';
       S.newPost = false; S.form = null; S.detail = null; render();
       if (window.CLOUD_ON) {
         toast('Salvando…');

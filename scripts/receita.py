@@ -160,5 +160,7 @@ def main():
         arq = grava(cid, lst, coords)
         print(ncid[cid], len(lst), '->', arq, 'com localização:', sum(1 for g in coords if g), flush=True)
     with open('data/condominios/ATUALIZADO.txt', 'w') as f: f.write(DS + '\n')
+    import glob, json   # lista das cidades disponíveis (o app lê para buscar em todas)
+    with open('data/condominios/cidades.json', 'w') as f: json.dump(sorted(os.path.basename(x)[:-4] for x in glob.glob('data/condominios/*.csv')), f)
 
 main()

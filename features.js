@@ -727,7 +727,7 @@
     const fresh = p.month === monthKey();
     return { tier: p.tier === 'anual' && p.until > Date.now() ? 'anual' : 'free', until: p.until || 0, month: monthKey(), ads: fresh ? (p.ads | 0) : 0, boosts: fresh ? (p.boosts | 0) : 0 };
   }
-  const APP_VERSION = '2026-11-06.55';
+  const APP_VERSION = '2026-11-06.56';
   window.APP_VERSION = APP_VERSION;
   const savePlan = p => store.set('plan', p);
   window.refundAd = () => { const w = wallet(); const p = plan(); if (p.ads > 0) { p.ads--; savePlan(p); } };
@@ -1703,6 +1703,52 @@
     const c = e.target.closest('[data-errclose]');
     if (c && (c.matches('button') || e.target === c)) { S.errMsg = null; render(); }
   });
+  /* ---------- busca de condomínio em todas as cidades levantadas (arquivos estáticos, sem custo no Firebase) ---------- */
+  let rfCities = null;
+  async function rfAllLists() {
+    if (!rfCities) { try { const r = await fetchT('data/condominios/cidades.json', null, 10000); rfCities = r.ok ? await r.json() : []; } catch (e) { rfCities = []; } }
+    return Promise.all(rfCities.map(k => rfList(k.replace(/-/g, ' '))));
+  }
+  const _condoPickerR = window.condoPicker;
+  window.condoPicker = function (mode) {
+    let h = _condoPickerR(mode);
+    const q = (mode === 'onb' ? S.onb.q : S.cq) || '';
+    const rs = S.rfQ === q ? (S.rfRes || []) : [];
+    if (!rs.length) return h;
+    const have = new Set(CONDOS.map(c => norm(c[0])));
+    const btns = rs.filter(x => !have.has(norm(x.name))).map((x, i) => `<button data-rfpick="${i}" data-rfmode="${mode}">${esc(x.name)}<small>${esc([x.bairro, x.cidade].filter(Boolean).join(' • '))}</small></button>`).join('');
+    return h.replace(/<button disabled>[^<]*<\/button>/, '').replace('<div class="sug">', '<div class="sug">' + btns);
+  };
+  let rfQT;
+  document.addEventListener('input', e => {       // digitar na busca: atualiza só a lista (sem redesenhar a tela, sem piscar)
+    const id = e.target && e.target.id; if (id !== 'o-q' && id !== 'c-q') return;
+    e.stopImmediatePropagation();
+    const mode = id === 'o-q' ? 'onb' : 'sheet', q = e.target.value;
+    if (mode === 'onb') S.onb.q = q; else S.cq = q;
+    const refresh = () => {
+      const tmp = document.createElement('div'); tmp.innerHTML = window.condoPicker(mode);
+      const nw = tmp.querySelector('.sug'), old = e.target.nextElementSibling;
+      if (nw && old && old.classList.contains('sug')) old.innerHTML = nw.innerHTML;
+    };
+    refresh(); clearTimeout(rfQT);
+    if (norm(q).length < 4) { S.rfRes = []; S.rfQ = q; refresh(); return; }
+    rfQT = setTimeout(async () => {
+      const lists = await rfAllLists(); if ((mode === 'onb' ? S.onb.q : S.cq) !== q) return;
+      const out = []; lists.forEach(l => rfByName(l, q).forEach(x => out.push(x)));
+      S.rfRes = out.slice(0, 8); S.rfQ = q; refresh();
+    }, 350);
+  }, true);
+  document.addEventListener('click', e => {       // tocar num condomínio da lista da Receita: cadastra e já entra
+    const t = e.target.closest('[data-rfpick]'); if (!t) return;
+    e.stopImmediatePropagation(); e.preventDefault();
+    const have = new Set(CONDOS.map(c => norm(c[0])));
+    const s = (S.rfRes || []).filter(x => !have.has(norm(x.name)))[+t.dataset.rfpick]; if (!s) return;
+    const mode = t.dataset.rfmode; resetReg(mode); const g = S.reg; g.open = true;
+    g.name = s.name; const p = splitEnd(s.end); g.street = p.street; g.num = p.num; setEnd(g);
+    g.cep = fmtCep(s.cep); g.bairro = s.bairro; g.cidade = s.cidade; g.lat = s.lat; g.lng = s.lng;
+    window.saveCondo();
+  }, true);
+
   /* ---------- eventos ---------- */
   document.addEventListener('click', e => {
     const t = e.target.closest('[data-renew],[data-geosug],[data-usecondo],[data-regnew],[data-regopen],[data-regcancel],[data-saveemail],[data-adminopen],[data-admclose],[data-adminlogin],[data-admact],[data-admmore]');

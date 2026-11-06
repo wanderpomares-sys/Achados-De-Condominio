@@ -216,9 +216,11 @@
   }
 
   /* ---------- administrador ---------- */
+  let condoUnsub = null;
   async function checkAdmin() {
     try { const d = await db.collection('admins').doc(uid).get(); C.admErr = ''; C.isAdmin = !!d.exists; C.role = d.exists && d.data() && d.data().role === 'mod' ? 'mod' : 'admin'; } catch (e) { C.isAdmin = false; C.role = null; C.admErr = (e && (e.code || e.message)) || 'erro'; }
     if (window.rebuildCondos) rebuildCondos();
+    if (C.isAdmin && C.attachCondos) C.attachCondos();   // login de admin depois da abertura: passa a acompanhar os condomínios ao vivo
     watchPlanReqs();
     loadSponsors();
     render();
@@ -354,8 +356,9 @@
       // condomínios: admin acompanha ao vivo; os demais usam a lista guardada (6 h) ou leem uma vez
       let fcT = 0, fcL = null;
       const fillCondos = list => { fcL = list; clearTimeout(fcT); fcT = setTimeout(() => { CR.length = 0; fcL.forEach(x => CR.push(x)); rebuildCondos(); C.apply(); }, 350); };
+      C.attachCondos = () => { if (condoUnsub) return; condoUnsub = db.collection('condos').onSnapshot(snap => fillCondos(snap.docs.map(d => ({ id: d.id, ...d.data() }))), fail); };
       if (C.isAdmin) {
-        db.collection('condos').onSnapshot(snap => fillCondos(snap.docs.map(d => ({ id: d.id, ...d.data() }))), fail);
+        C.attachCondos();
       } else {
         const cached = cacheGet();
         if (cached) fillCondos(cached);

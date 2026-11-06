@@ -690,7 +690,7 @@
     const fresh = p.month === monthKey();
     return { tier: p.tier === 'anual' && p.until > Date.now() ? 'anual' : 'free', until: p.until || 0, month: monthKey(), ads: fresh ? (p.ads | 0) : 0, boosts: fresh ? (p.boosts | 0) : 0 };
   }
-  const APP_VERSION = '2026-11-05.37';
+  const APP_VERSION = '2026-11-05.38';
   window.APP_VERSION = APP_VERSION;
   const savePlan = p => store.set('plan', p);
   window.refundAd = () => { const w = wallet(); const p = plan(); if (p.ads > 0) { p.ads--; savePlan(p); } };
@@ -1383,7 +1383,7 @@
       const q = pts.slice(); await Promise.all([0].map(async () => { while (q.length && !(fails >= 6 && !found)) await one(q.shift()); }));
       S.impMsg = `Pronto: ${found} no mapa • ${added} novos em análise (role a lista abaixo) • ${found - added} já existiam ou eram repetidos.` + (fails ? ` ${fails} de ${pts.length} áreas com erro (${lastErr}); toque de novo para completar.` : '');
     } catch (e) { S.impMsg = 'Não consegui consultar o mapa agora. Tente de novo em alguns minutos.'; }
-    S.impBusy = false; render();
+    S.impBusy = false; if (window.Cloud && Cloud.attachCondos) Cloud.attachCondos(); render();
   }
   document.addEventListener('click', async e => {
     if (e.target.closest('[data-admimport]')) return importOsm();

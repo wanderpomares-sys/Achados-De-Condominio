@@ -692,7 +692,7 @@
     const fresh = p.month === monthKey();
     return { tier: p.tier === 'anual' && p.until > Date.now() ? 'anual' : 'free', until: p.until || 0, month: monthKey(), ads: fresh ? (p.ads | 0) : 0, boosts: fresh ? (p.boosts | 0) : 0 };
   }
-  const APP_VERSION = '2026-11-05.47';
+  const APP_VERSION = '2026-11-05.48';
   window.APP_VERSION = APP_VERSION;
   const savePlan = p => store.set('plan', p);
   window.refundAd = () => { const w = wallet(); const p = plan(); if (p.ads > 0) { p.ads--; savePlan(p); } };
@@ -1325,6 +1325,9 @@
       <label style="display:flex;gap:10px;align-items:center;font-size:14px"><input type="checkbox" id="imp-strict" style="width:22px;height:22px" ${impStrict() ? 'checked' : ''} ${S.impBusy ? 'disabled' : ''}>Só nomes que começam com "Condomínio"</label>
       <button class="ghost" data-admimport ${S.impBusy ? 'disabled' : ''}>${S.impBusy ? 'Buscando…' : 'Importar condomínios da região'}</button>
       ${S.impMsg ? `<small>${esc(S.impMsg)}</small>` : ''}
+      <div style="border-top:1px solid var(--border,#D6E0EE);padding-top:10px;margin-top:4px"><b>Importar lista (arquivo da Receita Federal)</b><small>Escolha o arquivo .csv gerado pelo script (nome;endereco;bairro;cep;cidade). Os condomínios entram em análise, com localização no mapa.</small>
+      <label class="ghost" style="display:flex;align-items:center;justify-content:center;height:46px;border:1px solid var(--border,#D6E0EE);border-radius:12px;font-weight:700;margin-top:6px;${S.csvBusy ? 'opacity:.5' : ''}">${S.csvBusy ? 'Importando…' : 'Escolher arquivo .csv'}<input type="file" id="imp-csv" accept=".csv,text/csv,text/plain" style="display:none" ${S.csvBusy ? 'disabled' : ''}></label>
+      ${S.csvMsg ? `<small>${esc(S.csvMsg)}</small>` : ''}</div>
       ${allImp ? `<button class="${S.rmAll ? 'no' : 'no'}" style="${S.rmAll ? '' : 'opacity:.85'}" data-admrmall>${S.rmAll ? `Confirmar: recusar TODOS os ${allImp} importados` : `Recusar TODOS os importados em análise (${allImp})`}</button>` : ''}
       ${notCond ? `<button class="${S.rmNc ? 'no' : 'ghost'}" data-admrmnc>${S.rmNc ? `Confirmar: recusar os ${notCond}` : `Recusar importados que não começam com Condomínio (${notCond})`}</button>` : ''}
       ${other ? `<button class="${S.rmOther ? 'no' : 'ghost'}" data-admrmother>${S.rmOther ? `Confirmar: recusar os ${other}` : `Recusar importados fora de ${esc(impCity())} (${other})`}</button>` : ''}
@@ -1369,6 +1372,49 @@
     }
     return pts.sort((a, b) => haversine({ lat: lat0, lng: lng0 }, { lat: a[0], lng: a[1] }) - haversine({ lat: lat0, lng: lng0 }, { lat: b[0], lng: b[1] }));
   }
+  function parseCsv(txt) {
+    txt = String(txt || '').replace(/^\uFEFF/, '');
+    const out = []; let row = [], cur = '', q = false;
+    for (let i = 0; i < txt.length; i++) {
+      const ch = txt[i];
+      if (q) { if (ch === '"') { if (txt[i + 1] === '"') { cur += '"'; i++; } else q = false; } else cur += ch; }
+      else if (ch === '"') q = true;
+      else if (ch === ';' || ch === ',' && !txt.slice(0, txt.indexOf('\n')).includes(';')) { row.push(cur); cur = ''; }
+      else if (ch === '\n') { row.push(cur.replace(/\r$/, '')); out.push(row); row = []; cur = ''; }
+      else cur += ch;
+    }
+    if (cur || row.length) { row.push(cur.replace(/\r$/, '')); out.push(row); }
+    return out.filter(r => r.some(x => String(x).trim()));
+  }
+  async function importCsv(file) {
+    if (S.csvBusy) return;
+    S.csvBusy = true; S.csvMsg = 'Lendo o arquivo…'; render();
+    let ok = 0, dup = 0, bad = 0, nogeo = 0, tot = 0, last = 0;
+    try {
+      const rows = parseCsv(await file.text());
+      const head = rows.shift().map(h => norm(h)), ix = k => head.indexOf(k);
+      const iN = ix('nome'), iE = ix('endereco'), iB = ix('bairro'), iC = ix('cep'), iCi = ix('cidade');
+      if (iN < 0 || iE < 0) throw new Error('O arquivo precisa ter as colunas nome e endereco.');
+      tot = rows.length; const me = (window.Cloud && Cloud.uid) || null, buf = [];
+      const flush = async () => { if (!buf.length) return; const part = buf.splice(0); if (window.CLOUD_ON) await Cloud.adm.importCondos(part); else { part.forEach(r => CR.push(r)); persistCR(); } rebuildCondos(); };
+      for (let i = 0; i < rows.length; i++) {
+        const r = rows[i], name = String(r[iN] || '').trim(), end = String(r[iE] || '').trim(), bairro = iB >= 0 ? String(r[iB] || '').trim() : '', cep = iC >= 0 ? String(r[iC] || '').replace(/\D/g, '') : '', cidade = iCi >= 0 ? String(r[iCi] || '').trim() : impCity();
+        if (name.length < 2) { bad++; continue; }
+        const g = { name, end, cidade, cep, bairro };
+        if (findMatches(g).some(m => m.hard) || buf.some(b => subsetName(b.name, name) && norm(b.endereco) === norm(end))) { dup++; continue; }
+        const geo = await geocode(end, bairro, cidade); await new Promise(res => setTimeout(res, 1100));
+        if (!geo) nogeo++;
+        buf.push({ id: 'c-osm-rf-' + slug(name + ' ' + cep + ' ' + end).slice(0, 80), name, endereco: end.length > 4 ? end : 'Endereço a confirmar', cep: cep ? fmtCep(cep) : '', bairro: bairro.length > 1 ? bairro : 'Não informado', cidade: cidade.length > 1 ? cidade : impCity(), lat: geo ? geo.lat : undefined, lng: geo ? geo.lng : undefined, status: 'pending', createdBy: me, ts: Date.now() });
+        ok++;
+        if (buf.length >= 10) await flush();
+        if (Date.now() - last > 1500) { last = Date.now(); S.csvMsg = `Importando… ${i + 1}/${tot} • ${ok} novos • ${dup} já existiam`; render(); }
+      }
+      await flush();
+      S.csvMsg = `Pronto: ${ok} novos em análise • ${dup} já existiam • ${bad} sem nome` + (nogeo ? ` • ${nogeo} sem localização no mapa` : '') + '.';
+    } catch (e) { S.csvMsg = 'Erro: ' + (e && e.message || e); }
+    S.csvBusy = false; if (window.Cloud && Cloud.attachCondos) Cloud.attachCondos(); render();
+  }
+  document.addEventListener('change', e => { if (e.target && e.target.id === 'imp-csv' && e.target.files && e.target.files[0]) importCsv(e.target.files[0]); });
   async function importOsm() {
     if (S.impBusy) return;
     S.impBusy = true; S.impMsg = 'Começando…'; render();

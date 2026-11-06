@@ -410,6 +410,34 @@ html[data-theme=dark] button.pill{font-family:inherit;cursor:pointer}
 .onb h1{font-size:19px;margin-top:4px}.onb{padding-top:32px}
 .onb img{height:120px!important}
 .onb img{margin:0 auto 10px!important}.onbname{margin-top:6px!important}
+
+/* tela de entrada: faixa azul com textura e cartão branco */
+.onb{background:#EAF1FF;padding:0 0 28px;gap:0}
+.onbhero{position:relative;display:flex;flex-direction:column;align-items:center;gap:10px;padding:34px 24px 96px;text-align:center;color:#fff;border-radius:0 0 34px 34px;overflow:hidden;
+ background:radial-gradient(circle at 20% 15%,rgba(255,196,0,.22),transparent 38%),radial-gradient(circle at 85% 0,rgba(80,150,255,.45),transparent 45%),linear-gradient(160deg,#0F2E6B 0%,#1A4BB0 60%,#2F6FE0 100%)}
+.onbhero:before{content:"";position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,.16) 1.2px,transparent 1.4px);background-size:18px 18px;opacity:.55}
+.onbhero:after{content:"";position:absolute;left:0;right:0;bottom:0;height:70px;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 90' preserveAspectRatio='none'%3E%3Cg fill='%23ffffff' fill-opacity='.16'%3E%3Crect x='10' y='40' width='34' height='50'/%3E%3Crect x='50' y='18' width='28' height='72'/%3E%3Crect x='84' y='48' width='40' height='42'/%3E%3Crect x='130' y='8' width='30' height='82'/%3E%3Crect x='166' y='34' width='36' height='56'/%3E%3Crect x='208' y='52' width='30' height='38'/%3E%3Crect x='244' y='14' width='32' height='76'/%3E%3Crect x='282' y='38' width='38' height='52'/%3E%3Crect x='326' y='22' width='28' height='68'/%3E%3Crect x='360' y='46' width='34' height='44'/%3E%3C/g%3E%3C/svg%3E") center bottom/100% 100% no-repeat}
+.onbhero>*{position:relative;z-index:1}
+.onb .onbhero img{width:104px!important;height:104px!important;background:#fff;border-radius:30px;padding:10px;box-shadow:0 10px 30px rgba(0,0,0,.28);margin:0 auto 4px!important}
+.onb .onbhero .onbname{color:#fff;margin:0!important}.onb .onbhero .onbname span{color:#FFC400}
+.onb .onbhero h1{color:#fff;font-size:18px;font-weight:700;margin:4px 0 0}
+.onb .onbhero p{color:rgba(255,255,255,.85);margin:0;font-size:14px}
+.onb .form{position:relative;z-index:2;margin:-44px 16px 0;background:#fff;border-radius:26px;padding:20px 18px 18px!important;box-shadow:0 14px 40px rgba(15,46,107,.18);gap:14px}
+.onb .form label{color:#0F2E6B}
+.onb .form input[type=text],.onb .form input[type=number]{height:54px;background:#F3F7FF;border:2px solid #D3E0F8;border-radius:16px;font-weight:500}
+.onb .form input::placeholder{color:#8A9BBB}
+.onb .form input:focus{background:#fff;border-color:#2F6FE0;box-shadow:0 0 0 4px rgba(47,111,224,.16)}
+.onb .form .sug{border:2px solid #D3E0F8;border-radius:16px;background:#fff}
+.onb .form .cta48{height:56px;border-radius:16px;background:linear-gradient(135deg,#FFC400,#FFB000);color:#0F2E6B;font-weight:800;box-shadow:0 8px 20px rgba(255,176,0,.38)}
+.onb .form .cta48:disabled{background:#E3E9F5;color:#97A5C0;box-shadow:none}
+html[data-theme=dark] .onb{background:transparent}
+html[data-theme=dark] .onbhero{background:radial-gradient(circle at 20% 15%,rgba(255,196,0,.16),transparent 38%),radial-gradient(circle at 85% 0,rgba(47,140,255,.4),transparent 45%),linear-gradient(160deg,#071533 0%,#0B2A6B 60%,#123E94 100%)}
+html[data-theme=dark] .onb .form{background:#0F1E3A;box-shadow:0 14px 40px rgba(0,0,0,.5);border:1px solid rgba(120,170,255,.18)}
+html[data-theme=dark] .onb .form label{color:#DCE8FF}
+html[data-theme=dark] .onb .form input[type=text],html[data-theme=dark] .onb .form input[type=number]{background:#0A1630;border-color:#244079;color:#fff}
+html[data-theme=dark] .onb .form input:focus{background:#0A1630;border-color:#4C93FF;box-shadow:0 0 0 4px rgba(76,147,255,.22)}
+html[data-theme=dark] .onb .form .cta48:disabled{background:#1B2D55;color:#6F82A8}
+html[data-theme=dark] .onb .form .sug{background:#0A1630;border-color:#244079}
 </style>
 <script src="firebase-config.js"></script>
 <script>window.CLOUD_ON=!!(window.FIREBASE_CONFIG&&window.FIREBASE_CONFIG.apiKey)</script>
@@ -699,7 +727,7 @@ function condoPicker(mode){
 function onboarding(){
  const o=S.onb;const ok=o.name.trim()&&o.apt.trim()&&o.condo;
  const list=CONDOS.filter(c=>c[0].toLowerCase().includes(o.q.toLowerCase()));
- return `<div class="onb"><img src="${LOGO}" alt="Achados"><div class="onbname">Achados<span>de Condomínios</span></div><h1>Tudo que rola no seu condomínio e nos vizinhos</h1><p>Venda, doação e achados em um raio de até 20km.</p>
+ return `<div class="onb"><div class="onbhero"><img src="${LOGO}" alt="Achados"><div class="onbname">Achados<span>de Condomínios</span></div><h1>Tudo que rola no seu condomínio e nos vizinhos</h1><p>Venda, doação e achados em um raio de até 20km.</p></div>
  <div class="form" style="padding:0">
   <div><label>Nome</label><input type="text" id="o-name" value="${esc(o.name)}" placeholder="Seu nome"></div>
   <div><label>Apto</label><input type="text" id="o-apt" value="${esc(o.apt)}" placeholder="Ex.: 204"></div>

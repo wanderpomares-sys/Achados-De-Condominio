@@ -27,16 +27,24 @@ BASE = BASES[0]
 def mes_disponivel():
     global BASE
     d = datetime.date.today().replace(day=1)
-    for _ in range(8):
+    for _ in range(3):
         m = d.strftime('%Y-%m')
         for b in BASES:
             try:
-                req = urllib.request.Request(b + m + '/Municipios.zip', method='HEAD', headers={'User-Agent': 'Mozilla/5.0'})
+                req = urllib.request.Request(b + m + '/Municipios.zip', headers={'User-Agent': 'Mozilla/5.0', 'Range': 'bytes=0-0'})
                 urllib.request.urlopen(req, timeout=20)
                 BASE = b
                 return m
             except Exception as e:
                 print('sem', b + m, type(e).__name__, str(e)[:80], flush=True)
+                if not getattr(mes_disponivel, 'dbg', 0):
+                    mes_disponivel.dbg = 1
+                    for u in (b, b + m + '/'):
+                        try:
+                            t = urllib.request.urlopen(urllib.request.Request(u, headers={'User-Agent': 'Mozilla/5.0'}), timeout=20).read(4000).decode('latin-1', 'replace')
+                            print('LISTAGEM', u, re.sub(r'\s+', ' ', t)[:1500], flush=True)
+                        except Exception as e2:
+                            print('LISTAGEM falhou', u, type(e2).__name__, str(e2)[:80], flush=True)
         d = (d - datetime.timedelta(days=1)).replace(day=1)
     sys.exit('Não achei pasta recente na Receita')
 

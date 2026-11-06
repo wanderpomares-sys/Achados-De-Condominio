@@ -13,14 +13,16 @@ permissions:
 jobs:
   gerar:
     runs-on: ubuntu-latest
-    timeout-minutes: 120
+    timeout-minutes: 240
     steps:
       - uses: actions/checkout@v4
       - name: Instalar DuckDB
         run: pip install duckdb
       - name: Gerar listas
+        timeout-minutes: 200
         run: python3 scripts/receita.py "${{ github.event.inputs.cidades || 'Mogi das Cruzes;São José dos Campos' }}"
       - name: Publicar
+        if: always()
         run: |
           git config user.name "achados-bot"
           git config user.email "achados-bot@users.noreply.github.com"

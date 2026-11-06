@@ -117,19 +117,25 @@ def main():
         vistos.add(chave)
         por[cid].append([n, end, titulo(bairro), re.sub(r'\D', '', cep or ''), ncid[cid]])
     os.makedirs('data/condominios', exist_ok=True)
-    for cid, lst in por.items():
+    def grava(cid, lst, coords):
+        arq = 'data/condominios/' + cid.replace(' ', '-') + '.csv'
+        with open(arq, 'w', newline='', encoding='utf-8') as f:
+            w = csv.writer(f, delimiter=';'); w.writerow(['nome', 'endereco', 'bairro', 'cep', 'cidade', 'lat', 'lng'])
+            for r, g in zip(lst, coords): w.writerow(r + list(g or ('', '')))
+        return arq
+    for cid, lst in sorted(por.items(), key=lambda kv: len(kv[1])):
         lst.sort(key=lambda x: x[0])
         arq = 'data/condominios/' + cid.replace(' ', '-') + '.csv'
         cache = le_cache(arq); novos = 0
-        for r in lst:
-            g = cache.get((r[0], r[1]))
-            if not g and not os.environ.get('SEM_GEO'):
-                gg = geocodifica(r[1], r[2], r[3], r[4]); g = gg and (str(gg[0]), str(gg[1])); novos += 1
-                if novos % 100 == 0: print('  geocodificados', novos, 'de', len(lst), flush=True)
-            r.extend(g or ('', ''))
-        with open(arq, 'w', newline='', encoding='utf-8') as f:
-            w = csv.writer(f, delimiter=';'); w.writerow(['nome', 'endereco', 'bairro', 'cep', 'cidade', 'lat', 'lng']); w.writerows(lst)
-        print(ncid[cid], len(lst), '->', arq, 'com localização:', sum(1 for r in lst if r[5]), flush=True)
+        coords = [cache.get((r[0], r[1])) for r in lst]      # o que já tinha localização é reaproveitado
+        for i, r in enumerate(lst):
+            if coords[i] or os.environ.get('SEM_GEO'): continue
+            gg = geocodifica(r[1], r[2], r[3], r[4])
+            coords[i] = gg and (str(gg[0]), str(gg[1])); novos += 1
+            if novos % 50 == 0:
+                print('  ', ncid[cid], 'geocodificados', novos, flush=True); grava(cid, lst, coords)   # ponto de retomada
+        arq = grava(cid, lst, coords)
+        print(ncid[cid], len(lst), '->', arq, 'com localização:', sum(1 for g in coords if g), flush=True)
     with open('data/condominios/ATUALIZADO.txt', 'w') as f: f.write(DS + '\n')
 
 main()

@@ -692,7 +692,7 @@
     const fresh = p.month === monthKey();
     return { tier: p.tier === 'anual' && p.until > Date.now() ? 'anual' : 'free', until: p.until || 0, month: monthKey(), ads: fresh ? (p.ads | 0) : 0, boosts: fresh ? (p.boosts | 0) : 0 };
   }
-  const APP_VERSION = '2026-11-05.41';
+  const APP_VERSION = '2026-11-05.42';
   window.APP_VERSION = APP_VERSION;
   const savePlan = p => store.set('plan', p);
   window.refundAd = () => { const w = wallet(); const p = plan(); if (p.ads > 0) { p.ads--; savePlan(p); } };
@@ -1311,12 +1311,14 @@
   /* ---------- importar condomínios do mapa (administrador) ---------- */
   const CENTRO = { lat: -23.5228, lng: -46.1883 };
   const isFar = c => c.status === 'pending' && /^c-osm-/.test(c.id) && hasGeo(c) && haversine(CENTRO, c) > 20;
+  const isOther = c => c.status === 'pending' && /^c-osm-/.test(c.id) && c.cidade && !/mogi/i.test(c.cidade);
   const isNoAddr = c => c.status === 'pending' && /^c-osm-/.test(c.id) && c.endereco === 'Endereço a confirmar';
   function importHtml() {
-    const pend = CR.filter(c => c.status === 'pending').length, noAddr = CR.filter(isNoAddr).length, far = CR.filter(isFar).length;
+    const pend = CR.filter(c => c.status === 'pending').length, noAddr = CR.filter(isNoAddr).length, far = CR.filter(isFar).length, other = CR.filter(isOther).length;
     return `<h3>Carregar condomínios do mapa</h3><div class="cardc"><small>Busca no OpenStreetMap os condomínios num raio de 20 km do centro de Mogi das Cruzes. Eles entram <b>em análise</b> (sem duplicar os que já existem) e você aprova.</small>
       <button class="ghost" data-admimport ${S.impBusy ? 'disabled' : ''}>${S.impBusy ? 'Buscando…' : 'Importar condomínios da região'}</button>
       ${S.impMsg ? `<small>${esc(S.impMsg)}</small>` : ''}
+      ${other ? `<button class="${S.rmOther ? 'no' : 'ghost'}" data-admrmother>${S.rmOther ? `Confirmar: recusar os ${other}` : `Recusar importados de outras cidades (${other})`}</button>` : ''}
       ${far ? `<button class="${S.rmFar ? 'no' : 'ghost'}" data-admrmfar>${S.rmFar ? `Confirmar: recusar os ${far}` : `Recusar importados a mais de 20 km (${far})`}</button>` : ''}
       ${noAddr ? `<button class="${S.rmConfirm ? 'no' : 'ghost'}" data-admrmnoaddr>${S.rmConfirm ? `Confirmar: recusar os ${noAddr}` : `Recusar importados sem endereço (${noAddr})`}</button>` : ''}
       ${pend ? `<button class="${S.apConfirm ? 'no' : 'ok'}" data-admapproveall>${S.apConfirm ? `Confirmar: aprovar os ${pend}` : `Aprovar todos em análise (${pend})`}</button>` : ''}</div>`;
@@ -1377,6 +1379,7 @@
           if (!core(x.name).length) return;
           if (x.area) return;   // bairro, loteamento ou área: não é um condomínio
           if (haversine(CENTRO, x) > 20) return;   // fora do raio de 20 km
+          if (x.cidade && !/mogi/i.test(x.cidade)) return;   // só Mogi das Cruzes (Suzano, Arujá, Jacareí etc. ficam de fora)
           if (CR.concat(add).some(c => c.status !== 'rejected' && subsetName(c.name, x.name) && (!hasGeo(c) || haversine(c, x) < 0.6))) return;
           add.push({ id: 'c-osm-' + x.osm, name: x.name.trim(), endereco: (x.end && x.end.length > 4) ? x.end : 'Endereço a confirmar', cep: x.cep ? fmtCep(x.cep) : '', bairro: (x.bairro && x.bairro.length > 1) ? x.bairro : 'Não informado',
             cidade: (x.cidade && x.cidade.length > 1) ? x.cidade : 'Mogi das Cruzes', lat: x.lat, lng: x.lng, status: 'pending', createdBy: me, ts: Date.now() });
@@ -1396,6 +1399,17 @@
   }
   document.addEventListener('click', async e => {
     if (e.target.closest('[data-admimport]')) return importOsm();
+    if (e.target.closest('[data-admrmother]')) {
+      if (!S.rmOther) { S.rmOther = true; return render(); }
+      S.rmOther = false;
+      const ids = CR.filter(isOther).map(c => c.id);
+      try {
+        if (window.CLOUD_ON) await Cloud.adm.removeMany(ids); else persistCR();
+        for (let i = CR.length - 1; i >= 0; i--) if (ids.includes(CR[i].id)) CR.splice(i, 1);
+        rebuildCondos(); toast(ids.length + ' recusados');
+      } catch (x) { toast('Erro: ' + (x.message || x)); }
+      return render();
+    }
     if (e.target.closest('[data-admrmfar]')) {
       if (!S.rmFar) { S.rmFar = true; return render(); }
       S.rmFar = false;

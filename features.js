@@ -692,7 +692,7 @@
     const fresh = p.month === monthKey();
     return { tier: p.tier === 'anual' && p.until > Date.now() ? 'anual' : 'free', until: p.until || 0, month: monthKey(), ads: fresh ? (p.ads | 0) : 0, boosts: fresh ? (p.boosts | 0) : 0 };
   }
-  const APP_VERSION = '2026-11-05.46';
+  const APP_VERSION = '2026-11-05.47';
   window.APP_VERSION = APP_VERSION;
   const savePlan = p => store.set('plan', p);
   window.refundAd = () => { const w = wallet(); const p = plan(); if (p.ads > 0) { p.ads--; savePlan(p); } };
@@ -1316,14 +1316,16 @@
   const startsCond = n => /^cond(om[ií]nio|\.)?\s/i.test(String(n || '').trim().normalize('NFC')) || /^condominio\s/i.test(norm(n) + ' ');
   const impStrict = () => { let v = S.impStrict; if (v == null) { try { v = localStorage.getItem('impStrict'); } catch (x) {} } return v == null || v === true || v === '1'; };
   const isNotCond = c => c.status === 'pending' && /^c-osm-/.test(c.id) && !startsCond(c.name);
+  const isImp = c => c.status === 'pending' && /^c-osm-/.test(c.id);
   const isNoAddr = c => c.status === 'pending' && /^c-osm-/.test(c.id) && c.endereco === 'Endereço a confirmar';
   function importHtml() {
-    const pend = CR.filter(c => c.status === 'pending').length, noAddr = CR.filter(isNoAddr).length, other = CR.filter(isOther).length, notCond = CR.filter(isNotCond).length;
+    const pend = CR.filter(c => c.status === 'pending').length, noAddr = CR.filter(isNoAddr).length, other = CR.filter(isOther).length, notCond = CR.filter(isNotCond).length, allImp = CR.filter(isImp).length;
     return `<h3>Carregar condomínios do mapa</h3><div class="cardc"><small>Busca no OpenStreetMap os condomínios dentro do município escolhido (só ele; outras cidades ficam de fora). Eles entram <b>em análise</b> (sem duplicar os que já existem) e você aprova.</small>
       <input type="text" id="imp-city" value="${esc(impCity())}" placeholder="Nome da cidade" autocomplete="off" ${S.impBusy ? 'disabled' : ''}>
       <label style="display:flex;gap:10px;align-items:center;font-size:14px"><input type="checkbox" id="imp-strict" style="width:22px;height:22px" ${impStrict() ? 'checked' : ''} ${S.impBusy ? 'disabled' : ''}>Só nomes que começam com "Condomínio"</label>
       <button class="ghost" data-admimport ${S.impBusy ? 'disabled' : ''}>${S.impBusy ? 'Buscando…' : 'Importar condomínios da região'}</button>
       ${S.impMsg ? `<small>${esc(S.impMsg)}</small>` : ''}
+      ${allImp ? `<button class="${S.rmAll ? 'no' : 'no'}" style="${S.rmAll ? '' : 'opacity:.85'}" data-admrmall>${S.rmAll ? `Confirmar: recusar TODOS os ${allImp} importados` : `Recusar TODOS os importados em análise (${allImp})`}</button>` : ''}
       ${notCond ? `<button class="${S.rmNc ? 'no' : 'ghost'}" data-admrmnc>${S.rmNc ? `Confirmar: recusar os ${notCond}` : `Recusar importados que não começam com Condomínio (${notCond})`}</button>` : ''}
       ${other ? `<button class="${S.rmOther ? 'no' : 'ghost'}" data-admrmother>${S.rmOther ? `Confirmar: recusar os ${other}` : `Recusar importados fora de ${esc(impCity())} (${other})`}</button>` : ''}
       ${noAddr ? `<button class="${S.rmConfirm ? 'no' : 'ghost'}" data-admrmnoaddr>${S.rmConfirm ? `Confirmar: recusar os ${noAddr}` : `Recusar importados sem endereço (${noAddr})`}</button>` : ''}
@@ -1420,6 +1422,17 @@
   document.addEventListener('change', e => { if (e.target && e.target.id === 'imp-strict') { S.impStrict = e.target.checked; try { localStorage.setItem('impStrict', e.target.checked ? '1' : '0'); } catch (x) {} } });
   document.addEventListener('click', async e => {
     if (e.target.closest('[data-admimport]')) { const el = document.getElementById('imp-city'); if (el) S.impCity = el.value; return importOsm(); }
+    if (e.target.closest('[data-admrmall]')) {
+      if (!S.rmAll) { S.rmAll = true; return render(); }
+      S.rmAll = false;
+      const ids = CR.filter(isImp).map(c => c.id);
+      try {
+        if (window.CLOUD_ON) await Cloud.adm.removeMany(ids); else persistCR();
+        for (let i = CR.length - 1; i >= 0; i--) if (ids.includes(CR[i].id)) CR.splice(i, 1);
+        rebuildCondos(); toast(ids.length + ' recusados');
+      } catch (x) { toast('Erro: ' + (x.message || x)); }
+      return render();
+    }
     if (e.target.closest('[data-admrmnc]')) {
       if (!S.rmNc) { S.rmNc = true; return render(); }
       S.rmNc = false;

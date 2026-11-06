@@ -727,7 +727,7 @@
     const fresh = p.month === monthKey();
     return { tier: p.tier === 'anual' && p.until > Date.now() ? 'anual' : 'free', until: p.until || 0, month: monthKey(), ads: fresh ? (p.ads | 0) : 0, boosts: fresh ? (p.boosts | 0) : 0 };
   }
-  const APP_VERSION = '2026-11-06.54';
+  const APP_VERSION = '2026-11-06.55';
   window.APP_VERSION = APP_VERSION;
   const savePlan = p => store.set('plan', p);
   window.refundAd = () => { const w = wallet(); const p = plan(); if (p.ads > 0) { p.ads--; savePlan(p); } };
@@ -1123,7 +1123,7 @@
   });
 
   /* ---------- alcance: tipos que ficam só no condomínio (vaga de garagem) ---------- */
-  const LOCK_PRED = ['vaga', 'aviso'];
+  const LOCK_PRED = ['vaga', 'aviso', 'enquete', 'pergunta'];
   const _newPostL = window.newPost;
   window.newPost = function () {
     let h = _newPostL();
@@ -1145,6 +1145,103 @@
     S.form._wasLocked = LOCK_PRED.includes(S.form.type);
     render();
   }); // mostra/esconde o alcance travado
+
+  /* ---------- enquetes e perguntas entre vizinhos (só dentro do condomínio) ---------- */
+  const NB = ['enquete', 'pergunta'];
+  const localNb = { get: (k) => store.get(k, {}), set: (k, v) => store.set(k, v) };
+  S.nbV = S.nbV || {}; S.nbA = S.nbA || {}; S.nbLd = S.nbLd || {};
+  function nbLoad(p) {
+    if (S.nbLd[p.id]) return; S.nbLd[p.id] = 1;
+    const done = () => { delete S.nbBusy; render(); };
+    if (window.CLOUD_ON && window.Cloud) {
+      (p.type === 'enquete' ? Cloud.loadVotes(p.id).then(v => { S.nbV[p.id] = v; }) : Cloud.loadAnswers(p.id).then(a => { S.nbA[p.id] = a; }))
+        .then(done).catch(() => { S.nbLd[p.id] = 0; });
+    } else {
+      if (p.type === 'enquete') { const all = localNb.get('nbVotes'); const counts = []; (all[p.id] || []).forEach(c => { counts[c] = (counts[c] || 0) + 1; }); S.nbV[p.id] = { counts, mine: (localNb.get('nbMine'))[p.id] ?? null }; }
+      else S.nbA[p.id] = (localNb.get('nbAns'))[p.id] || [];
+    }
+  }
+  const _newPostN = window.newPost;
+  window.newPost = function () {
+    let h = _newPostN();
+    if (!S.form || !NB.includes(S.form.type)) return h;
+    S.form.free = false; S.form.price = '';
+    const edit = !!S.form.editId;
+    let blk = '';
+    if (S.form.type === 'enquete' && !edit) {
+      const o = S.form.opts || (S.form.opts = ['', '']);
+      blk = `<div><label>Opções de resposta (2 a 5)</label>${o.map((v, i) => `<input type="text" data-opt="${i}" maxlength="60" value="${esc(v)}" placeholder="Opção ${i + 1}" style="margin-bottom:8px">`).join('')}${o.length < 5 ? '<button class="ghost" data-addopt style="margin:0">+ Adicionar opção</button>' : ''}</div>`;
+    } else if (S.form.type === 'enquete') blk = '<div><small>As opções não podem ser alteradas depois de publicadas.</small></div>';
+    h = h.replace(/<div><label>Preço<\/label>[\s\S]*?(?=<div><label>Foto)/, blk);
+    h = h.replace(/<div><label>Foto<\/label>[\s\S]*?<\/label><\/div>\s*/, '');
+    h = h.replace('placeholder="O que você quer anunciar?"', S.form.type === 'enquete' ? 'placeholder="Qual a sua pergunta para votação?"' : 'placeholder="O que você quer perguntar aos vizinhos?"');
+    return h;
+  };
+  document.addEventListener('input', e => {
+    const i = e.target && e.target.getAttribute && e.target.getAttribute('data-opt');
+    if (i != null && S.form && S.form.opts) S.form.opts[+i] = e.target.value;
+  });
+  document.addEventListener('click', e => {
+    if (e.target.closest('[data-addopt]') && S.form && S.form.opts && S.form.opts.length < 5) { e.stopImmediatePropagation(); S.form.opts.push(''); render(); return; }
+    if (e.target.id === 'f-go' && S.form && S.form.type === 'enquete' && !S.form.editId) {
+      const n = (S.form.opts || []).map(x => x.trim()).filter(Boolean);
+      if (n.length < 2) { e.stopImmediatePropagation(); e.preventDefault(); toast('Informe pelo menos 2 opções'); }
+    }
+  }, true);
+  function nbBlock(p) {
+    nbLoad(p);
+    if (p.type === 'enquete') {
+      const v = S.nbV[p.id], opts = p.poll || [];
+      if (!v) return '<div class="cardc"><small>Carregando votos…</small></div>';
+      const tot = opts.reduce((s, _, i) => s + (v.counts[i] || 0), 0);
+      const rows = opts.map((o, i) => {
+        if (v.mine != null) {
+          const c = v.counts[i] || 0, pc = tot ? Math.round(c * 100 / tot) : 0;
+          return `<div style="position:relative;margin:6px 0;border:1px solid var(--border);border-radius:12px;overflow:hidden"><div style="position:absolute;inset:0 ${100 - pc}% 0 0;background:${v.mine === i ? '#7C3AED55' : '#7C3AED22'}"></div><div style="position:relative;padding:12px 14px;display:flex;justify-content:space-between;gap:8px"><span>${v.mine === i ? '✓ ' : ''}${esc(o)}</span><b>${pc}% (${c})</b></div></div>`;
+        }
+        return `<button class="ghost" data-vote="${p.id}|${i}" style="margin:6px 0;text-align:left">${esc(o)}</button>`;
+      }).join('');
+      return `<div style="margin:12px 0"><b>🗳️ Enquete do condomínio</b>${rows}<small style="color:var(--gray)">${tot} ${tot === 1 ? 'voto' : 'votos'} • cada morador vota uma vez${v.mine == null ? ' • o resultado aparece depois do seu voto' : ''}</small></div>`;
+    }
+    const a = S.nbA[p.id];
+    if (!a) return '<div class="cardc"><small>Carregando respostas…</small></div>';
+    const list = a.map(x => `<div class="cardc" style="margin:6px 0"><b>${esc(x.name || 'Vizinho')}${x.apt && x.apt !== '—' ? ' • Apto ' + esc(x.apt) : ''}</b><br>${esc(x.text)}${x.mine ? ` <button class="lk" data-delans="${p.id}|${x.id}" style="color:#C0392B;background:none;border:0">apagar</button>` : ''}</div>`).join('') || '<small style="color:var(--gray)">Ainda sem respostas. Seja o primeiro a ajudar.</small>';
+    return `<div style="margin:12px 0"><b>💬 Respostas dos vizinhos (${a.length})</b>${list}<textarea id="a-text" maxlength="300" placeholder="Escreva sua resposta (até 300 letras)" style="margin-top:8px;width:100%;min-height:70px"></textarea><button class="cta52" data-answer="${p.id}" style="margin-top:8px">Responder</button></div>`;
+  }
+  const _detailN = window.detail;
+  window.detail = function () {
+    let h = _detailN(); const p = S.posts.find(x => x.id === S.detail);
+    if (!p || !NB.includes(p.type)) return h;
+    h = h.replace(/<button class="big" data-whats=[\s\S]*?<\/button>/, '');
+    return h.replace('<div class="proof">', nbBlock(p) + '<div class="proof">');
+  };
+  document.addEventListener('click', async e => {
+    const v = e.target.closest('[data-vote]'), a = e.target.closest('[data-answer]'), d = e.target.closest('[data-delans]');
+    if (!v && !a && !d) return;
+    e.stopImmediatePropagation(); e.preventDefault();
+    try {
+      if (v) {
+        const [id, i] = v.dataset.vote.split('|'), c = +i, cur = S.nbV[id]; if (!cur || cur.mine != null) return;
+        if (window.CLOUD_ON && window.Cloud) await Cloud.vote(id, c);
+        else { const all = localNb.get('nbVotes'); (all[id] = all[id] || []).push(c); localNb.set('nbVotes', all); const m = localNb.get('nbMine'); m[id] = c; localNb.set('nbMine', m); }
+        cur.counts[c] = (cur.counts[c] || 0) + 1; cur.mine = c; render(); toast('Voto registrado ✓');
+      } else if (a) {
+        const id = a.dataset.answer, t = document.getElementById('a-text'), text = t ? t.value.trim() : '';
+        if (!text) return toast('Escreva sua resposta');
+        const u = S.user || {}; let aid = 'l' + Date.now();
+        if (window.CLOUD_ON && window.Cloud) aid = await Cloud.answer(id, text.slice(0, 300), u.name || 'Vizinho', u.apt || '');
+        const rec = { id: aid, name: u.name || 'Vizinho', apt: u.apt || '', text: text.slice(0, 300), ts: Date.now(), mine: true };
+        (S.nbA[id] = S.nbA[id] || []).push(rec);
+        if (!window.CLOUD_ON) { const all = localNb.get('nbAns'); (all[id] = all[id] || []).push(rec); localNb.set('nbAns', all); }
+        render(); toast('Resposta enviada ✓');
+      } else {
+        const [id, aid] = d.dataset.delans.split('|');
+        if (window.CLOUD_ON && window.Cloud) await Cloud.delAnswer(aid);
+        else { const all = localNb.get('nbAns'); all[id] = (all[id] || []).filter(x => x.id !== aid); localNb.set('nbAns', all); }
+        S.nbA[id] = (S.nbA[id] || []).filter(x => x.id !== aid); render();
+      }
+    } catch (x) { toast('Não foi possível: ' + (x && x.message ? x.message : x)); }
+  }, true);
 
   /* ---------- segurança contra golpes e termos ---------- */
   const SAFE_SHORT = `<div class="safe">⚠️ <b>Cuidado com golpes.</b> Combine a entrega pessoalmente, no condomínio. <b>Não pague antecipado</b>, não envie códigos e desconfie de pressa. <button class="lk" data-safe>Ver dicas</button></div>`;

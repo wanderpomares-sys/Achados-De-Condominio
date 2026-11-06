@@ -92,6 +92,37 @@ service cloud.firestore {
       allow update, delete: if isAdmin();
     }
 
+    // Enquetes: um voto por pessoa (id = postId_uid), sem trocar nem apagar.
+    // O contador fica num único documento (pollStats), então abrir uma enquete custa só 2 leituras.
+    match /votes/{vid} {
+      allow read: if signedIn() && (resource.data.userId == request.auth.uid || isStaff());
+      allow create: if signedIn() && vid == request.resource.data.postId + '_' + request.auth.uid
+        && request.resource.data.userId == request.auth.uid
+        && request.resource.data.choice is int
+        && request.resource.data.choice >= 0 && request.resource.data.choice <= 4;
+      allow delete: if isStaff();
+    }
+    function cnt(d, i) { return d.get('c' + string(i), 0); }
+    match /pollStats/{pid} {
+      allow read: if signedIn();
+      // soma +1 no total, junto com a criação do próprio voto (mesmo lote)
+      allow create, update: if signedIn()
+        && existsAfter(/databases/$(database)/documents/votes/$(pid + '_' + request.auth.uid))
+        && !exists(/databases/$(database)/documents/votes/$(pid + '_' + request.auth.uid))
+        && request.resource.data.keys().hasOnly(['c0','c1','c2','c3','c4'])
+        && (cnt(request.resource.data,0)+cnt(request.resource.data,1)+cnt(request.resource.data,2)+cnt(request.resource.data,3)+cnt(request.resource.data,4))
+           - (resource == null ? 0 : (cnt(resource.data,0)+cnt(resource.data,1)+cnt(resource.data,2)+cnt(resource.data,3)+cnt(resource.data,4))) == 1;
+    }
+
+    // Perguntas entre vizinhos: respostas curtas; o autor ou a equipe apagam.
+    match /answers/{aid} {
+      allow read: if signedIn();
+      allow create: if signedIn() && request.resource.data.userId == request.auth.uid
+        && request.resource.data.text is string
+        && request.resource.data.text.size() > 0 && request.resource.data.text.size() <= 300;
+      allow delete: if signedIn() && (resource.data.userId == request.auth.uid || isStaff());
+    }
+
     // Fila de e-mails (extensão "Trigger Email"): só o servidor escreve.
     match /mail/{id} { allow read, write: if false; }
   }

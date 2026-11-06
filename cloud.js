@@ -163,6 +163,32 @@
       return true;
     } catch (e) { bad('Não foi possível salvar a alteração. O anúncio voltou ao original.', e); C.apply(); return false; }
   };
+  // ---------- enquetes (votos) e perguntas (respostas): só lidas quando o anúncio é aberto ----------
+  C.loadVotes = async id => { // custo fixo: 2 leituras (contador + meu voto), não importa quantos votos
+    if (!db) return { counts: [], mine: null };
+    const [st, mv] = await Promise.all([db.collection('pollStats').doc(id).get(), uid ? db.collection('votes').doc(id + '_' + uid).get() : Promise.resolve(null)]);
+    const d = st.exists ? st.data() : {}, counts = [0, 1, 2, 3, 4].map(i => d['c' + i] || 0);
+    return { counts, mine: mv && mv.exists ? mv.data().choice : null };
+  };
+  C.vote = async (id, choice) => {
+    if (!db || !uid) throw new Error('ainda conectando, tente de novo em instantes');
+    const b = db.batch();
+    b.set(db.collection('votes').doc(id + '_' + uid), { postId: id, userId: uid, choice, ts: Date.now() });
+    b.set(db.collection('pollStats').doc(id), { ['c' + choice]: firebase.firestore.FieldValue.increment(1) }, { merge: true });
+    await b.commit();
+  };
+  C.loadAnswers = async id => {
+    if (!db) return [];
+    const q = await db.collection('answers').where('postId', '==', id).limit(30).get();
+    const a = []; q.forEach(d => a.push({ id: d.id, ...d.data(), mine: d.data().userId === uid }));
+    return a.sort((x, y) => x.ts - y.ts);
+  };
+  C.answer = async (id, text, name, apt) => {
+    if (!db || !uid) throw new Error('ainda conectando, tente de novo em instantes');
+    const r = await db.collection('answers').add(clean({ postId: id, userId: uid, name, apt, text, ts: Date.now() }));
+    return r.id;
+  };
+  C.delAnswer = aid => db && db.collection('answers').doc(aid).delete();
   C.purge = list => db && list.forEach(p => db.collection('posts').doc(p.id).delete().catch(noop)); // dono apaga os próprios vencidos
   const undoAdd = p => { // não deixa um anúncio "fantasma" (só no aparelho) nem gasta a cota do mês
     S.posts = S.posts.filter(x => x.id !== p.id);
@@ -180,7 +206,7 @@
         id: p.id, title: p.title, price: p.price, originalPrice: p.originalPrice, type: p.type,
         building: p.building, buildingId: slug(cond(p)), ts: p.ts, seller: p.seller, apt: p.apt,
         verified: false, views: 0, wants: 0, description: p.description, imageUrl: url,
-        reach: p.reach, whats: String(p.whats || '').replace(/\D/g, '').slice(0, 13), boostedUntil: 0, sellerUid: uid,
+        reach: p.reach, poll: Array.isArray(p.poll) ? p.poll.slice(0, 5).map(x => String(x).slice(0, 60)) : undefined, whats: String(p.whats || '').replace(/\D/g, '').slice(0, 13), boostedUntil: 0, sellerUid: uid,
         expiresAt: p.expiresAt, warnedAt: null
       });
       await db.collection('posts').doc(p.id).set(d);

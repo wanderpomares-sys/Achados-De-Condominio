@@ -308,7 +308,7 @@
     const sel = onb ? S.onb.condo : S.user.condo;
     const list = CONDOS.filter(c => c[0].toLowerCase().includes(q));
     const g = S.reg;
-    const label = c => c[5] === 'pending' ? 'em análise' : (c[2] ? esc(c[2]) : (c[1] === 0 ? 'aqui' : c[1].toLocaleString('pt-BR') + ' km'));
+    const label = c => c[5] === 'pending' ? 'em análise' : (c[2] ? esc(c[2] + (c[3] ? ' • ' + c[3] : '')) : (c[1] === 0 ? 'aqui' : c[1].toLocaleString('pt-BR') + ' km'));
     const matches = (g.open && g.mode === mode && g.matches && g.matches.length) ? (g.hard ? `
       <div class="dupbox"><b>Este condomínio já está cadastrado</b>
        <p>Para não termos o mesmo lugar com vários nomes, use o nome que já existe:</p>
@@ -727,7 +727,7 @@
     const fresh = p.month === monthKey();
     return { tier: p.tier === 'anual' && p.until > Date.now() ? 'anual' : 'free', until: p.until || 0, month: monthKey(), ads: fresh ? (p.ads | 0) : 0, boosts: fresh ? (p.boosts | 0) : 0 };
   }
-  const APP_VERSION = '2026-11-06.56';
+  const APP_VERSION = '2026-11-06.57';
   window.APP_VERSION = APP_VERSION;
   const savePlan = p => store.set('plan', p);
   window.refundAd = () => { const w = wallet(); const p = plan(); if (p.ads > 0) { p.ads--; savePlan(p); } };
@@ -1715,10 +1715,11 @@
     const q = (mode === 'onb' ? S.onb.q : S.cq) || '';
     const rs = S.rfQ === q ? (S.rfRes || []) : [];
     if (!rs.length) return h;
-    const have = new Set(CONDOS.map(c => norm(c[0])));
-    const btns = rs.filter(x => !have.has(norm(x.name))).map((x, i) => `<button data-rfpick="${i}" data-rfmode="${mode}">${esc(x.name)}<small>${esc([x.bairro, x.cidade].filter(Boolean).join(' • '))}</small></button>`).join('');
+    const btns = rs.filter(x => !sameSpot(x)).map((x, i) => `<button data-rfpick="${i}" data-rfmode="${mode}">${esc(x.name)}<small>${esc([x.bairro, x.cidade].filter(Boolean).join(' • '))}</small></button>`).join('');
     return h.replace(/<button disabled>[^<]*<\/button>/, '').replace('<div class="sug">', '<div class="sug">' + btns);
   };
+  const sameSpot = x => CONDOS.some(c => norm(c[0]) === norm(x.name) && norm(c[3] || '') === norm(x.cidade) && norm(c[2] || '') === norm(x.bairro))
+    || CR.some(c => c.status !== 'rejected' && norm(c.name) === norm(x.name) && cep8(c.cep) === cep8(x.cep));
   let rfQT;
   document.addEventListener('input', e => {       // digitar na busca: atualiza só a lista (sem redesenhar a tela, sem piscar)
     const id = e.target && e.target.id; if (id !== 'o-q' && id !== 'c-q') return;
@@ -1727,7 +1728,7 @@
     if (mode === 'onb') S.onb.q = q; else S.cq = q;
     const refresh = () => {
       const tmp = document.createElement('div'); tmp.innerHTML = window.condoPicker(mode);
-      const nw = tmp.querySelector('.sug'), old = e.target.nextElementSibling;
+      const nw = tmp.querySelector('.sug'), inp = document.getElementById(id), old = inp && inp.nextElementSibling;
       if (nw && old && old.classList.contains('sug')) old.innerHTML = nw.innerHTML;
     };
     refresh(); clearTimeout(rfQT);
@@ -1741,10 +1742,13 @@
   document.addEventListener('click', e => {       // tocar num condomínio da lista da Receita: cadastra e já entra
     const t = e.target.closest('[data-rfpick]'); if (!t) return;
     e.stopImmediatePropagation(); e.preventDefault();
-    const have = new Set(CONDOS.map(c => norm(c[0])));
-    const s = (S.rfRes || []).filter(x => !have.has(norm(x.name)))[+t.dataset.rfpick]; if (!s) return;
+    const s = (S.rfRes || []).filter(x => !sameSpot(x))[+t.dataset.rfpick]; if (!s) return;
     const mode = t.dataset.rfmode; resetReg(mode); const g = S.reg; g.open = true;
-    g.name = s.name; const p = splitEnd(s.end); g.street = p.street; g.num = p.num; setEnd(g);
+    g.name = s.name;
+    if (CR.some(c => c.status !== 'rejected' && norm(c.name) === norm(s.name)) || CONDOS.some(c => norm(c[0]) === norm(s.name))) { // mesmo nome em outro lugar: acrescenta cidade ou bairro para diferenciar
+      const outraCidade = !CR.concat(CONDOS.map(c => ({ name: c[0], cidade: c[3] }))).some(c => norm(c.name) === norm(s.name) && norm(c.cidade || '') === norm(s.cidade || ''));
+      g.name = s.name + ' — ' + (outraCidade ? s.cidade : (s.bairro || s.cidade));
+    } const p = splitEnd(s.end); g.street = p.street; g.num = p.num; setEnd(g);
     g.cep = fmtCep(s.cep); g.bairro = s.bairro; g.cidade = s.cidade; g.lat = s.lat; g.lng = s.lng;
     window.saveCondo();
   }, true);

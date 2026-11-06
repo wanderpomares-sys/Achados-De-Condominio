@@ -692,7 +692,7 @@
     const fresh = p.month === monthKey();
     return { tier: p.tier === 'anual' && p.until > Date.now() ? 'anual' : 'free', until: p.until || 0, month: monthKey(), ads: fresh ? (p.ads | 0) : 0, boosts: fresh ? (p.boosts | 0) : 0 };
   }
-  const APP_VERSION = '2026-11-05.49';
+  const APP_VERSION = '2026-11-05.50';
   window.APP_VERSION = APP_VERSION;
   const savePlan = p => store.set('plan', p);
   window.refundAd = () => { const w = wallet(); const p = plan(); if (p.ads > 0) { p.ads--; savePlan(p); } };
@@ -1395,7 +1395,7 @@
     try {
       const rows = parseCsv(typeof file === 'string' ? file : await file.text());
       const head = rows.shift().map(h => norm(h)), ix = k => head.indexOf(k);
-      const iN = ix('nome'), iE = ix('endereco'), iB = ix('bairro'), iC = ix('cep'), iCi = ix('cidade');
+      const iN = ix('nome'), iE = ix('endereco'), iB = ix('bairro'), iC = ix('cep'), iCi = ix('cidade'), iLa = ix('lat'), iLn = ix('lng');
       if (iN < 0 || iE < 0) throw new Error('O arquivo precisa ter as colunas nome e endereco.');
       tot = rows.length; const me = (window.Cloud && Cloud.uid) || null, buf = [];
       const flush = async () => { if (!buf.length) return; const part = buf.splice(0); if (window.CLOUD_ON) await Cloud.adm.importCondos(part); else { part.forEach(r => CR.push(r)); persistCR(); } rebuildCondos(); };
@@ -1404,7 +1404,8 @@
         if (name.length < 2) { bad++; continue; }
         const g = { name, end, cidade, cep, bairro };
         if (findMatches(g).some(m => m.hard) || buf.some(b => subsetName(b.name, name) && norm(b.endereco) === norm(end))) { dup++; continue; }
-        const geo = await geocode(end, bairro, cidade); await new Promise(res => setTimeout(res, 1100));
+        let geo = null; const la = iLa >= 0 ? parseFloat(r[iLa]) : NaN, ln = iLn >= 0 ? parseFloat(r[iLn]) : NaN;
+        if (isFinite(la) && isFinite(ln)) geo = { lat: la, lng: ln }; else { geo = await geocode(end, bairro, cidade); await new Promise(res => setTimeout(res, 1100)); }
         if (!geo) nogeo++;
         buf.push({ id: 'c-osm-rf-' + slug(name + ' ' + cep + ' ' + end).slice(0, 80), name, endereco: end.length > 4 ? end : 'Endereço a confirmar', cep: cep ? fmtCep(cep) : '', bairro: bairro.length > 1 ? bairro : 'Não informado', cidade: cidade.length > 1 ? cidade : impCity(), lat: geo ? geo.lat : undefined, lng: geo ? geo.lng : undefined, status: 'pending', createdBy: me, ts: Date.now() });
         ok++;

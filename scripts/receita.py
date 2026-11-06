@@ -7,7 +7,7 @@ Uso:  python3 scripts/receita.py "Mogi das Cruzes;São José dos Campos"
 Variáveis opcionais:  CNPJ_DATASET (padrão andrelacerda23/cnpj-dados-receita-brasil-2026-10)
                       CNPJ_ROOT (para teste local: pasta com estabelecimentos/ empresas/ municipios/)
 """
-import csv, json, os, re, sys, tempfile, time, unicodedata, urllib.request
+import csv, json, os, re, sys, tempfile, time, unicodedata, urllib.parse, urllib.request
 import duckdb
 
 DS = os.environ.get('CNPJ_DATASET', 'andrelacerda23/cnpj-dados-receita-brasil-2026-10')
@@ -54,6 +54,29 @@ def apaga(f):
         try: os.remove(f)
         except OSError: pass
 
+
+def geocodifica(end, bairro, cep, cidade):
+    """Nominatim (1 consulta por segundo): endereço completo, depois CEP."""
+    qs = [', '.join(x for x in (end, bairro, cidade, 'Brasil') if x)]
+    if cep and len(cep) == 8: qs.append('%s-%s, %s, Brasil' % (cep[:5], cep[5:], cidade))
+    for q in qs:
+        try:
+            u = 'https://nominatim.openstreetmap.org/search?format=json&limit=1&countrycodes=br&q=' + urllib.parse.quote(q)
+            j = json.load(urllib.request.urlopen(urllib.request.Request(u, headers={'User-Agent': 'achados-de-condominios-bot (achadosdecondominios@gmail.com)'}), timeout=30))
+            time.sleep(1.1)
+            if j: return round(float(j[0]['lat']), 6), round(float(j[0]['lon']), 6)
+        except Exception:
+            time.sleep(2)
+    return None
+
+def le_cache(arq):
+    c = {}
+    if os.path.exists(arq):
+        with open(arq, encoding='utf-8') as f:
+            for r in csv.DictReader(f, delimiter=';'):
+                if r.get('lat') and r.get('lng'): c[(r['nome'], r['endereco'])] = (r['lat'], r['lng'])
+    return c
+
 def main():
     cidades = [c.strip() for c in (sys.argv[1] if len(sys.argv) > 1 else 'Mogi das Cruzes').split(';') if c.strip()]
     ncid = {norm(c): c for c in cidades}
@@ -97,9 +120,16 @@ def main():
     for cid, lst in por.items():
         lst.sort(key=lambda x: x[0])
         arq = 'data/condominios/' + cid.replace(' ', '-') + '.csv'
+        cache = le_cache(arq); novos = 0
+        for r in lst:
+            g = cache.get((r[0], r[1]))
+            if not g and not os.environ.get('SEM_GEO'):
+                gg = geocodifica(r[1], r[2], r[3], r[4]); g = gg and (str(gg[0]), str(gg[1])); novos += 1
+                if novos % 100 == 0: print('  geocodificados', novos, 'de', len(lst), flush=True)
+            r.extend(g or ('', ''))
         with open(arq, 'w', newline='', encoding='utf-8') as f:
-            w = csv.writer(f, delimiter=';'); w.writerow(['nome', 'endereco', 'bairro', 'cep', 'cidade']); w.writerows(lst)
-        print(ncid[cid], len(lst), '->', arq, flush=True)
+            w = csv.writer(f, delimiter=';'); w.writerow(['nome', 'endereco', 'bairro', 'cep', 'cidade', 'lat', 'lng']); w.writerows(lst)
+        print(ncid[cid], len(lst), '->', arq, 'com localização:', sum(1 for r in lst if r[5]), flush=True)
     with open('data/condominios/ATUALIZADO.txt', 'w') as f: f.write(DS + '\n')
 
 main()

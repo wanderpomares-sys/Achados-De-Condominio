@@ -692,7 +692,7 @@
     const fresh = p.month === monthKey();
     return { tier: p.tier === 'anual' && p.until > Date.now() ? 'anual' : 'free', until: p.until || 0, month: monthKey(), ads: fresh ? (p.ads | 0) : 0, boosts: fresh ? (p.boosts | 0) : 0 };
   }
-  const APP_VERSION = '2026-11-05.50';
+  const APP_VERSION = '2026-11-06.51';
   window.APP_VERSION = APP_VERSION;
   const savePlan = p => store.set('plan', p);
   window.refundAd = () => { const w = wallet(); const p = plan(); if (p.ads > 0) { p.ads--; savePlan(p); } };
@@ -1541,7 +1541,14 @@
     if (!e.target.closest('[data-admapproveall]')) return;
     if (!S.apConfirm) { S.apConfirm = true; return render(); }
     S.apConfirm = false;
-    try { for (const r of CR.filter(c => c.status === 'pending')) await ops().approve(r); if (!window.CLOUD_ON) persistCR(); rebuildCondos(); toast('Aprovados'); } catch (x) { toast('Erro: ' + (x.message || x)); }
+    const list = CR.filter(c => c.status === 'pending');
+    toast('Aprovando ' + list.length + '…');
+    try {
+      if (window.CLOUD_ON && Cloud.adm.approveMany) await Cloud.adm.approveMany(list.map(c => c.id)); else for (const r of list) await ops().approve(r);
+      list.forEach(r => { r.status = 'approved'; });
+      if (!window.CLOUD_ON) persistCR();
+      rebuildCondos(); toast(list.length + ' aprovados');
+    } catch (x) { toast('Erro: ' + (x.message || x)); }
     render();
   });
 

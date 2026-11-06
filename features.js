@@ -690,7 +690,7 @@
     const fresh = p.month === monthKey();
     return { tier: p.tier === 'anual' && p.until > Date.now() ? 'anual' : 'free', until: p.until || 0, month: monthKey(), ads: fresh ? (p.ads | 0) : 0, boosts: fresh ? (p.boosts | 0) : 0 };
   }
-  const APP_VERSION = '2026-11-05.36';
+  const APP_VERSION = '2026-11-05.37';
   window.APP_VERSION = APP_VERSION;
   const savePlan = p => store.set('plan', p);
   window.refundAd = () => { const w = wallet(); const p = plan(); if (p.ads > 0) { p.ads--; savePlan(p); } };
@@ -1356,9 +1356,9 @@
     if (S.impBusy) return;
     S.impBusy = true; S.impMsg = 'Começando…'; render();
     const me = (window.Cloud && Cloud.uid) || null, pts = tilePoints(-23.5228, -46.1883, 20, 6);
-    let done = 0, found = 0, added = 0, fails = 0, last = 0, useNom = false, ovFail = 0;
+    let done = 0, found = 0, added = 0, fails = 0, last = 0, useNom = false, ovFail = 0, lastErr = '';
     const seen = new Set(), pending = [];
-    const upd = force => { const n = Date.now(); if (!force && n - last < 1500) return; last = n; S.impMsg = `Buscando… ${done}/${pts.length} áreas • ${found} no mapa • ${added} novos em análise` + (fails ? ` • ${fails} área(s) sem resposta` : ''); render(); };
+    const upd = force => { const n = Date.now(); if (!force && n - last < 1500) return; last = n; S.impMsg = `Buscando… ${done}/${pts.length} áreas • ${found} no mapa • ${added} novos em análise` + (fails ? ` • ${fails} área(s) com erro` : '') + (lastErr ? ` • Erro: ${lastErr}` : ''); render(); };
     async function one(pt) {
       try {
         let list;
@@ -1369,19 +1369,19 @@
           if (seen.has(x.osm)) return; seen.add(x.osm); found++;
           if (!core(x.name).length) return;
           if (CR.concat(add).some(c => c.status !== 'rejected' && subsetName(c.name, x.name) && (!hasGeo(c) || haversine(c, x) < 0.6))) return;
-          add.push({ id: 'c-osm-' + x.osm, name: x.name.trim(), endereco: x.end || 'Endereço a confirmar', cep: x.cep ? fmtCep(x.cep) : '', bairro: x.bairro || 'Não informado',
-            cidade: x.cidade || 'Mogi das Cruzes', lat: x.lat, lng: x.lng, status: 'pending', createdBy: me, ts: Date.now() });
+          add.push({ id: 'c-osm-' + x.osm, name: x.name.trim(), endereco: (x.end && x.end.length > 4) ? x.end : 'Endereço a confirmar', cep: x.cep ? fmtCep(x.cep) : '', bairro: (x.bairro && x.bairro.length > 1) ? x.bairro : 'Não informado',
+            cidade: (x.cidade && x.cidade.length > 1) ? x.cidade : 'Mogi das Cruzes', lat: x.lat, lng: x.lng, status: 'pending', createdBy: me, ts: Date.now() });
         });
         if (add.length) {
           if (window.CLOUD_ON) await Cloud.adm.importCondos(add); else { add.forEach(r => CR.push(r)); persistCR(); rebuildCondos(); }
           added += add.length;
         }
-      } catch (e) { fails++; }
+      } catch (e) { fails++; lastErr = (e && (e.code || e.message)) ? String(e.code || '') + ' ' + String(e.message || '').slice(0, 90) : String(e); }
       done++; upd(false);
     }
     try {
       const q = pts.slice(); await Promise.all([0].map(async () => { while (q.length && !(fails >= 6 && !found)) await one(q.shift()); }));
-      S.impMsg = `Pronto: ${found} no mapa • ${added} novos em análise (role a lista abaixo) • ${found - added} já existiam ou eram repetidos.` + (fails ? ` ${fails} de ${pts.length} áreas não responderam; toque de novo para completar.` : '');
+      S.impMsg = `Pronto: ${found} no mapa • ${added} novos em análise (role a lista abaixo) • ${found - added} já existiam ou eram repetidos.` + (fails ? ` ${fails} de ${pts.length} áreas com erro (${lastErr}); toque de novo para completar.` : '');
     } catch (e) { S.impMsg = 'Não consegui consultar o mapa agora. Tente de novo em alguns minutos.'; }
     S.impBusy = false; render();
   }

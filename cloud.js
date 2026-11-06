@@ -293,11 +293,18 @@
     rejectPlan: uid2 => db.collection('planRequests').doc(uid2).delete(),
     approve: async rec => { await db.collection('condos').doc(rec.id).update({ status: 'approved' }); },
     importCondos: async list => {
+      const doc = r => clean({ name: r.name, endereco: r.endereco, cep: r.cep, lat: r.lat, lng: r.lng, bairro: r.bairro, cidade: r.cidade, status: 'pending', createdBy: uid, ts: r.ts });
+      let ok = 0, lastE;
       for (let i = 0; i < list.length; i += 400) {
-        const b = db.batch();
-        list.slice(i, i + 400).forEach(r => b.set(db.collection('condos').doc(r.id), clean({ name: r.name, endereco: r.endereco, cep: r.cep, lat: r.lat, lng: r.lng, bairro: r.bairro, cidade: r.cidade, status: 'pending', createdBy: uid, ts: r.ts })));
-        await b.commit();
+        const part = list.slice(i, i + 400), b = db.batch();
+        part.forEach(r => b.set(db.collection('condos').doc(r.id), doc(r)));
+        try { await b.commit(); ok += part.length; }
+        catch (e) {   // um cadastro inválido derruba o lote todo: grava um a um e pula só o problemático
+          lastE = e;
+          for (const r of part) { try { await db.collection('condos').doc(r.id).set(doc(r)); ok++; } catch (e2) { lastE = e2; } }
+        }
       }
+      if (!ok && lastE) throw lastE;
     },
     rename: async (rec, newName) => {
       const old = rec.name;

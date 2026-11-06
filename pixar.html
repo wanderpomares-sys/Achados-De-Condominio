@@ -753,7 +753,7 @@ function feed(){
  if(!l.length)out=`<div class="empty"><b>🔎</b>Nada por aqui ainda.<br>Tente outro filtro ou publique o primeiro anúncio!</div>`;
  return `<header class="hdr"><div class="brand"><img src="${LOGO}" alt="Achados"><b>Achados<small>de Condomínios</small></b></div><button class="pill" data-map="${esc(S.user.condo)}">📍 ${esc(S.user.cityShort||'Mogi')} • ${RAD()}km</button></header>
  <section class="top">
-  <div class="greet"><div>Olá, <b>${esc(S.user.name.split(' ')[0])}</b> 👋</div><span>${esc(short(S.user.condo))} • Apto ${esc(S.user.apt)}</span></div>
+  <div class="greet"><div>Olá, <b>${esc(S.user.name.split(' ')[0])}</b> 👋</div>${S.scope==='pred'?`<span>${esc(short(S.user.condo))}</span><em class="apt">Apto ${esc(S.user.apt)}</em>`:''}</div>
   <div class="search"><span>🔍</span><input id="q" value="${esc(S.q)}" placeholder="Buscar sofá, vaga, feirinha..." autocomplete="off"></div>
   <div class="lab">Onde procurar</div>
   <div class="scopes"><button class="${S.scope==='pred'?'on':''}" data-scope="pred">Meu Condomínio • ${countMy()}</button><button class="${S.scope==='viz'?'on':''}" data-scope="viz">Vizinhos ${RAD()}km • ${countViz()}</button></div>

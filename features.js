@@ -202,6 +202,15 @@
       cidade: t['addr:city'] || '', lat: la, lng: ln, osm: (e.type || 'n')[0] + e.id,
       area: !!(t.place || t.boundary || (t.landuse === 'residential' && !/gated|apartments/.test(t.residential || '')) || t.admin_level) };
   };
+
+  /* destaque do condomínio do morador na capa: claro => fundo escuro/letra clara; escuro => fundo claro/letra escura */
+  (function () {
+    const st = document.createElement('style');
+    st.textContent = '.greet span{display:inline-block;align-self:flex-start;margin-top:8px;padding:8px 14px;border-radius:12px;font-size:15px;font-weight:700;line-height:1.25;background:#0F2E6B;color:#FFFFFF;box-shadow:0 2px 8px rgba(15,46,107,.25)}' +
+      '.greet span::before{content:"🏢 "}' + '.greet .apt{font-style:normal;font-size:13px;color:var(--gray);margin-top:4px}' +
+      'html[data-theme=dark] .greet span{background:#E8F1FF;color:#0B1730;box-shadow:0 2px 10px rgba(34,211,238,.25)}';
+    document.head.appendChild(st);
+  })();
   const OSM_NAME = 'condom[ií]nio|residencial|edif[ií]cio|^res[. ]|^ed[. ]|residence|torre|village|villa[gl]|spazio|reserva|solar d|parque d';
   async function overpass(q) {
     const big = q.includes('around:20000'), mirrors = ['https://overpass-api.de/api/interpreter', 'https://overpass.kumi.systems/api/interpreter'];
@@ -718,7 +727,7 @@
     const fresh = p.month === monthKey();
     return { tier: p.tier === 'anual' && p.until > Date.now() ? 'anual' : 'free', until: p.until || 0, month: monthKey(), ads: fresh ? (p.ads | 0) : 0, boosts: fresh ? (p.boosts | 0) : 0 };
   }
-  const APP_VERSION = '2026-11-06.52';
+  const APP_VERSION = '2026-11-06.54';
   window.APP_VERSION = APP_VERSION;
   const savePlan = p => store.set('plan', p);
   window.refundAd = () => { const w = wallet(); const p = plan(); if (p.ads > 0) { p.ads--; savePlan(p); } };

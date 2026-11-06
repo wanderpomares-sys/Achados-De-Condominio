@@ -692,7 +692,7 @@
     const fresh = p.month === monthKey();
     return { tier: p.tier === 'anual' && p.until > Date.now() ? 'anual' : 'free', until: p.until || 0, month: monthKey(), ads: fresh ? (p.ads | 0) : 0, boosts: fresh ? (p.boosts | 0) : 0 };
   }
-  const APP_VERSION = '2026-11-05.48';
+  const APP_VERSION = '2026-11-05.49';
   window.APP_VERSION = APP_VERSION;
   const savePlan = p => store.set('plan', p);
   window.refundAd = () => { const w = wallet(); const p = plan(); if (p.ads > 0) { p.ads--; savePlan(p); } };
@@ -1325,7 +1325,9 @@
       <label style="display:flex;gap:10px;align-items:center;font-size:14px"><input type="checkbox" id="imp-strict" style="width:22px;height:22px" ${impStrict() ? 'checked' : ''} ${S.impBusy ? 'disabled' : ''}>Só nomes que começam com "Condomínio"</label>
       <button class="ghost" data-admimport ${S.impBusy ? 'disabled' : ''}>${S.impBusy ? 'Buscando…' : 'Importar condomínios da região'}</button>
       ${S.impMsg ? `<small>${esc(S.impMsg)}</small>` : ''}
-      <div style="border-top:1px solid var(--border,#D6E0EE);padding-top:10px;margin-top:4px"><b>Importar lista (arquivo da Receita Federal)</b><small>Escolha o arquivo .csv gerado pelo script (nome;endereco;bairro;cep;cidade). Os condomínios entram em análise, com localização no mapa.</small>
+      <div style="border-top:1px solid var(--border,#D6E0EE);padding-top:10px;margin-top:4px"><b>Lista da Receita Federal (automática)</b><small>Usa a cidade escrita no campo acima. A lista é atualizada todo mês, sem você fazer nada.</small>
+      <button class="ghost" data-admrf ${S.csvBusy ? 'disabled' : ''}>Importar condomínios da Receita (${esc(impCity())})</button>
+      <small>Ou escolha você mesmo um arquivo gerado pelo script:</small><small>Escolha o arquivo .csv gerado pelo script (nome;endereco;bairro;cep;cidade). Os condomínios entram em análise, com localização no mapa.</small>
       <label class="ghost" style="display:flex;align-items:center;justify-content:center;height:46px;border:1px solid var(--border,#D6E0EE);border-radius:12px;font-weight:700;margin-top:6px;${S.csvBusy ? 'opacity:.5' : ''}">${S.csvBusy ? 'Importando…' : 'Escolher arquivo .csv'}<input type="file" id="imp-csv" accept=".csv,text/csv,text/plain" style="display:none" ${S.csvBusy ? 'disabled' : ''}></label>
       ${S.csvMsg ? `<small>${esc(S.csvMsg)}</small>` : ''}</div>
       ${allImp ? `<button class="${S.rmAll ? 'no' : 'no'}" style="${S.rmAll ? '' : 'opacity:.85'}" data-admrmall>${S.rmAll ? `Confirmar: recusar TODOS os ${allImp} importados` : `Recusar TODOS os importados em análise (${allImp})`}</button>` : ''}
@@ -1391,7 +1393,7 @@
     S.csvBusy = true; S.csvMsg = 'Lendo o arquivo…'; render();
     let ok = 0, dup = 0, bad = 0, nogeo = 0, tot = 0, last = 0;
     try {
-      const rows = parseCsv(await file.text());
+      const rows = parseCsv(typeof file === 'string' ? file : await file.text());
       const head = rows.shift().map(h => norm(h)), ix = k => head.indexOf(k);
       const iN = ix('nome'), iE = ix('endereco'), iB = ix('bairro'), iC = ix('cep'), iCi = ix('cidade');
       if (iN < 0 || iE < 0) throw new Error('O arquivo precisa ter as colunas nome e endereco.');
@@ -1415,6 +1417,17 @@
     S.csvBusy = false; if (window.Cloud && Cloud.attachCondos) Cloud.attachCondos(); render();
   }
   document.addEventListener('change', e => { if (e.target && e.target.id === 'imp-csv' && e.target.files && e.target.files[0]) importCsv(e.target.files[0]); });
+  async function importRf() {
+    if (S.csvBusy) return;
+    const city = impCity(), slug2 = norm(city).replace(/ /g, '-');
+    S.csvBusy = true; S.csvMsg = 'Baixando a lista de ' + city + '…'; render();
+    try {
+      const r = await fetchT('data/condominios/' + slug2 + '.csv?v=' + Date.now(), null, 20000);
+      if (!r.ok) throw new Error('nf');
+      const t = await r.text();
+      S.csvBusy = false; return importCsv(t);
+    } catch (e) { S.csvMsg = 'Ainda não existe lista da Receita para "' + city + '". Peça a geração dela (leva uns 20 minutos).'; S.csvBusy = false; render(); }
+  }
   async function importOsm() {
     if (S.impBusy) return;
     S.impBusy = true; S.impMsg = 'Começando…'; render();
@@ -1467,6 +1480,7 @@
   document.addEventListener('input', e => { if (e.target && e.target.id === 'imp-city') S.impCity = e.target.value; });
   document.addEventListener('change', e => { if (e.target && e.target.id === 'imp-strict') { S.impStrict = e.target.checked; try { localStorage.setItem('impStrict', e.target.checked ? '1' : '0'); } catch (x) {} } });
   document.addEventListener('click', async e => {
+    if (e.target.closest('[data-admrf]')) return importRf();
     if (e.target.closest('[data-admimport]')) { const el = document.getElementById('imp-city'); if (el) S.impCity = el.value; return importOsm(); }
     if (e.target.closest('[data-admrmall]')) {
       if (!S.rmAll) { S.rmAll = true; return render(); }

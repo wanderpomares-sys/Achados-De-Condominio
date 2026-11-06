@@ -216,10 +216,30 @@
     throw last;
   }
   const nearbyOsm = (lat, lng, rad) => overpass(`[out:json][timeout:15];nwr["name"~"${OSM_NAME}",i](around:${rad || 250},${lat},${lng});out center tags 20;`);
+  // lista da Receita Federal por cidade (arquivo estático no site; carregado só quando alguém cadastra, uma vez por cidade)
+  const RF = {};
+  async function rfList(cidade) {
+    const k = norm(cidade || '').replace(/ /g, '-'); if (!k) return [];
+    if (RF[k]) return RF[k];
+    RF[k] = [];
+    try {
+      const r = await fetchT('data/condominios/' + k + '.csv', null, 15000); if (!r.ok) return RF[k];
+      const rows = parseCsv(await r.text()); const h = rows.shift().map(x => norm(x)), ix = n => h.indexOf(n);
+      RF[k] = rows.map(c => ({ name: c[ix('nome')] || '', end: c[ix('endereco')] || '', bairro: c[ix('bairro')] || '', cep: c[ix('cep')] || '', cidade: c[ix('cidade')] || cidade,
+        lat: parseFloat(c[ix('lat')]), lng: parseFloat(c[ix('lng')]), rf: true })).filter(x => x.name);
+      RF[k].forEach(x => { x.n = norm(x.name + ' ' + x.end + ' ' + x.bairro); if (!isFinite(x.lat)) { x.lat = null; x.lng = null; } });
+    } catch (e) {}
+    return RF[k];
+  }
+  const rfByCep = (list, cep, num) => {
+    const c = String(cep || '').replace(/\D/g, ''); if (c.length !== 8) return [];
+    return list.filter(x => String(x.cep).replace(/\D/g, '') === c).sort((a, b) => ((splitEnd(b.end).num === num) - (splitEnd(a.end).num === num))).slice(0, 5);
+  };
+  const rfByName = (list, q) => { const ws = norm(q).split(' ').filter(w => w.length > 1); if (!ws.length) return []; return list.filter(x => ws.every(w => x.n.includes(w))).slice(0, 8); };
   const sugHtml = () => {
     const g = S.reg || {}, here = g.here || [], l = g.sugs || [];
     if (here.length) return `<div class="bub here"><b>Este endereço já está cadastrado</b><p>Toque para usar o nome que já existe (assim todos os vizinhos ficam juntos):</p>${here.map(m => `<button data-usecondo="${esc(m.rec.name)}">Usar «${esc(m.rec.name)}»<small>${esc(m.rec.endereco || '')}${m.rec.bairro ? ' • ' + esc(m.rec.bairro) : ''}</small></button>`).join('')}</div>`;
-    if (l.length) return `<div class="bub"><b>${g.sugKind === 'name' ? 'Encontrado no mapa' : 'É este o seu condomínio?'}</b><p>Toque no nome certo e o resto é preenchido sozinho:</p>${l.map((s, i) => `<button data-geosug="${i}">${esc(s.name)}<small>${esc([s.end, s.bairro].filter(Boolean).join(' • ') || 'sem endereço no mapa')}</small></button>`).join('')}</div>`;
+    if (l.length) return `<div class="bub"><b>${g.sugKind === 'name' ? (l[0] && l[0].rf ? 'Condomínios da cidade' : 'Encontrado no mapa') : (l[0] && l[0].rf ? 'É um destes condomínios?' : 'É este o seu condomínio?')}</b><p>Toque no nome certo e o resto é preenchido sozinho:</p>${l.map((s, i) => `<button data-geosug="${i}">${esc(s.name)}<small>${esc([s.end, s.bairro].filter(Boolean).join(' • ') || 'sem endereço no mapa')}</small></button>`).join('')}</div>`;
     if (g.sugBusy) return `<div class="bub"><b>Procurando o nome do condomínio…</b><p>Só um instante.</p></div>`;
     if (g.sugMsg) return `<div class="bub"><b>${esc(g.sugMsg)}</b></div>`;
     return '';
@@ -231,6 +251,9 @@
     if (q.trim().length < 4) { if (S.reg.sugKind === 'name') S.reg.sugs = []; updSug(); return; }
     nameT = setTimeout(async () => {
       try {
+        const rf = rfByName(await rfList(S.reg.cidade), q);
+        if (S.reg.name !== q) return;
+        if (rf.length) { S.reg.sugs = rf; S.reg.sugKind = 'name'; S.reg.here = []; return updSug(); }
         const r = await fetchT('https://nominatim.openstreetmap.org/search?format=json&addressdetails=1&limit=6&countrycodes=br&q=' + encodeURIComponent(q + ', ' + (S.reg.cidade || '')), { headers: { 'Accept-Language': 'pt-BR' } }, 8000);
         const j = await r.json(); if (S.reg.name !== q) return;
         S.reg.sugs = j.map(fromNom).filter(Boolean); S.reg.sugKind = 'name'; S.reg.here = []; updSug();
@@ -251,6 +274,9 @@
       const same = () => snap === g.cep + '|' + g.num + '|' + g.street;
       const here = findMatches({ name: '', end: g.end, cidade: g.cidade, cep: g.cep, bairro: g.bairro, lat: g.lat, lng: g.lng }).filter(m => m.why === 'mesmo endereço');
       if (here.length) { g.here = here; g.sugBusy = false; return updSug(); }
+      const rfc = rfByCep(await rfList(g.cidade), g.cep, g.num);
+      if (!same()) return;
+      if (rfc.length) { g.sugBusy = false; g.sugs = rfc; g.sugKind = 'name'; updSug(); return; }
       const c = await geocode(g.end, g.bairro, g.cidade);
       if (!same()) return;
       if (c && isFinite(c.lat)) { g.lat = c.lat; g.lng = c.lng; }
@@ -692,7 +718,7 @@
     const fresh = p.month === monthKey();
     return { tier: p.tier === 'anual' && p.until > Date.now() ? 'anual' : 'free', until: p.until || 0, month: monthKey(), ads: fresh ? (p.ads | 0) : 0, boosts: fresh ? (p.boosts | 0) : 0 };
   }
-  const APP_VERSION = '2026-11-06.51';
+  const APP_VERSION = '2026-11-06.52';
   window.APP_VERSION = APP_VERSION;
   const savePlan = p => store.set('plan', p);
   window.refundAd = () => { const w = wallet(); const p = plan(); if (p.ads > 0) { p.ads--; savePlan(p); } };

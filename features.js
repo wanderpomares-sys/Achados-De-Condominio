@@ -443,6 +443,7 @@
   function adminSheet() {
     if (window.CLOUD_ON && !isAdmin()) {
       return `<div class="ov" data-admclose><div class="sheet adm" id="admsheet"><div class="handle"></div><button class="close" data-admclose>✕</button><div class="form"><h2>Administrador</h2>
+        <div class="cardc"><small>Diagnóstico: ${Cloud.admErr ? 'erro ' + esc(Cloud.admErr) : 'conta ' + (Cloud.email ? 'Google (' + esc(Cloud.email) + ')' : 'anônima')} • código ${esc(String(Cloud.uid || '').slice(0, 8))}…</small></div>
         ${Cloud.email ? `<div class="cardc"><b>Conectado como ${esc(Cloud.email)}</b><small>Esta conta ainda não é administradora. No Firestore, crie o documento <b>admins/${esc(Cloud.uid)}</b> (pode ser vazio) e volte aqui.</small><button class="ghost" data-copyuid style="margin-top:8px">Copiar código</button>${Cloud.admErr ? `<small style="display:block;margin-top:6px;color:#B42318">Não consegui ler o documento (${esc(Cloud.admErr)}). Republique as regras do Firestore.</small>` : ''}<button class="cta52" data-admrecheck style="margin-top:8px">Já criei o documento: verificar</button></div>` : `<div class="cardc"><small>Entre com a sua conta Google para aprovar, renomear e mesclar condomínios.</small></div>`}
         <button class="cta52" data-adminlogin>Entrar com Google</button></div></div></div>`;
     }
@@ -690,7 +691,7 @@
     const fresh = p.month === monthKey();
     return { tier: p.tier === 'anual' && p.until > Date.now() ? 'anual' : 'free', until: p.until || 0, month: monthKey(), ads: fresh ? (p.ads | 0) : 0, boosts: fresh ? (p.boosts | 0) : 0 };
   }
-  const APP_VERSION = '2026-11-05.38';
+  const APP_VERSION = '2026-11-05.39';
   window.APP_VERSION = APP_VERSION;
   const savePlan = p => store.set('plan', p);
   window.refundAd = () => { const w = wallet(); const p = plan(); if (p.ads > 0) { p.ads--; savePlan(p); } };

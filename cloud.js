@@ -347,6 +347,7 @@
       try { await db.enablePersistence({ synchronizeTabs: true }); } catch (e) { console.warn('[Cloud] persistência', e && e.code); }
       await firebase.auth().signInAnonymously();
       uid = firebase.auth().currentUser.uid; C.uid = uid;
+      try { const cu0 = firebase.auth().currentUser; C.email = (cu0.providerData.find(x => x.email) || {}).email || cu0.email || null; C.anon = cu0.isAnonymous; } catch (x) {}
       C.ready = true;
       listenPosts();                       // começa a buscar os anúncios já, sem esperar o resto
       await checkAdmin();

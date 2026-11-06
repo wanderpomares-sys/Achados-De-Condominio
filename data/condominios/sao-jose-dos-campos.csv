@@ -1,10 +1,8 @@
 nome;endereco;bairro;cep;cidade;lat;lng
 Condominio'vitor Hugo';Rua Frutal, 154;Bosque dos Eucalipto;12233360;São José dos Campos;-23.282251;-45.832676
-Condomínio - Centro Comercial West Place;Rua Nelson Cesar de Oliveira, 134;Jdim das Industrias;12240220;São José dos Campos;-23.226526;-45.920114
 Condomínio Absoluto;Avenida Papa Joao Paulo I, 421;Jardim Satelite;12231710;São José dos Campos;-23.228378;-45.879231
 Condomínio Alecrim;Rua Hugo Jose de Freitas, 51;Residencial Bosque dos Ipes;12236895;São José dos Campos;-23.282251;-45.832676
 Condomínio Allure Vila Ema Patriani;Rua Padre Rodolfo, 285;Vila Ema;12243080;São José dos Campos;-23.204696;-45.902579
-Condomínio Alpha Office Place;Rua Itajai, 80;Condominio Centro Empresarial Taquari;12246858;São José dos Campos;-23.211291;-45.900668
 Condomínio Alphacenter;Rua Paulo Setubal, 147;Jardim Sao Dimas;12245460;São José dos Campos;-23.193067;-45.889756
 Condomínio Amadeus;Avenida Dr Eduardo Cury, 350;Jardim Esplanada;12242001;São José dos Campos;-23.200902;-45.909228
 Condomínio Apollo Center;Avenida Nove de Julho, 765;Jardim Apolo I;12243000;São José dos Campos;-23.199591;-45.895119
@@ -39,7 +37,6 @@ Condomínio Bem Viver;Avenida Presidente Tancredo Neves, 1251;Jardim Americano;1
 Condomínio Best Center Sao Jose dos Campos - Urbanova A;Avenida Ironman Victor Garrido, 460;Loteamento Urbanova Ii;12244392;São José dos Campos;-23.20218;-45.947494
 Condomínio Best Center Sao Jose dos Campos - Urbanova B;Avenida Ironman Victor Garrido, 450;Loteamento Urbanova Ii;12244392;São José dos Campos;-23.202554;-45.945516
 Condomínio Blessed Aquarius Exceptional;Rua Jurema Vieira Medrado, 40;Parque Residencial Aquarius;12246180;São José dos Campos;-23.220409;-45.905753
-Condomínio Blue Offices;Rua Madre Paula de Sao Jose, 414;Vila Ema;12243010;São José dos Campos;-23.20287;-45.900163
 Condomínio Blue View;Rua Doutor Alberto Miguel Roman, 101;Vila Industrial;12220320;São José dos Campos;-23.282251;-45.832676
 Condomínio Boluveard Marseille;Rua Heitor de Andrade, 1032;Jardim das Industria;12241000;São José dos Campos;-23.227513;-45.923303
 Condomínio Bom Retiro I;Estrada do Mato Dentro, 2400;Jardim Nova Michigan;12225470;São José dos Campos;-23.282251;-45.832676
@@ -63,10 +60,6 @@ Condomínio Casa Alta;Rua dos Advogados, 50;Jdm Valparaiba;12221810;São José d
 Condomínio Celebrity Club House;Rua Barbara Knippelberg Loureiro, 203;Vila Ema;12243040;São José dos Campos;-23.207799;-45.901292
 Condomínio Center Nove;Avenida Nove de Julho, 95;Vila Ady Anna;12243000;São José dos Campos;-23.198655;-45.894808
 Condomínio Central Park Aquarius;Avenida do Tubarao, 331;Parque Residencial Aquarius;12246140;São José dos Campos;-23.216948;-45.907118
-Condomínio Centro Comercial Aquarius Center;Avenida Cassiano Ricardo, 521;Parque Residencial Aquarius;12246870;São José dos Campos;-23.217633;-45.90986
-Condomínio Centro Comercial Ironman;Avenida Ironman Victor Garrido, 460;Loteamento Urbanova Ii;12244392;São José dos Campos;-23.20218;-45.947494
-Condomínio Centro Empresarial Aquarius By Helbor;Rua Doutor Orlando Feirabend Filho, 230;Parque Residencial Aquarius;12246190;São José dos Campos;-23.22091;-45.905089
-Condomínio Centro Empresarial New Port;Rua Jose Alves dos Santos, 281;Floradas Sao Jose;12230300;São José dos Campos;-23.218959;-45.889725
 Condomínio Centro Medico Ruy Doria;Praca Mauricio Cury, 120;Centro;12210000;São José dos Campos;-23.185261;-45.88388
 Condomínio Centro Medico Sao Joao;Rua Benedito da Silva Ramos, 23;Jardim Esplanada Ii;12242650;São José dos Campos;-23.187618;-45.961262
 Condomínio Chale das Tulipas;Rua Crato, 885;Parque Industrial;12235580;São José dos Campos;-23.236127;-45.907884
@@ -77,7 +70,6 @@ Condomínio Citta Di Roma;Rua Roma, 673;Jardim Augusta;12216510;São José dos C
 Condomínio Citta de Fiori;Rua Coronel Joao Cursino, 223;Vila Adyana;12243680;São José dos Campos;-23.202783;-45.895537
 Condomínio Codnominio Residencial Cajuru I;Estrada Dom Jose Antonio do Couto, 5571;Cajuru;12226789;São José dos Campos;-23.282251;-45.832676
 Condomínio Colinas de Santa Julia;Rua Maria Pompilio dos Santos, 100;Jardim Santa Julia;12228326;São José dos Campos;-23.233905;-45.820598
-Condomínio Columbia Offices;Rua Serimbura, 320;Jardim Maringa;12243360;São José dos Campos;-23.205568;-45.897832
 Condomínio Comissao de Representantes do Condominio Edificio Villa Sorrento;Rua Teopompo de Vasconcelos, 555;Vila Nove de Julho;12243830;São José dos Campos;-23.196805;-45.894324
 Condomínio Complexo Hoteleiro Mondial Vale;Avenida Dr. Jorge Zarur, 81;Jardim Apolo;12243081;São José dos Campos;-23.207202;-45.903234
 Condomínio Condominium Arti Belle;Avenida Jorge Zarur, 431;Vila Ema;12243081;São José dos Campos;-23.209071;-45.902053
@@ -109,8 +101,6 @@ Condomínio Conjunto Vila Novo Mundo;Rua Kenkiti Shimomoto, 401;Vila Zizinha;122
 Condomínio Conlife Center;Avenida Salmao, 325;Parque Residencial Aquarius;12246260;São José dos Campos;-23.219072;-45.907572
 Condomínio Contemporaneo Vila Ema;Avenida Heitor Villa Lobos, 555;Vila Ema;12243260;São José dos Campos;-23.205974;-45.900119
 Condomínio Corporate Tower;Avenida Sao Joao, 2405;Jardim das Colinas;12242000;São José dos Campos;-23.209238;-45.908318
-Condomínio Cosmopolitan Business;Rua Jurema Vieira Medrado, 65;Parque Residencial Aquarius;12246180;São José dos Campos;-23.220181;-45.905824
-Condomínio Costa Norte Offices Royal Park;Rua Carlos Maria Auricchio, 70;Condominio Royal Park;12246876;São José dos Campos;-23.224867;-45.909892
 Condomínio Diva;Rua Claudino Pinto, 251;Centro;12210010;São José dos Campos;-23.188391;-45.883737
 Condomínio Domani;Avenida Joao Batista Soares de Queiroz Junior, 800;Jd das Industrias;12240000;São José dos Campos;-23.22652;-45.919041
 Condomínio Duda Diniz;Rua Leopoldo Fernandes Neves, 180;Chacaras Pousada do Vale;12226755;São José dos Campos;-23.282251;-45.832676
@@ -143,7 +133,6 @@ Condomínio Edificio Angela;Alameda Armando Couto Magalhaes Rodrigues, 28;Vila B
 Condomínio Edificio Antares;Rua Mj Francisco de P Elias, 405;Vila Adyanna;12245320;São José dos Campos;-23.282251;-45.832676
 Condomínio Edificio Apolo;Avenida Nove de Julho, 1027;Vila Adyana;12243001;São José dos Campos;-23.195868;-45.893817
 Condomínio Edificio Aquarius;Praca Romao Gomes, 98;Vila Adiana;12243790;São José dos Campos;-23.282251;-45.832676
-Condomínio Edificio Aquarius Business Center;Avenida Alfredo Ignacio Nogueira Penido, 305;Parque Residencial Aquarius;12246000;São José dos Campos;-23.215304;-45.907136
 Condomínio Edificio Aquarius Tower;Rua das Baleias, 95;Jardim Aquarius;12246290;São José dos Campos;-23.282251;-45.832676
 Condomínio Edificio Arabesque;Avenida Republica do Libano, 230;Jd Oswaldo Cruz;12216590;São José dos Campos;-23.282251;-45.832676
 Condomínio Edificio Araguari;Rua Helena David Neme, 222;Jd S Dimas;12245310;São José dos Campos;-23.282251;-45.832676
@@ -153,9 +142,7 @@ Condomínio Edificio Arraial do Cabo;Rua Icatu, 1840;Pq Industrial;12230010;São
 Condomínio Edificio Asturias;Rua das Lobelias, 131;Jd das Industrias;12240460;São José dos Campos;-23.228918;-45.91388
 Condomínio Edificio Atenas;Rua Estefania do Nascimento, 28;Jd das Industrias;12240470;São José dos Campos;-23.230714;-45.914254
 Condomínio Edificio Atlanta;Rua Armando de Oliveira Cobra, 99;Jd.das Industrias;12246002;São José dos Campos;-23.212236;-45.90809
-Condomínio Edificio Atlantico Empresarial;Rua Juiz David Barrilli, 304;Pque.res.aquarius;12246200;São José dos Campos;-23.221369;-45.906984
 Condomínio Edificio Atlantico Sul;Rua dos Alecrins, 617;Jd. das Industrias;12240030;São José dos Campos;-23.228305;-45.920043
-Condomínio Edificio Atrium Offices;Rua Francisca Maria de Jesus, 347;Floradas de Sao Jose;12230083;São José dos Campos;-23.219313;-45.887037
 Condomínio Edificio Aurea;Avenida Dr. Nelson D Avila, 1178;Centro;12245031;São José dos Campos;-23.196427;-45.886303
 Condomínio Edificio Auriflama;Rua Auriflama, 58;Jardim Satelite;12230330;São José dos Campos;-23.228408;-45.890046
 Condomínio Edificio Avenida;Avenida Joao B S de Queiroz Jr, 2296;Jd das Industrias;12240000;São José dos Campos;-23.22652;-45.919041
@@ -186,7 +173,6 @@ Condomínio Edificio Boulevard Flamboyant Home & Club;Avenida Jose Pinto da Cunh
 Condomínio Edificio Brisas do Vale;Rua Castor, 25;Jardim Satelite;12230320;São José dos Campos;-23.222534;-45.896131
 Condomínio Edificio Bristol;Rua dos Atuns, 54;Pq. Resid. Aquarius;12246320;São José dos Campos;-23.282251;-45.832676
 Condomínio Edificio Buriti;Rua 21 de Abril, 740;Vila Progresso;12215290;São José dos Campos;-23.181083;-45.870545
-Condomínio Edificio Business Center;Rua Sebastiao Humel, 171;Centro;12210900;São José dos Campos;-23.180604;-45.882922
 Condomínio Edificio Cabo Canaveral;Avenida Heitor Villa Lobos, 1850;Vila Guaianazes;12245280;São José dos Campos;-23.204183;-45.898179
 Condomínio Edificio Cabo Frio;Rua Dr. Orlando Feiraben Filho;Pque.res.aquarius;12246190;São José dos Campos;-23.22091;-45.905089
 Condomínio Edificio Cabo Kennedy;Rua Pedro de Toledo, 48;Vl Jacy;12243740;São José dos Campos;-23.199429;-45.893186
@@ -211,7 +197,6 @@ Condomínio Edificio Casa Nova;Rua Itacarambi, 711;Jardim Ismenia;12220700;São 
 Condomínio Edificio Casabella;Rua Sto Agostinho, 149;Vila Adyana;12243800;São José dos Campos;-23.282251;-45.832676
 Condomínio Edificio Castelabbate;Rua Eng. Prudente Meireles de Moraes, 813;Vila Ady-anna;12245011;São José dos Campos;-23.200113;-45.892629
 Condomínio Edificio Cecilia Meireles Ii;Rua Juazeiro, 262;Jardim Vale do Sol;12238080;São José dos Campos;-23.256637;-45.912225
-Condomínio Edificio Centro Empresarial Tech Tower;Avenida Dr Nelson D Avila, 389;Centro;12245031;São José dos Campos;-23.18948;-45.885461
 Condomínio Edificio Cerejeira;Rua Vinte e Nove de Junho, 30;Jardim das Cerejeiras;12225520;São José dos Campos;-23.189643;-45.78895
 Condomínio Edificio Cerejeiras;Praca Mikado, 114;Jardim Oriente;12236160;São José dos Campos;-23.242912;-45.896486
 Condomínio Edificio Chalet das Ambrosias;Rua das Ambrosias, 88;Jd das Industrias;12240080;São José dos Campos;-23.231329;-45.918315
@@ -236,7 +221,6 @@ Condomínio Edificio Conjunto Sport Ville Resid Sul;Rua Polar, 40;Jd Satelite;12
 Condomínio Edificio Copacabana I;Avenida Barbacena, 716;Jardim Ismenia;12221000;São José dos Campos;-23.17191;-45.844296
 Condomínio Edificio Copacabana Ii;Rua dos Engenheiros, 160;Jardim Valparaiba;12221780;São José dos Campos;-23.172128;-45.836781
 Condomínio Edificio Cosmos;Rua Cosmos, 103;Jardim Paraiso;12235440;São José dos Campos;-23.236814;-45.900241
-Condomínio Edificio Costa Rica Empresarial;Rua Jurema Vieira Medrado, 88;Parque Residencial Aquarius;12246180;São José dos Campos;-23.220659;-45.905671
 Condomínio Edificio Cote D'or;Avenida Sao Jose, 626;Centro;12209010;São José dos Campos;-23.182372;-45.88786
 Condomínio Edificio Cote Verte;Rua Manoel Borba Gato, 330;Jd Esplanada;12242270;São José dos Campos;-23.282251;-45.832676
 Condomínio Edificio Cristina;Rua Madre Paula de Sao Jose, 125;Vila Ema;12243010;São José dos Campos;-23.20287;-45.900163
@@ -449,7 +433,6 @@ Condomínio Edificio Nancy;Rua Rodolfo Scarpa, 244;Jardim Rodolfo;12224838;São 
 Condomínio Edificio Napoli;Rua Manoel Bosco Ribeiro, 1017;Jd das Industrias;12241070;São José dos Campos;-23.228747;-45.924556
 Condomínio Edificio Nassau;Rua Nassau, 185;Vila Rubi;12245591;São José dos Campos;-23.203391;-45.892663
 Condomínio Edificio Natura Park;Rua Jose Polli, 191;Vila Industrial;12220440;São José dos Campos;-23.176733;-45.860278
-Condomínio Edificio Net Offices;Rua Benedito da Silva Ramos, 20;Jd Europa;12242650;São José dos Campos;-23.187618;-45.961262
 Condomínio Edificio Nettuno;Avenida Nove de Julho, 34;Vl Adyana;12243901;São José dos Campos;-23.195868;-45.893817
 Condomínio Edificio New Life Tower;Rua Celio Jose dos Santos, 72;Jardim Residencial Aquarius;12246023;São José dos Campos;-23.221561;-45.909195
 Condomínio Edificio New Worker - Jardim Aquarius -;Rua Armando de Oliveira Cobra, 50;Parque Residencial Aquarius;12246002;São José dos Campos;-23.212236;-45.90809
@@ -459,7 +442,6 @@ Condomínio Edificio Nisia;Rua Sorocaba, 45;Jardim Alvorada;12240600;São José 
 Condomínio Edificio Nova America;Rua Prof Jose Antonio Coutinho Condino, 553;Jardim America;12235360;São José dos Campos;-23.233187;-45.89981
 Condomínio Edificio Nove de Julho;Avenida Nove de Julho, 579;Vl Adyana;12243900;São José dos Campos;-23.195868;-45.893817
 Condomínio Edificio Novo Horizonte;Rua Joao Guimaraes Rosa, 24;Eugenio de Melo;12247030;São José dos Campos;-23.284751;-45.830431
-Condomínio Edificio Olimpus Offices;Rua Jose Augusto dos Santos, 108;Floradas de Sao Jose;12230085;São José dos Campos;-23.220569;-45.886564
 Condomínio Edificio Opusville;Rua Juiz David Barrilli, 276;Pque. Res. Aquarius;12246200;São José dos Campos;-23.221369;-45.906984
 Condomínio Edificio Oriental;Rua Paissandu, 302;Jardim America;12235020;São José dos Campos;-23.183965;-45.874109
 Condomínio Edificio Orla do Sol;Rua Lilazes, 90;Jardim das Industrias;12240110;São José dos Campos;-23.230886;-45.918683
@@ -718,7 +700,6 @@ Condomínio Edificios Bahamas Bermudas e Martinica;Avenida Rui Barbosa, 688;Vila
 Condomínio Edificios Mediterraneo e Adriatico;Rua Prudente Meir de Moraes, 768;Vl Ady Anna;12243750;São José dos Campos;-23.198184;-45.894017
 Condomínio Edifico Rubi;Rua Ribeirao Preto, 235;Jardim Alvorada;12240630;São José dos Campos;-23.224149;-45.912994
 Condomínio Edilicio Vivendas Apollo;Rua Paulo Edison Blair, 65;Jardim Apollo Ii;12243100;São José dos Campos;-23.205773;-45.904389
-Condomínio Eldorado Empresarial;Avenida Dois;Colonia Paraiso;12230000;São José dos Campos;-23.222917;-45.893025
 Condomínio Enjoy Aquarius;Rua Jesus Garcia, 51;Condominio Royal Park;12246875;São José dos Campos;-23.282251;-45.832676
 Condomínio Enterprise Suite Hotel;Avenida Dep Benedito Matarazzo, 9009;Jd Osvaldo Cruz;12216550;São José dos Campos;-23.195905;-45.899051
 Condomínio Epic Vila Ema Patriani;Rua Jose Francisco Alves, 151;Vila Ema;12243060;São José dos Campos;-23.205872;-45.902531
@@ -732,7 +713,6 @@ Condomínio Estilo Oriente;Rua Hondo, 211;Jardim Oriente;12236100;São José dos
 Condomínio Evidence;Rua Major Francisco de Paula Elias, 449;Vila Adyana;12245320;São José dos Campos;-23.282251;-45.832676
 Condomínio Eviva Residencial;Avenida Presidente Tancredo Neves, 1331;Jardim Pararangaba;12225011;São José dos Campos;-23.173012;-45.812377
 Condomínio Exclusive Vista Linda;Rua Jose Oliveira da Cruz, 35;Loteamento Residencial Vista Linda;12220051;São José dos Campos;-23.282251;-45.832676
-Condomínio Executive Offices;Rua Paraibuna, 811;Jardim Sao Dimas;12245020;São José dos Campos;-23.199246;-45.886447
 Condomínio Fantasia Vale Services;Rua Armando Couto de Magalhaes Rodrigues, 417;Vila Betania;12245483;São José dos Campos;-23.207487;-45.889165
 Condomínio Fazenda Jaguariuna;Estrada Municipal do Jaguariuna, 2200;Condominio Residencial Colinas do Paratehy;12244109;São José dos Campos;-23.282251;-45.832676
 Condomínio Felicita;Rua Porto Novo, 100;Jardim Satelite;12230060;São José dos Campos;-23.223378;-45.884753
@@ -750,8 +730,6 @@ Condomínio Green Hills Residence;Rua Maria Pompilio dos Santos, 53;Jardim Santa
 Condomínio Green View;Rua Emilio Marelo, 501;Jardim das Industrias;12241200;São José dos Campos;-23.234212;-45.925155
 Condomínio Guadalupe;Avenida Guadalupe, 58;Jardim America;12235000;São José dos Campos;-23.231734;-45.901555
 Condomínio Helbor Belvedere;Avenida Sao Joao, 2400;Jardim das Colinas;12242000;São José dos Campos;-23.207052;-45.907086
-Condomínio Helbor Downtown Offices & Mall;Rua Euclides Miragaia, 145;Centro;12245820;São José dos Campos;-23.192087;-45.892077
-Condomínio Helbor Offices Jardim das Colinas;Avenida Sao Joao, 2375;Jardim das Colinas;12242000;São José dos Campos;-23.208619;-45.908175
 Condomínio Helbor Paesaggio Jardim das Colinas;Avenida Sao Joao, 2380;Jardim das Colinas;12242000;São José dos Campos;-23.207052;-45.907086
 Condomínio Hope Residence;Rua Palmares, 476;Parque Industrial;12235620;São José dos Campos;-23.233576;-45.90471
 Condomínio Horizontes;Rua Almirante Barroso, 262;Jardim Imperial;12234020;São José dos Campos;-23.276434;-45.901899
@@ -790,7 +768,6 @@ Condomínio Manhattan;Rua Eng. Prudente Meireles de Moraes, 706;Vila Jacy;122437
 Condomínio Maranata Parque Industrial;Rua Icatu, 170;Conjunto Residencial Trinta e Um de Marco;12237010;São José dos Campos;-23.253131;-45.917125
 Condomínio Maranata Vila Industrial;Rua Doutor Jamil Cury, 100;Vila Industrial;12220281;São José dos Campos;-23.282251;-45.832676
 Condomínio Marinella Exclusive Residence;Avenida Nove de Julho, 141;Jardim Apolo I;12243000;São José dos Campos;-23.20067;-45.895751
-Condomínio Metropolitan Offices;Avenida Dr Joao Guilhermino, 261;Centro;12210131;São José dos Campos;-23.187646;-45.884816
 Condomínio Millenium Residence;Rua Professor Roberval Froes, 340;Jardim Esplanada;12242460;São José dos Campos;-23.201071;-45.907935
 Condomínio Millenium Sao Jose;Rua Sandro Bezerra da Silva, 111;Parque Residencial Flamboyant;12227778;São José dos Campos;-23.187618;-45.961262
 Condomínio Mirai Vila Ema Patriani;Rua Ipiranga, 125;Jardim Fatima;12243400;São José dos Campos;-23.207907;-45.896465
@@ -809,9 +786,7 @@ Condomínio Neo Vila Adyana;Rua Major Francisco de Paula Elias, 355;Vila Adyana;
 Condomínio New Center Vista Verde;Alameda Harvey C. Weeks, 14;Cidade Vista Verde;12223830;São José dos Campos;-23.179471;-45.828717
 Condomínio New Park;Avenida Fortaleza, 850;Parque Industrial;12235560;São José dos Campos;-23.23233;-45.906474
 Condomínio Nova Ema;Rua Madre Paula de S Jose, 327;Vl Ema;12243010;São José dos Campos;-23.20287;-45.900163
-Condomínio Office Tower;Avenida Joao Guilhermino, 474;Centro;12210131;São José dos Campos;-23.190382;-45.88823
 Condomínio Opus 570;Avenida Sao Joao, 570;Vila Higienopolis;12242840;São José dos Campos;-23.199255;-45.900387
-Condomínio Oregon Business Center;Rua Doutor Tito Roberto Liberato, 83;Parque Residencial Aquarius;12246150;São José dos Campos;-23.217501;-45.9053
 Condomínio Ouro Preto;Avenida Rui Barbosa, 1450;Santana;12211005;São José dos Campos;-23.160262;-45.897113
 Condomínio Pablo Picasso;Rua Aimbire, 150;Jardim das Industrias;12240171;São José dos Campos;-23.227042;-45.919185
 Condomínio Palazzi Di Venezia;Alameda Jose Alves de Siqueira Filho, 12;Vila Betania;12245492;São José dos Campos;-23.207298;-45.891263
@@ -848,7 +823,6 @@ Condomínio Pouso Alegre;Rua Francisca Maria de Souza, 169;Vila Cristina;1221146
 Condomínio Premiere;Rua Benedito Osvaldo Lecques, 300;Parque Residencial Aquarius;12246021;São José dos Campos;-23.222726;-45.908763
 Condomínio Premium Bela Vista;Avenida Doutor Mario Galvao, 252;Jardim Bela Vista;12209004;São José dos Campos;-23.177819;-45.885002
 Condomínio Prime House Aquarius;Rua Professor Duilio Panziera, 120;Altos do Esplanada;12246015;São José dos Campos;-23.282251;-45.832676
-Condomínio Prime Offices Cassiano Ricardo;Rua Benedito Osvaldo Lecques, 51;Parque Residencial Aquarius;12246021;São José dos Campos;-23.222726;-45.908763
 Condomínio Privilege Vila Ema;Rua Santa Madalena, 36;Vila Ema;12243300;São José dos Campos;-23.203604;-45.897009
 Condomínio Profissional Center;Avenida Dr Adhemar de Barros, 566;Vila Ady Anna;12245011;São José dos Campos;-23.200113;-45.892629
 Condomínio Quadria Aquarius;Rua Benedita Simoes de Almeida, 114;Condominio Royal Park;12246871;São José dos Campos;-23.223863;-45.910286
@@ -1184,22 +1158,15 @@ Condomínio Rossi Jardinatti Pracas Residenciais;Rua Mauricio Cardoso, 55;Jardim
 Condomínio Rossi Montes;Rua Doutor Jamil Cury, 20;Vila Industrial;12220281;São José dos Campos;-23.17944;-45.88694
 Condomínio Royal;Rua Benedita Simoes de Almeida, 54;Royal Park;12246871;São José dos Campos;-23.17944;-45.88694
 Condomínio S/c Visconde de Cayuru;Avenida Madre Tereza, 449;Centro;12227788;São José dos Campos;-23.17944;-45.88694
-Condomínio Sala Shopping;Rua Vilaca, 374;Centro;12210000;São José dos Campos;-23.17944;-45.88694
 Condomínio Salvador Dali Condominium;Rua Aimbire, 120;Jardim das Industrias Vale do Paraiba;12240171;São José dos Campos;-23.17944;-45.88694
 Condomínio Sao Joao Center;Avenida Sao Joao, 660;Jardim Nova America;12242000;São José dos Campos;-23.17944;-45.88694
 Condomínio Sao Joao Del Rei;Avenida Rui Barbosa, 1490;Santana;12211005;São José dos Campos;-23.17944;-45.88694
 Condomínio Sao Jose Prime;Avenida Nove de Julho, 685;Jardim Apolo;12243000;São José dos Campos;-23.17944;-45.88694
 Condomínio Serra Negra;Rua Jorge Barbosa Moreira, 361;Vila Ema;12243070;São José dos Campos;-23.17944;-45.88694
 Condomínio Serra Verde;Rua Heitor de Andrade, 1321;Jd das Industria;12241000;São José dos Campos;-23.17944;-45.88694
-Condomínio Shopping Center Esplanada;Avenida Sao Joao, 614;Jardim Esplanada;12242000;São José dos Campos;-23.17944;-45.88694
-Condomínio Shopping Center Sao Jose;Rua Rubiao Junior, 84;Centro;12210903;São José dos Campos;-23.17944;-45.88694
-Condomínio Shopping Colinas;Avenida Sao Joao, 2200;Jardim das Colinas;12242000;São José dos Campos;-23.17944;-45.88694
-Condomínio Side Vale Office;Rua Republica do Iraque, 40;Jardim Oswaldo Cruz;12216540;São José dos Campos;-23.17944;-45.88694
 Condomínio Siena;Avenida Dr. Jorge Zarur, 330;Vila Ema;12242010;São José dos Campos;-23.17944;-45.88694
 Condomínio Signature Royal Park;Rua Carlos Maria Auricchio, 146;Condominio Royal Park;12246876;São José dos Campos;-23.17944;-45.88694
-Condomínio Sky Espaco Empresarial;Rua Euclides Miragaia, 700;Centro;12245820;São José dos Campos;-23.17944;-45.88694
 Condomínio Sky House Club Residence;Avenida Cassiano Ricardo, 101;Parque Residencial Aquarius;12246870;São José dos Campos;-23.17944;-45.88694
-Condomínio Sky Ii Espaco Empresarial;Rua Euclides Miragaia, 660;Centro;12245820;São José dos Campos;-23.17944;-45.88694
 Condomínio Smart Residence;Rua Itajai, 161;Condominio Centro Empresarial Taquari;12246858;São José dos Campos;-23.17944;-45.88694
 Condomínio Sol Nascente;Rua Ana Auxiliadora Machado de Almeida, 204;Residencial Interlagos;12229073;São José dos Campos;-23.17944;-45.88694
 Condomínio Solar Aroeira;Rua Winston Churchill, 612;Jdim das Industrias;12240690;São José dos Campos;-23.17944;-45.88694
@@ -1240,7 +1207,6 @@ Condomínio Splendor Garden;Rua Emilio Marelo, 100;Jardim das Industrias;1224120
 Condomínio Sport Tower;Rua Jose Pulga, 91;Parque Residencial Aquarius;12246022;São José dos Campos;-23.17944;-45.88694
 Condomínio Sun Tower;Avenida Salmao, 663;Parque Residencial Aquarius;12246260;São José dos Campos;-23.17944;-45.88694
 Condomínio Sun Vale Edificio;Rua Abare, 775;Jardim Vale do Sol;12238230;São José dos Campos;-23.17944;-45.88694
-Condomínio Supremo Aquarius Offices;Rua das Arraias, 50;Parque Residencial Aquarius;12246330;São José dos Campos;-23.17944;-45.88694
 Condomínio Tangara Residencial;Avenida Livio Veneziani, 319;Chacaras Sao Jose;12227570;São José dos Campos;-23.17944;-45.88694
 Condomínio Tatiana;Rua Raimundo Barbosa Nogueira, 271;Palmeiras Sao Jose;12237828;São José dos Campos;-23.17944;-45.88694
 Condomínio Teleminio Parque das Americas;Rua Patativa, 200;Vila Tatetuba;12220140;São José dos Campos;-23.17944;-45.88694
@@ -1252,7 +1218,6 @@ Condomínio Terra Nova Sao Jose dos Campos I;Estrada Velha Rio Sao Paulo, 4850;D
 Condomínio Terracos Jardim das Colinas;Rua Laurent Martins, 529;Jardim Esplanada;12242431;São José dos Campos;-23.17944;-45.88694
 Condomínio Terrasse Premier;Avenida Cidade Jardim, 3000;Bosque dos Eucaliptos;12233002;São José dos Campos;-23.17944;-45.88694
 Condomínio Terrazo Di Dante;Rua Jose Cobra, 251;Parque Industrial;12237821;São José dos Campos;-23.17944;-45.88694
-Condomínio The One Office Tower;Avenida Cassiano Ricardo, 601;Parque Residencial Aquarius;12246870;São José dos Campos;-23.17944;-45.88694
 Condomínio The View Club Residence;Avenida Cassiano Ricardo, 1411;Serimbura;12240540;São José dos Campos;-23.17944;-45.88694
 Condomínio Tivoli;Avenida Tivoli, 207;Vila Zelfa;12245230;São José dos Campos;-23.17944;-45.88694
 Condomínio Tons do Parque;Avenida Fortaleza, 1315;Parque Industrial;12235560;São José dos Campos;-23.17944;-45.88694
@@ -1261,7 +1226,6 @@ Condomínio Topvision;Rua Barbara K Loureiro, 53;Vila Ema;12243040;São José do
 Condomínio Torres do Parque;Rua Jose Cobra, 360;Parque Industrial;12237000;São José dos Campos;-23.17944;-45.88694
 Condomínio Unique Sao Jose;Rua Sandro Bezerra da Silva, 81;Parque Residencial Flamboyant;12227778;São José dos Campos;-23.17944;-45.88694
 Condomínio Urbanova Premium;Avenida Shishima Hifumi, 2700;Urbanova;12244000;São José dos Campos;-23.17944;-45.88694
-Condomínio Vale Sul Shopping;Avenida Andromeda, 227;Jardim Satelite;12230002;São José dos Campos;-23.17944;-45.88694
 Condomínio Varanda Quinta das Flores;Avenida Cidade Jardim, 3200;Bq dos Eucaliptos;12233002;São José dos Campos;-23.17944;-45.88694
 Condomínio Varandas Dumont;Rua Nivaldo Verissimo Santos, 128;Residencial Bosque dos Ipes;12236892;São José dos Campos;-23.17944;-45.88694
 Condomínio Varandas Santos Dumont;Rua Eng Prudente M Moraes, 965;Vila Adyanna;12243000;São José dos Campos;-23.17944;-45.88694
@@ -1318,7 +1282,6 @@ Condomínio das Palmeiras;Rua Raimundo Barbosa Nogueira, 200;Palmeiras de Sao Jo
 Condomínio das Violetas;Rua Pedro Turci, 331;Jd Satelite;12230000;São José dos Campos;-23.17944;-45.88694
 Condomínio de Constr do Edif Spacevalley Flat Service;Avenida Dr Nelson D'avila, 1875;Centro;12227788;São José dos Campos;-23.17944;-45.88694
 Condomínio do Centro Medico Nelson D'avila;Avenida Nove de Julho, 520;Jardim Apolo I;12243001;São José dos Campos;-23.17944;-45.88694
-Condomínio do Conjunto Comercial Mantura Rumeno Neme;Avenida Francisco Jose Longo, 532;Centro;12235000;São José dos Campos;-23.17944;-45.88694
 Condomínio do Conjunto Residencial Parque das Americas;Rua Patativa, 200;Vl Tatetuba;12220140;São José dos Campos;-23.17944;-45.88694
 Condomínio do Conjunto Residencial Santa Isabel;Avenida Papa Joao Paulo I, 501;Jardim Satelite;12231710;São José dos Campos;-23.17944;-45.88694
 Condomínio do Edificio Adara;Rua Araraquara, 86;Jd das Industrias;12240270;São José dos Campos;-23.17944;-45.88694

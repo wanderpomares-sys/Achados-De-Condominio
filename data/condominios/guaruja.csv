@@ -1,7 +1,6 @@
 nome;endereco;bairro;cep;cidade;lat;lng
 Condominio;Rua Jose Ignacio Correa, 299;Loteamento Joao Batista;11443540;Guarujá;-23.99306;-46.25639
 Condomínio Abc Guaruja;Avenida Miguel Stefano, 5035;Enseada;11440534;Guarujá;-23.99306;-46.25639
-Condomínio Acm Prime Offices;Rua Buenos Aires, 611;Pitangueiras;11410010;Guarujá;-23.99306;-46.25639
 Condomínio Albatroz;Rua Jose Alves de Oliveira, 90;Jardim Las Palmas;11420445;Guarujá;-23.99306;-46.25639
 Condomínio Areias do Mar Casado - Praia de Pernambuco;Avenida Marjory da Silva Prado, 700;Praia de Pernambuco;11440000;Guarujá;-23.99306;-46.25639
 Condomínio Astral Ii;Rua Joao Ruiz, 243;Jardim Las Palmas;11420350;Guarujá;-23.99306;-46.25639
@@ -14,12 +13,7 @@ Condomínio Boulevard La Plage;Rua Mario Ribeiro, 623;Centro;11410192;Guarujá;-
 Condomínio Brisas da Enseada;Rua Eduardo Risk, 58;Bal. Cid. Atlantica;11441140;Guarujá;-23.99306;-46.25639
 Condomínio Campomarino;Rua Chile, 857;Jardim Praiano;11441070;Guarujá;-23.99306;-46.25639
 Condomínio Capitania Varam;Rua Mario Ribeiro, 886;Centro;11410192;Guarujá;-23.99306;-46.25639
-Condomínio Ceab - Centro Empresarial Adhemar de Barros;Avenida Ademar de Barros, 1347;Jardim Helena Maria;11430003;Guarujá;-23.99306;-46.25639
-Condomínio Centro Comercial Santo Antonio;Alameda Margaridas, 616;Jardim Primavera;11432240;Guarujá;-23.99306;-46.25639
-Condomínio Centro Empresarial Comendador Antonio Vardasca;Rua Comendador Vicente Gagliano, 31;Centro;11410200;Guarujá;-23.99306;-46.25639
-Condomínio Centro Empresarial Guaruja - Ceg;Avenida Adhemar de Barros, 210;Vila Santo Antonio;11430000;Guarujá;-23.99306;-46.25639
 Condomínio Centro Medico e Odontologico de Vicente Carvalho;Rua Rio Grande do Sul, 43;Vila Alice;11450130;Guarujá;-23.99306;-46.25639
-Condomínio Chris Shopping;Rua Amazonas, 72;Vicente de Carvalho;11450210;Guarujá;-23.99306;-46.25639
 Condomínio Coluna Ii;Rua Estrela Rodrigues, 460;Jardim Las Palmas;11420360;Guarujá;-23.99306;-46.25639
 Condomínio Cond.edificio Pombeva;Avenida Mal.deodoro da Fonseca, 404;Centro;11444610;Guarujá;-23.99306;-46.25639
 Condomínio Condom Edificio Beau Soleil;Avenida Leomil, 1213;Pitangueiras;11410162;Guarujá;-23.99306;-46.25639
@@ -27,7 +21,6 @@ Condomínio Condomnio Edificio Antar;Rua Antonio de Souza, 171;Centro;11410170;G
 Condomínio Condomnio Residencial Azaleia;Avenida Hum;Jardim Primavera;11432320;Guarujá;-23.99306;-46.25639
 Condomínio Conj Garagem Quebra Mar;Rua Taubate, 34;Centro;11410390;Guarujá;-23.99306;-46.25639
 Condomínio Conjunto Amazonas;Rua Montenegro, 587;Vila Maia;11410040;Guarujá;-23.99306;-46.25639
-Condomínio Conjunto Comercial Rilocenter;Rua Mario Ribeiro, 755;Centro;11410191;Guarujá;-23.99306;-46.25639
 Condomínio Conjunto Guaruja I;Rua Campos Salles, 505;Enseada;11440060;Guarujá;-23.99306;-46.25639
 Condomínio Conjunto Habitacional Enseada Iii- Quadra 11;Rua Francisco da Conceicao Joao Guarda, 60;Jardim Virginia;11442745;Guarujá;-23.99306;-46.25639
 Condomínio Conjunto Habitacional Santo Amaro I;Rua Sem Denominacao, 185;Conceicaozinha;11472000;Guarujá;-23.99306;-46.25639
@@ -387,8 +380,6 @@ Condomínio Edificio Coluna Iii;Rua Jorge Chaddad, 265;Jardim Las Palmas;1142023
 Condomínio Edificio Coluna Iv;Rua Leao Marinho, 62;Jardin Las Palmas;11420280;Guarujá;-23.99306;-46.25639
 Condomínio Edificio Comendador Lelio Ferrari;Avenida Venezuela, 528;Enseada;11441240;Guarujá;-23.99306;-46.25639
 Condomínio Edificio Comendador Lui Rubio;Rua Luiz Del Nero, 190;Vl.luiz Antonio;11420300;Guarujá;-23.99306;-46.25639
-Condomínio Edificio Comercial Gray Tower;Rua Ciro Alves, 126;Jardim Tres Marias;11440340;Guarujá;-23.99306;-46.25639
-Condomínio Edificio Comercial Leticia;Rua Vereador Antonio Gonzales, 67;Vila Santo Antonio;11432510;Guarujá;-23.99306;-46.25639
 Condomínio Edificio Comexim;Rua Almirante Tamandare, 76;Enseada;11440470;Guarujá;-23.99306;-46.25639
 Condomínio Edificio Conceicao;Avenida Adhemar de Barros, 1485;Jd Santa Maria;11430002;Guarujá;-23.99306;-46.25639
 Condomínio Edificio Concordia;Avenida Dois, 20;Jd Tres Marias;11441100;Guarujá;-23.99306;-46.25639
@@ -789,7 +780,6 @@ Condomínio Edificio Leblon;Rua Mario Ribeiro, 1579;Centro;11410192;Guarujá;-23
 Condomínio Edificio Lester Primo;Rua D Vitoria Yunes Estefno, 201;Enseada;11440000;Guarujá;-23.99306;-46.25639
 Condomínio Edificio Liberty;Avenida General Monteiro de Barros, 134;Vila Luis Antonio;11420010;Guarujá;-23.99306;-46.25639
 Condomínio Edificio Lico;Rua Julio Prestes de Albuquerque, 175;Bal. C.atlantica;11441400;Guarujá;-23.99306;-46.25639
-Condomínio Edificio Lico Office;Rua Montenegro, 169;Vila Maia;11410040;Guarujá;-23.99306;-46.25639
 Condomínio Edificio Lico Prime;Rua Petropolis, 65;Barra Funda;11410300;Guarujá;-23.99306;-46.25639
 Condomínio Edificio Lico Prime 2;Rua Mario Ribeiro, 1460;Centro;11410194;Guarujá;-23.99306;-46.25639
 Condomínio Edificio Lico Prime 3;Rua Rio de Janeiro, 161;Pitangueiras;11410310;Guarujá;-23.99306;-46.25639
@@ -1692,7 +1682,6 @@ Condomínio Edificio Yucatan;Rua Mario Ribeiro, 1340;Pitangueiras;11410192;Guaru
 Condomínio Edificio Zambia;Avenida General Rondon, 960;Asturias;11420000;Guarujá;-23.99306;-46.25639
 Condomínio Edificio Zapata;Rua Mexico, 156;Barra Funda;11410350;Guarujá;-23.99306;-46.25639
 Condomínio Edificio Ze Geraldo;Rua Joao Ruiz, 584;Jardim Las Palmas;11420350;Guarujá;-23.99306;-46.25639
-Condomínio Edificio Zenithal Shopping Center;Avenida Ademar de Barros, 2131;Helena Maria;11430003;Guarujá;-23.99306;-46.25639
 Condomínio Edificio das Palmeiras;Rua Sao Paulo, 213;Enseada;11443380;Guarujá;-23.99306;-46.25639
 Condomínio Edificio das Tartarugas;Rua Santo Amaro, 586;Vila Juliao;11443580;Guarujá;-23.99306;-46.25639
 Condomínio Edificio de Garagens Tenda's Guaruja;Avenida General Rondon, 427;Vila Alzira;11420000;Guarujá;-23.99306;-46.25639
@@ -1715,7 +1704,6 @@ Condomínio Enseada Ii;Rua Otaviano da Silva Moreira Joao Guarda, 53;Jardim Virg
 Condomínio Enseada Iv;Rua Cento e Dois Joao Guarda Cantagalo, 480;Jardim Virginia;11442715;Guarujá;-23.99306;-46.25639
 Condomínio Enseada Ocean Front;Rua C, 58;Enseada;11440000;Guarujá;-23.99306;-46.25639
 Condomínio Enseada dos Corais;Rua Abdala Daige, 395;Bal. Cid. Atlantica;11442370;Guarujá;-23.99306;-46.25639
-Condomínio Espaco Comercial Washington;Rua Washington, 140;Pitangueiras;11410150;Guarujá;-23.99306;-46.25639
 Condomínio Estrela Alfa Bloco I e Ii;Rua Estrela Rodrigues, 316;Jardim Las Palmas;11420360;Guarujá;-23.99306;-46.25639
 Condomínio Forest Hill;Rua Sorocaba, 80;Barra Funda;11410440;Guarujá;-23.99306;-46.25639
 Condomínio Garage Asturias;Rua Mario Ribeiro, 1395;Centro;11410192;Guarujá;-23.99306;-46.25639
@@ -1857,10 +1845,6 @@ Condomínio Rossi Reserva Enseada;Avenida Miguel Stefano, 5374;Loteamento Joao B
 Condomínio San Sebastian;Rua Iracema, 491;Enseada;11443400;Guarujá;-23.99306;-46.25639
 Condomínio Saveiros;Rua Emilio Portela, 65;Jd Las Palmas;11420070;Guarujá;-23.99306;-46.25639
 Condomínio Shoping Center Florida;Avenida Dom Pedro I, 1405;Enseada;11440001;Guarujá;-23.99306;-46.25639
-Condomínio Shopping Center Santos Dumont;Via Santos Dumont, 247;Vicente de Carvalho;11460001;Guarujá;-23.99306;-46.25639
-Condomínio Shopping Center de Guaruja;Rua Santo Amaro, 134;Centro;11410904;Guarujá;-23.99306;-46.25639
-Condomínio Shopping Le Soleil;Estrada do Pernambuco, 229;Lot. J.b. Juliao;11443530;Guarujá;-23.99306;-46.25639
-Condomínio Shopping Trevo;Via Presidente Tancredo Neves, 210;Cachoeira;11435000;Guarujá;-23.99306;-46.25639
 Condomínio Sitio Grande;Avenida dos Caicaras, 1443;Jardim Las Palmas;11420440;Guarujá;-23.99306;-46.25639
 Condomínio Sol de Espanha;Rua Dois de Junho, 155;Vila Julia;11440100;Guarujá;-23.99306;-46.25639
 Condomínio Sol de Espanha Edificio Granada;Avenida Santa Maria, 604;Jd Santa Maria;11440110;Guarujá;-23.99306;-46.25639

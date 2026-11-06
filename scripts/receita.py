@@ -1,125 +1,65 @@
 #!/usr/bin/env python3
 """
-Gera a lista de condomínios de uma cidade a partir dos dados abertos de CNPJ da Receita Federal.
+Gera data/condominios/<cidade>.csv (nome;endereco;bairro;cep;cidade) a partir dos dados abertos de CNPJ
+da Receita Federal (espelho em Parquet no Hugging Face, lido direto pela rede com DuckDB: só baixa o necessário).
 
-Como usar (no computador):
-  1. Baixe, do portal de Dados Abertos do CNPJ da Receita Federal, os arquivos
-     Estabelecimentos0.zip ... Estabelecimentos9.zip, Empresas0.zip ... Empresas9.zip e Municipios.zip
-     e coloque todos numa mesma pasta (NÃO precisa descompactar).
-  2. Rode:   python condominios_receita.py PASTA "Mogi das Cruzes"
-     (ou "São José dos Campos"; pode passar mais de uma cidade separadas por ;)
-     Filtros opcionais (podem ser combinados):
-        --bairro "Centro;Vila Oliveira"     só esses bairros
-        --cep 08710;08730                   só CEPs que começam assim
-  3. Sai o arquivo  condominios_<cidade>.csv  (nome;endereco;bairro;cep;cidade) para importar no painel do app.
-
-Só usa a biblioteca padrão do Python 3.
+Uso:  python3 scripts/receita.py "Mogi das Cruzes;São José dos Campos"
+Variáveis opcionais:  CNPJ_DATASET (padrão andrelacerda23/cnpj-dados-receita-brasil-2026-10)
+                      CNPJ_ROOT (para teste local: pasta com estabelecimentos/ empresas/ municipios/)
 """
-import csv, datetime, glob, io, os, re, sys, tempfile, unicodedata, urllib.request, zipfile
+import csv, os, re, sys, unicodedata
+import duckdb
 
-CNAE = '8112500'      # condomínios prediais (fallback: 8111700 serviços combinados não entra)
-ATIVA = '02'
-
-
-BASES = ['https://arquivos.receitafederal.gov.br/dados/cnpj/dados_abertos_cnpj/', 'https://dadosabertos.rfb.gov.br/CNPJ/dados_abertos_cnpj/']
-BASE = BASES[0]
-
-def mes_disponivel():
-    global BASE
-    d = datetime.date.today().replace(day=1)
-    for _ in range(3):
-        m = d.strftime('%Y-%m')
-        for b in BASES:
-            try:
-                req = urllib.request.Request(b + m + '/Municipios.zip', headers={'User-Agent': 'Mozilla/5.0', 'Range': 'bytes=0-0'})
-                urllib.request.urlopen(req, timeout=20)
-                BASE = b
-                return m
-            except Exception as e:
-                print('sem', b + m, type(e).__name__, str(e)[:80], flush=True)
-                if not getattr(mes_disponivel, 'dbg', 0):
-                    mes_disponivel.dbg = 1
-                    for u in (b, b + m + '/'):
-                        try:
-                            t = urllib.request.urlopen(urllib.request.Request(u, headers={'User-Agent': 'Mozilla/5.0'}), timeout=20).read(4000).decode('latin-1', 'replace')
-                            print('LISTAGEM', u, re.sub(r'\s+', ' ', t)[:1500], flush=True)
-                        except Exception as e2:
-                            print('LISTAGEM falhou', u, type(e2).__name__, str(e2)[:80], flush=True)
-        d = (d - datetime.timedelta(days=1)).replace(day=1)
-    sys.exit('Não achei pasta recente na Receita')
-
-def baixa(mes, nome, tmp):
-    dest = os.path.join(tmp, nome)
-    with urllib.request.urlopen(urllib.request.Request(BASE + mes + '/' + nome, headers={'User-Agent': 'Mozilla/5.0'}), timeout=120) as r, open(dest, 'wb') as f:
-        while True:
-            b = r.read(1 << 20)
-            if not b: break
-            f.write(b)
-    return dest
+DS = os.environ.get('CNPJ_DATASET', 'andrelacerda23/cnpj-dados-receita-brasil-2026-10')
+ROOT = os.environ.get('CNPJ_ROOT') or ('hf://datasets/' + DS)
+CNAE, ATIVA = '8112500', '02'
 
 def norm(s):
     s = unicodedata.normalize('NFD', s or '')
     return re.sub(r'[^a-z0-9 ]+', ' ', ''.join(c for c in s if unicodedata.category(c) != 'Mn').lower()).strip()
 
-def rows(zpath):
-    with zipfile.ZipFile(zpath) as z:
-        for name in z.namelist():
-            with z.open(name) as f:
-                for line in io.TextIOWrapper(f, encoding='latin-1', newline=''):
-                    yield next(csv.reader([line], delimiter=';', quotechar='"'))
-
 def titulo(s):
-    s = (s or '').strip().lower()
     peq = {'de', 'da', 'do', 'das', 'dos', 'e'}
-    return ' '.join(w if (i and w in peq) else w.capitalize() for i, w in enumerate(s.split()))
+    return ' '.join(w if (i and w in peq) else w.capitalize() for i, w in enumerate((s or '').strip().lower().split()))
 
 def main():
-    cidades_txt = sys.argv[1] if len(sys.argv) > 1 else 'Mogi das Cruzes'
-    cidades = [c.strip() for c in cidades_txt.split(';') if c.strip()]
+    cidades = [c.strip() for c in (sys.argv[1] if len(sys.argv) > 1 else 'Mogi das Cruzes').split(';') if c.strip()]
     ncid = {norm(c): c for c in cidades}
-    mes = mes_disponivel(); print('Mês da Receita:', mes)
-    tmp = tempfile.mkdtemp()
-    cod = {}
-    mz = baixa(mes, 'Municipios.zip', tmp)
-    for r in rows(mz):
-        if len(r) >= 2 and norm(r[1]) in ncid: cod[r[0]] = norm(r[1])
-    os.remove(mz)
-    if not cod: sys.exit('Nenhuma cidade encontrada em Municipios.zip')
-    print('Municípios:', cod)
-    est = {}
-    for i in range(10):
-        z = baixa(mes, 'Estabelecimentos%d.zip' % i, tmp); n = 0
-        for r in rows(z):
-            if len(r) < 21 or r[5] != ATIVA or r[20] not in cod or r[11] != CNAE: continue
-            rua = (r[13] + ' ' + r[14]).strip(); num = r[15].strip()
-            end = (titulo(rua) + (', ' + num if num and num.upper() != 'S/N' else '')).strip(', ')
-            est.setdefault(r[0], []).append({'cid': cod[r[20]], 'fantasia': r[4], 'endereco': end, 'bairro': titulo(r[17]), 'cep': r[18]})
-            n += 1
-        os.remove(z); print('Estabelecimentos%d' % i, n, flush=True)
-    nome = {}
-    for i in range(10):
-        z = baixa(mes, 'Empresas%d.zip' % i, tmp)
-        for r in rows(z):
-            if r and r[0] in est: nome[r[0]] = r[1]
-        os.remove(z); print('Empresas%d ok' % i, flush=True)
-    os.makedirs('data/condominios', exist_ok=True)
+    con = duckdb.connect()
+    print('Fonte:', ROOT, flush=True)
+    mun = con.execute("select codigo, descricao from read_parquet('%s/municipios/*.parquet')" % ROOT).fetchall()
+    cod = {c: norm(d) for c, d in mun if norm(d) in ncid}
+    if not cod: sys.exit('Nenhuma cidade encontrada em municipios. Confira o nome.')
+    print('Municípios:', cod, flush=True)
+    lista = ",".join("'%s'" % c for c in cod)
+    q = f"""
+      select e.cnpj_basico, e.nome_fantasia, e.tipo_logradouro, e.logradouro, e.numero, e.bairro, e.cep, e.municipio, em.razao_social
+      from read_parquet('{ROOT}/estabelecimentos/*.parquet') e
+      left join read_parquet('{ROOT}/empresas/*.parquet') em using (cnpj_basico)
+      where e.situacao_cadastral = '{ATIVA}' and e.cnae_fiscal_principal = '{CNAE}' and e.municipio in ({lista})
+    """
+    rows = con.execute(q).fetchall()
+    print('Estabelecimentos encontrados:', len(rows), flush=True)
     por = {c: [] for c in ncid}; vistos = set()
-    for base, lst in est.items():
-        for e in lst:
-            n = titulo(e['fantasia'] or nome.get(base, ''))
-            n = re.sub(r'^(Condominio|Cond\.?)\s', 'Condomínio ', n)
-            if len(n) < 4: continue
-            if not norm(n).startswith('condominio'): n = 'Condomínio ' + n
-            chave = (e['cid'], norm(n), norm(e['endereco']))
-            if chave in vistos: continue
-            vistos.add(chave)
-            por[e['cid']].append([n, e['endereco'], e['bairro'], re.sub(r'\D', '', e['cep']), ncid[e['cid']]])
-    for c, lst in por.items():
+    for base, fant, tl, lg, num, bairro, cep, mun_c, razao in rows:
+        cid = cod[mun_c]
+        n = titulo(fant or razao or '')
+        n = re.sub(r'^(Condominio|Cond\.?)\s', 'Condomínio ', n)
+        if len(n) < 4: continue
+        if not norm(n).startswith('condominio'): n = 'Condomínio ' + n
+        rua = ((tl or '') + ' ' + (lg or '')).strip(); nu = (num or '').strip()
+        end = (titulo(rua) + (', ' + nu if nu and nu.upper() != 'S/N' else '')).strip(', ')
+        chave = (cid, norm(n), norm(end))
+        if chave in vistos: continue
+        vistos.add(chave)
+        por[cid].append([n, end, titulo(bairro), re.sub(r'\D', '', cep or ''), ncid[cid]])
+    os.makedirs('data/condominios', exist_ok=True)
+    for cid, lst in por.items():
         lst.sort(key=lambda x: x[0])
-        arq = 'data/condominios/' + norm(c).replace(' ', '-') + '.csv'
+        arq = 'data/condominios/' + cid.replace(' ', '-') + '.csv'
         with open(arq, 'w', newline='', encoding='utf-8') as f:
             w = csv.writer(f, delimiter=';'); w.writerow(['nome', 'endereco', 'bairro', 'cep', 'cidade']); w.writerows(lst)
-        print(c, len(lst), '->', arq)
-    with open('data/condominios/ATUALIZADO.txt', 'w') as f: f.write(mes + '\n')
+        print(ncid[cid], len(lst), '->', arq, flush=True)
+    with open('data/condominios/ATUALIZADO.txt', 'w') as f: f.write(DS + '\n')
 
 main()

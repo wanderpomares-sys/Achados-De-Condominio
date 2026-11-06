@@ -352,7 +352,10 @@
       try { db.settings({ experimentalAutoDetectLongPolling: true, useFetchStreams: false, merge: true }); } catch (e) { console.warn('[Cloud] settings', e); }
       // guarda os anúncios no aparelho: abre na hora e não perde alterações se o app for fechado antes do servidor confirmar
       try { await db.enablePersistence({ synchronizeTabs: true }); } catch (e) { console.warn('[Cloud] persistência', e && e.code); }
-      await firebase.auth().signInAnonymously();
+      // espera o Firebase restaurar a sessão guardada (Google ou anônima) ANTES de criar um usuário anônimo novo;
+      // sem isso, cada abertura do app trocava o login do Google por um anônimo novo e o acesso de administrador sumia
+      const restored = await new Promise(res => { let done = false; const off = firebase.auth().onAuthStateChanged(u => { if (done) return; done = true; off(); res(u); }); setTimeout(() => { if (!done) { done = true; res(firebase.auth().currentUser); } }, 4000); });
+      if (!restored) await firebase.auth().signInAnonymously();
       uid = firebase.auth().currentUser.uid; C.uid = uid;
       try { const cu0 = firebase.auth().currentUser; C.email = (cu0.providerData.find(x => x.email) || {}).email || cu0.email || null; C.anon = cu0.isAnonymous; } catch (x) {}
       C.ready = true;

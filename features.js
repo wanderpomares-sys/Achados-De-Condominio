@@ -692,7 +692,7 @@
     const fresh = p.month === monthKey();
     return { tier: p.tier === 'anual' && p.until > Date.now() ? 'anual' : 'free', until: p.until || 0, month: monthKey(), ads: fresh ? (p.ads | 0) : 0, boosts: fresh ? (p.boosts | 0) : 0 };
   }
-  const APP_VERSION = '2026-11-05.43';
+  const APP_VERSION = '2026-11-05.44';
   window.APP_VERSION = APP_VERSION;
   const savePlan = p => store.set('plan', p);
   window.refundAd = () => { const w = wallet(); const p = plan(); if (p.ads > 0) { p.ads--; savePlan(p); } };
@@ -1311,14 +1311,16 @@
   /* ---------- importar condomínios do mapa (administrador) ---------- */
   const CENTRO = { lat: -23.5228, lng: -46.1883 };
   const isFar = c => c.status === 'pending' && /^c-osm-/.test(c.id) && hasGeo(c) && haversine(CENTRO, c) > 20;
-  const isOther = c => c.status === 'pending' && /^c-osm-/.test(c.id) && c.cidade && !/mogi/i.test(c.cidade);
+  const impCity = () => { let v = S.impCity; if (v == null) { try { v = localStorage.getItem('impCity'); } catch (x) {} } return String(v || 'Mogi das Cruzes').trim() || 'Mogi das Cruzes'; };
+  const isOther = c => c.status === 'pending' && /^c-osm-/.test(c.id) && c.cidade && norm(c.cidade) !== norm(impCity());
   const isNoAddr = c => c.status === 'pending' && /^c-osm-/.test(c.id) && c.endereco === 'Endereço a confirmar';
   function importHtml() {
     const pend = CR.filter(c => c.status === 'pending').length, noAddr = CR.filter(isNoAddr).length, other = CR.filter(isOther).length;
-    return `<h3>Carregar condomínios do mapa</h3><div class="cardc"><small>Busca no OpenStreetMap os condomínios dentro do município de Mogi das Cruzes (só ele; outras cidades ficam de fora). Eles entram <b>em análise</b> (sem duplicar os que já existem) e você aprova.</small>
+    return `<h3>Carregar condomínios do mapa</h3><div class="cardc"><small>Busca no OpenStreetMap os condomínios dentro do município escolhido (só ele; outras cidades ficam de fora). Eles entram <b>em análise</b> (sem duplicar os que já existem) e você aprova.</small>
+      <input type="text" id="imp-city" value="${esc(impCity())}" placeholder="Nome da cidade" autocomplete="off" ${S.impBusy ? 'disabled' : ''}>
       <button class="ghost" data-admimport ${S.impBusy ? 'disabled' : ''}>${S.impBusy ? 'Buscando…' : 'Importar condomínios da região'}</button>
       ${S.impMsg ? `<small>${esc(S.impMsg)}</small>` : ''}
-      ${other ? `<button class="${S.rmOther ? 'no' : 'ghost'}" data-admrmother>${S.rmOther ? `Confirmar: recusar os ${other}` : `Recusar importados de outras cidades (${other})`}</button>` : ''}
+      ${other ? `<button class="${S.rmOther ? 'no' : 'ghost'}" data-admrmother>${S.rmOther ? `Confirmar: recusar os ${other}` : `Recusar importados fora de ${esc(impCity())} (${other})`}</button>` : ''}
       ${noAddr ? `<button class="${S.rmConfirm ? 'no' : 'ghost'}" data-admrmnoaddr>${S.rmConfirm ? `Confirmar: recusar os ${noAddr}` : `Recusar importados sem endereço (${noAddr})`}</button>` : ''}
       ${pend ? `<button class="${S.apConfirm ? 'no' : 'ok'}" data-admapproveall>${S.apConfirm ? `Confirmar: aprovar os ${pend}` : `Aprovar todos em análise (${pend})`}</button>` : ''}</div>`;
   }
@@ -1363,7 +1365,20 @@
   async function importOsm() {
     if (S.impBusy) return;
     S.impBusy = true; S.impMsg = 'Começando…'; render();
-    const me = (window.Cloud && Cloud.uid) || null, pts = tilePoints(-23.5228, -46.1883, 20, 6);
+    const city = impCity(), cityQ = city.replace(/["\\]/g, ''), me = (window.Cloud && Cloud.uid) || null;
+    let pts = [];
+    try {
+      const gr = await fetchT('https://nominatim.openstreetmap.org/search?format=json&limit=1&countrycodes=br&q=' + encodeURIComponent(city + ', Brasil'), { headers: { 'Accept-Language': 'pt-BR' } }, 10000);
+      const g = (await gr.json())[0];
+      if (!g || !g.boundingbox) throw new Error('nf');
+      const [s0, n0, w0, e0] = g.boundingbox.map(Number), la0 = (s0 + n0) / 2;
+      let step = 6;
+      const mk = () => { const out = [], dLat = step / 111.2, dLng = step / (111.2 * Math.cos(la0 * Math.PI / 180)); for (let la = s0 + dLat / 2; la < n0 + dLat / 2; la += dLat) for (let ln = w0 + dLng / 2; ln < e0 + dLng / 2; ln += dLng) out.push([la, ln]); return out; };
+      pts = mk(); while (pts.length > 80 && step < 20) { step += 2; pts = mk(); }
+      const c0 = { lat: la0, lng: (w0 + e0) / 2 }; pts.sort((a, b) => haversine(c0, { lat: a[0], lng: a[1] }) - haversine(c0, { lat: b[0], lng: b[1] }));
+    } catch (e) { S.impBusy = false; S.impMsg = 'Não encontrei a cidade "' + city + '". Confira o nome (ex.: Mogi das Cruzes).'; return render(); }
+    try { localStorage.setItem('impCity', city); } catch (x) {}
+    const rad = Math.round(Math.max(3, Math.min(8, 6)) * 1000);
     let done = 0, found = 0, added = 0, fails = 0, last = 0, useNom = false, ovFail = 0, lastErr = '';
     const seen = new Set(), pending = [];
     const upd = force => { const n = Date.now(); if (!force && n - last < 1500) return; last = n; S.impMsg = `Buscando… ${done}/${pts.length} áreas • ${found} no mapa • ${added} novos em análise` + (fails ? ` • ${fails} área(s) com erro` : '') + (lastErr ? ` • Erro: ${lastErr}` : ''); render(); };
@@ -1371,16 +1386,16 @@
       try {
         let list;
         if (useNom) list = await nomTile(pt);
-        else { try { const A = `(around:6000,${pt[0].toFixed(5)},${pt[1].toFixed(5)})(area.m)`; list = await ovTile(`[out:json][timeout:20];area["boundary"="administrative"]["name"="Mogi das Cruzes"]->.m;(nwr["name"~"${OSM_NAME}",i]${A};nwr["building"="apartments"]["name"]${A};nwr["landuse"="residential"]["residential"~"apartments|gated"]["name"]${A};);out center tags 600;`); ovFail = 0; } catch (e) { if (++ovFail >= 2) useNom = true; list = await nomTile(pt); } }
+        else { try { const A = `(around:6000,${pt[0].toFixed(5)},${pt[1].toFixed(5)})(area.m)`; list = await ovTile(`[out:json][timeout:20];area["boundary"="administrative"]["name"="${cityQ}"]->.m;(nwr["name"~"${OSM_NAME}",i]${A};nwr["building"="apartments"]["name"]${A};nwr["landuse"="residential"]["residential"~"apartments|gated"]["name"]${A};);out center tags 600;`); ovFail = 0; } catch (e) { if (++ovFail >= 2) useNom = true; list = await nomTile(pt); } }
         const add = [];
         list.forEach(x => {
           if (seen.has(x.osm)) return; seen.add(x.osm); found++;
           if (!core(x.name).length) return;
           if (x.area) return;   // bairro, loteamento ou área: não é um condomínio
-          if (x.cidade && !/mogi/i.test(x.cidade)) return;   // só Mogi das Cruzes (Suzano, Arujá, Jacareí etc. ficam de fora); o Overpass já limita pelo contorno do município
+          if (x.cidade && norm(x.cidade) !== norm(city)) return;   // só a cidade escolhida; o Overpass já limita pelo contorno do município
           if (CR.concat(add).some(c => c.status !== 'rejected' && subsetName(c.name, x.name) && (!hasGeo(c) || haversine(c, x) < 0.6))) return;
           add.push({ id: 'c-osm-' + x.osm, name: x.name.trim(), endereco: (x.end && x.end.length > 4) ? x.end : 'Endereço a confirmar', cep: x.cep ? fmtCep(x.cep) : '', bairro: (x.bairro && x.bairro.length > 1) ? x.bairro : 'Não informado',
-            cidade: (x.cidade && x.cidade.length > 1) ? x.cidade : 'Mogi das Cruzes', lat: x.lat, lng: x.lng, status: 'pending', createdBy: me, ts: Date.now() });
+            cidade: (x.cidade && x.cidade.length > 1) ? x.cidade : city, lat: x.lat, lng: x.lng, status: 'pending', createdBy: me, ts: Date.now() });
         });
         if (add.length) {
           if (window.CLOUD_ON) await Cloud.adm.importCondos(add); else { add.forEach(r => CR.push(r)); persistCR(); rebuildCondos(); }
@@ -1395,8 +1410,9 @@
     } catch (e) { S.impMsg = 'Não consegui consultar o mapa agora. Tente de novo em alguns minutos.'; }
     S.impBusy = false; if (window.Cloud && Cloud.attachCondos) Cloud.attachCondos(); render();
   }
+  document.addEventListener('input', e => { if (e.target && e.target.id === 'imp-city') S.impCity = e.target.value; });
   document.addEventListener('click', async e => {
-    if (e.target.closest('[data-admimport]')) return importOsm();
+    if (e.target.closest('[data-admimport]')) { const el = document.getElementById('imp-city'); if (el) S.impCity = el.value; return importOsm(); }
     if (e.target.closest('[data-admrmother]')) {
       if (!S.rmOther) { S.rmOther = true; return render(); }
       S.rmOther = false;

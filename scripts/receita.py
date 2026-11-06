@@ -55,18 +55,41 @@ def apaga(f):
         except OSError: pass
 
 
+_cepcache = {}
+_nomfalhas = [0]
+
+def get_json(u, timeout=10):
+    return json.load(urllib.request.urlopen(urllib.request.Request(u, headers={'User-Agent': 'achados-de-condominios-bot (achadosdecondominio@gmail.com)'}), timeout=timeout))
+
+def por_cep(cep):
+    """BrasilAPI v2 (rápida): coordenada aproximada do CEP, reaproveitada entre condomínios do mesmo CEP."""
+    if cep in _cepcache: return _cepcache[cep]
+    g = None
+    try:
+        j = get_json('https://brasilapi.com.br/api/cep/v2/' + cep, 8)
+        c = (j.get('location') or {}).get('coordinates') or {}
+        if c.get('latitude') and c.get('longitude'): g = (round(float(c['latitude']), 6), round(float(c['longitude']), 6))
+    except Exception:
+        pass
+    time.sleep(0.15)
+    _cepcache[cep] = g
+    return g
+
 def geocodifica(end, bairro, cep, cidade):
-    """Nominatim (1 consulta por segundo): endereço completo, depois CEP."""
-    qs = [', '.join(x for x in (end, bairro, cidade, 'Brasil') if x)]
-    if cep and len(cep) == 8: qs.append('%s-%s, %s, Brasil' % (cep[:5], cep[5:], cidade))
-    for q in qs:
-        try:
-            u = 'https://nominatim.openstreetmap.org/search?format=json&limit=1&countrycodes=br&q=' + urllib.parse.quote(q)
-            j = json.load(urllib.request.urlopen(urllib.request.Request(u, headers={'User-Agent': 'achados-de-condominios-bot (achadosdecondominios@gmail.com)'}), timeout=30))
-            time.sleep(1.1)
-            if j: return round(float(j[0]['lat']), 6), round(float(j[0]['lon']), 6)
-        except Exception:
-            time.sleep(2)
+    """1) CEP (BrasilAPI); 2) Nominatim (1 consulta por segundo) com endereço completo — desligado após muitas falhas."""
+    if cep and len(cep) == 8:
+        g = por_cep(cep)
+        if g: return g
+    if _nomfalhas[0] >= 15: return None
+    q = ', '.join(x for x in (end, bairro, cidade, 'Brasil') if x)
+    try:
+        j = get_json('https://nominatim.openstreetmap.org/search?format=json&limit=1&countrycodes=br&q=' + urllib.parse.quote(q), 12)
+        time.sleep(1.1)
+        _nomfalhas[0] = 0
+        if j: return round(float(j[0]['lat']), 6), round(float(j[0]['lon']), 6)
+    except Exception:
+        _nomfalhas[0] += 1
+        time.sleep(2)
     return None
 
 def le_cache(arq):

@@ -21,23 +21,28 @@ CNAE = '8112500'      # condomínios prediais (fallback: 8111700 serviços combi
 ATIVA = '02'
 
 
-BASE = 'https://dadosabertos.rfb.gov.br/CNPJ/dados_abertos_cnpj/'
+BASES = ['https://arquivos.receitafederal.gov.br/dados/cnpj/dados_abertos_cnpj/', 'https://dadosabertos.rfb.gov.br/CNPJ/dados_abertos_cnpj/']
+BASE = BASES[0]
 
 def mes_disponivel():
+    global BASE
     d = datetime.date.today().replace(day=1)
     for _ in range(8):
         m = d.strftime('%Y-%m')
-        try:
-            req = urllib.request.Request(BASE + m + '/Municipios.zip', method='HEAD')
-            urllib.request.urlopen(req, timeout=60)
-            return m
-        except Exception:
-            d = (d - datetime.timedelta(days=1)).replace(day=1)
-    sys.exit('Não achei pasta recente na Receita (' + BASE + ')')
+        for b in BASES:
+            try:
+                req = urllib.request.Request(b + m + '/Municipios.zip', method='HEAD', headers={'User-Agent': 'Mozilla/5.0'})
+                urllib.request.urlopen(req, timeout=20)
+                BASE = b
+                return m
+            except Exception as e:
+                print('sem', b + m, type(e).__name__, str(e)[:80], flush=True)
+        d = (d - datetime.timedelta(days=1)).replace(day=1)
+    sys.exit('Não achei pasta recente na Receita')
 
 def baixa(mes, nome, tmp):
     dest = os.path.join(tmp, nome)
-    with urllib.request.urlopen(BASE + mes + '/' + nome, timeout=120) as r, open(dest, 'wb') as f:
+    with urllib.request.urlopen(urllib.request.Request(BASE + mes + '/' + nome, headers={'User-Agent': 'Mozilla/5.0'}), timeout=120) as r, open(dest, 'wb') as f:
         while True:
             b = r.read(1 << 20)
             if not b: break

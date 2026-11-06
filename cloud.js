@@ -308,6 +308,13 @@
       }
       if (!ok && lastE) throw lastE;
     },
+    removeMany: async ids => {
+      for (let i = 0; i < ids.length; i += 400) {
+        const b = db.batch();
+        ids.slice(i, i + 400).forEach(id => b.delete(db.collection('condos').doc(id)));
+        await b.commit();
+      }
+    },
     rename: async (rec, newName) => {
       const old = rec.name;
       await db.collection('condos').doc(rec.id).update({ name: newName });

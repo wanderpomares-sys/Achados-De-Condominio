@@ -199,7 +199,8 @@
     const t = e.tags || {}, la = e.lat != null ? e.lat : e.center && e.center.lat, ln = e.lon != null ? e.lon : e.center && e.center.lon;
     if (!t.name || la == null || ln == null) return null;
     return { name: t.name, end: [t['addr:street'], t['addr:housenumber']].filter(Boolean).join(', '), cep: t['addr:postcode'] || '', bairro: t['addr:suburb'] || t['addr:neighbourhood'] || '',
-      cidade: t['addr:city'] || '', lat: la, lng: ln, osm: (e.type || 'n')[0] + e.id };
+      cidade: t['addr:city'] || '', lat: la, lng: ln, osm: (e.type || 'n')[0] + e.id,
+      area: !!(t.place || t.boundary || (t.landuse === 'residential' && !/gated|apartments/.test(t.residential || '')) || t.admin_level) };
   };
   const OSM_NAME = 'condom[ií]nio|residencial|edif[ií]cio|^res[. ]|^ed[. ]|residence|torre|village|villa[gl]|spazio|reserva|solar d|parque d';
   async function overpass(q) {
@@ -691,7 +692,7 @@
     const fresh = p.month === monthKey();
     return { tier: p.tier === 'anual' && p.until > Date.now() ? 'anual' : 'free', until: p.until || 0, month: monthKey(), ads: fresh ? (p.ads | 0) : 0, boosts: fresh ? (p.boosts | 0) : 0 };
   }
-  const APP_VERSION = '2026-11-05.39';
+  const APP_VERSION = '2026-11-05.40';
   window.APP_VERSION = APP_VERSION;
   const savePlan = p => store.set('plan', p);
   window.refundAd = () => { const w = wallet(); const p = plan(); if (p.ads > 0) { p.ads--; savePlan(p); } };
@@ -1308,11 +1309,13 @@
 
 
   /* ---------- importar condomínios do mapa (administrador) ---------- */
+  const isNoAddr = c => c.status === 'pending' && /^c-osm-/.test(c.id) && c.endereco === 'Endereço a confirmar';
   function importHtml() {
-    const pend = CR.filter(c => c.status === 'pending').length;
+    const pend = CR.filter(c => c.status === 'pending').length, noAddr = CR.filter(isNoAddr).length;
     return `<h3>Carregar condomínios do mapa</h3><div class="cardc"><small>Busca no OpenStreetMap os condomínios num raio de 20 km do centro de Mogi das Cruzes. Eles entram <b>em análise</b> (sem duplicar os que já existem) e você aprova.</small>
       <button class="ghost" data-admimport ${S.impBusy ? 'disabled' : ''}>${S.impBusy ? 'Buscando…' : 'Importar condomínios da região'}</button>
       ${S.impMsg ? `<small>${esc(S.impMsg)}</small>` : ''}
+      ${noAddr ? `<button class="${S.rmConfirm ? 'no' : 'ghost'}" data-admrmnoaddr>${S.rmConfirm ? `Confirmar: recusar os ${noAddr}` : `Recusar importados sem endereço (${noAddr})`}</button>` : ''}
       ${pend ? `<button class="${S.apConfirm ? 'no' : 'ok'}" data-admapproveall>${S.apConfirm ? `Confirmar: aprovar os ${pend}` : `Aprovar todos em análise (${pend})`}</button>` : ''}</div>`;
   }
   // busca por pedaços (círculos de 5 km cobrindo 20 km): cada pedaço aparece na lista assim que chega
@@ -1338,7 +1341,7 @@
         const r = await fetch('https://nominatim.openstreetmap.org/search?format=json&addressdetails=1&limit=50&countrycodes=br&bounded=1&viewbox=' + [pt[1] - dLng, pt[0] + dLat, pt[1] + dLng, pt[0] - dLat].join(',') + '&q=' + encodeURIComponent(term), { headers: { 'Accept-Language': 'pt-BR' }, signal: c.signal });
         if (!r.ok) throw new Error('HTTP ' + r.status);
         const j = await r.json(); clearTimeout(t);
-        j.forEach(x => { const f = fromNom(x); if (f && (NOM_RE.test(f.name) || /^(building|apartments|residential)$/.test(x.type || ''))) { f.osm = (x.osm_type || 'n')[0] + x.osm_id; out.push(f); } });
+        j.forEach(x => { const f = fromNom(x); if (f && !/^(place|boundary|landuse|highway)$/.test(x.class || '') && (NOM_RE.test(f.name) || /^(building|apartments|residential)$/.test(x.type || ''))) { f.osm = (x.osm_type || 'n')[0] + x.osm_id; out.push(f); } });
       } catch (e) { clearTimeout(t); if (!out.length && term === 'edifício') throw e; }
       await new Promise(r => setTimeout(r, 1100));
     }
@@ -1369,6 +1372,7 @@
         list.forEach(x => {
           if (seen.has(x.osm)) return; seen.add(x.osm); found++;
           if (!core(x.name).length) return;
+          if (x.area) return;   // bairro, loteamento ou área: não é um condomínio
           if (CR.concat(add).some(c => c.status !== 'rejected' && subsetName(c.name, x.name) && (!hasGeo(c) || haversine(c, x) < 0.6))) return;
           add.push({ id: 'c-osm-' + x.osm, name: x.name.trim(), endereco: (x.end && x.end.length > 4) ? x.end : 'Endereço a confirmar', cep: x.cep ? fmtCep(x.cep) : '', bairro: (x.bairro && x.bairro.length > 1) ? x.bairro : 'Não informado',
             cidade: (x.cidade && x.cidade.length > 1) ? x.cidade : 'Mogi das Cruzes', lat: x.lat, lng: x.lng, status: 'pending', createdBy: me, ts: Date.now() });
@@ -1388,6 +1392,17 @@
   }
   document.addEventListener('click', async e => {
     if (e.target.closest('[data-admimport]')) return importOsm();
+    if (e.target.closest('[data-admrmnoaddr]')) {
+      if (!S.rmConfirm) { S.rmConfirm = true; return render(); }
+      S.rmConfirm = false;
+      const ids = CR.filter(isNoAddr).map(c => c.id);
+      try {
+        if (window.CLOUD_ON) await Cloud.adm.removeMany(ids); else { for (let i = CR.length - 1; i >= 0; i--) if (ids.includes(CR[i].id)) CR.splice(i, 1); persistCR(); rebuildCondos(); }
+        for (let i = CR.length - 1; i >= 0; i--) if (ids.includes(CR[i].id)) CR.splice(i, 1);
+        toast(ids.length + ' recusados');
+      } catch (x) { toast('Erro: ' + (x.message || x)); }
+      return render();
+    }
     if (!e.target.closest('[data-admapproveall]')) return;
     if (!S.apConfirm) { S.apConfirm = true; return render(); }
     S.apConfirm = false;

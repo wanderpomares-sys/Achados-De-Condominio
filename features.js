@@ -727,7 +727,7 @@
     const fresh = p.month === monthKey();
     return { tier: p.tier === 'anual' && p.until > Date.now() ? 'anual' : 'free', until: p.until || 0, month: monthKey(), ads: fresh ? (p.ads | 0) : 0, boosts: fresh ? (p.boosts | 0) : 0 };
   }
-  const APP_VERSION = '2026-11-06.59';
+  const APP_VERSION = '2026-11-06.60';
   window.APP_VERSION = APP_VERSION;
   const savePlan = p => store.set('plan', p);
   window.refundAd = () => { const w = wallet(); const p = plan(); if (p.ads > 0) { p.ads--; savePlan(p); } };
@@ -1713,6 +1713,12 @@
   window.condoPicker = function (mode) {
     let h = _condoPickerR(mode);
     const q = (mode === 'onb' ? S.onb.q : S.cq) || '';
+    if (norm(q).length < 3) { // sem busca: não mostra a lista inteira, só uma dica (e o condomínio já escolhido)
+      const sel = mode === 'onb' ? S.onb.condo : null;
+      const msg = sel ? `<div class="pickedc">✓ <b>${esc(sel)}</b><small>Seu condomínio. Digite outro nome para trocar.</small></div>`
+        : '<div class="pickhint">🔎 Digite o nome do seu condomínio e mostramos as sugestões.</div>';
+      return h.replace(/<div class="sug">[\s\S]*?<\/div>/, '<div class="sug nolist">' + msg + '</div>');
+    }
     const rs = S.rfQ === q ? (S.rfRes || []) : [];
     if (!rs.length) return h;
     const btns = rs.filter(x => !sameSpot(x)).map((x, i) => `<button data-rfpick="${i}" data-rfmode="${mode}">${esc(x.name)}<small>${esc([x.bairro, x.cidade].filter(Boolean).join(' • '))}</small></button>`).join('');
@@ -1721,6 +1727,11 @@
   const sameSpot = x => CONDOS.some(c => norm(c[0]) === norm(x.name) && norm(c[3] || '') === norm(x.cidade) && norm(c[2] || '') === norm(x.bairro))
     || CR.some(c => c.status !== 'rejected' && norm(c.name) === norm(x.name) && cep8(c.cep) === cep8(x.cep));
   (function () { const s = document.createElement('style'); s.textContent = `
+  .sug.nolist{max-height:none;border:0!important;background:transparent!important;overflow:visible}
+  .pickhint{padding:2px 4px;color:var(--gray);font-size:14px}
+  .pickedc{background:#E3F6EA;border:1.5px solid #8FD6AB;border-radius:14px;padding:12px 14px;color:#12263F;font-weight:700}
+  .pickedc small{display:block;font-weight:500;color:#2D6A47;margin-top:2px}
+  html[data-theme=dark] .pickedc{background:#15382B;border-color:#2F7F57;color:#E7F7EE}html[data-theme=dark] .pickedc small{color:#9ADBB5}
   .sug button[data-rfpick],.bub button[data-geosug]{background:#E3F6EA!important;border:1.5px solid #8FD6AB!important;color:#12263F!important}
   .sug button[data-rfpick] small,.bub button[data-geosug] small{color:#2D6A47!important}
   html[data-theme=dark] .sug button[data-rfpick],html[data-theme=dark] .bub button[data-geosug]{background:#15382B!important;border-color:#2F7F57!important;color:#E7F7EE!important}

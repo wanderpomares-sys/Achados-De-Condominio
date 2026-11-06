@@ -132,6 +132,7 @@ def main():
         n = titulo(fant or razao or '')
         n = re.sub(r'^(Condominio|Cond\.?)\s', 'Condomínio ', n)
         if len(n) < 4: continue
+        if re.search(r'prologis|golgi|logistic|galpo|galpao', norm(n)): continue   # condomínios industriais/logísticos: não são moradia
         if not norm(n).startswith('condominio'): n = 'Condomínio ' + n
         rua = ((tl or '') + ' ' + (lg or '')).strip(); nu = (num or '').strip()
         end = (titulo(rua) + (', ' + nu if nu and nu.upper() != 'S/N' else '')).strip(', ')

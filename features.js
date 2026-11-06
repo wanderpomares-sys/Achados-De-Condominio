@@ -692,7 +692,7 @@
     const fresh = p.month === monthKey();
     return { tier: p.tier === 'anual' && p.until > Date.now() ? 'anual' : 'free', until: p.until || 0, month: monthKey(), ads: fresh ? (p.ads | 0) : 0, boosts: fresh ? (p.boosts | 0) : 0 };
   }
-  const APP_VERSION = '2026-11-05.44';
+  const APP_VERSION = '2026-11-05.45';
   window.APP_VERSION = APP_VERSION;
   const savePlan = p => store.set('plan', p);
   window.refundAd = () => { const w = wallet(); const p = plan(); if (p.ads > 0) { p.ads--; savePlan(p); } };
@@ -1313,13 +1313,18 @@
   const isFar = c => c.status === 'pending' && /^c-osm-/.test(c.id) && hasGeo(c) && haversine(CENTRO, c) > 20;
   const impCity = () => { let v = S.impCity; if (v == null) { try { v = localStorage.getItem('impCity'); } catch (x) {} } return String(v || 'Mogi das Cruzes').trim() || 'Mogi das Cruzes'; };
   const isOther = c => c.status === 'pending' && /^c-osm-/.test(c.id) && c.cidade && norm(c.cidade) !== norm(impCity());
+  const startsCond = n => /^cond(om[ií]nio|\.)?\s/i.test(String(n || '').trim().normalize('NFC')) || /^condominio\s/i.test(norm(n) + ' ');
+  const impStrict = () => { let v = S.impStrict; if (v == null) { try { v = localStorage.getItem('impStrict'); } catch (x) {} } return v == null || v === true || v === '1'; };
+  const isNotCond = c => c.status === 'pending' && /^c-osm-/.test(c.id) && !startsCond(c.name);
   const isNoAddr = c => c.status === 'pending' && /^c-osm-/.test(c.id) && c.endereco === 'Endereço a confirmar';
   function importHtml() {
-    const pend = CR.filter(c => c.status === 'pending').length, noAddr = CR.filter(isNoAddr).length, other = CR.filter(isOther).length;
+    const pend = CR.filter(c => c.status === 'pending').length, noAddr = CR.filter(isNoAddr).length, other = CR.filter(isOther).length, notCond = CR.filter(isNotCond).length;
     return `<h3>Carregar condomínios do mapa</h3><div class="cardc"><small>Busca no OpenStreetMap os condomínios dentro do município escolhido (só ele; outras cidades ficam de fora). Eles entram <b>em análise</b> (sem duplicar os que já existem) e você aprova.</small>
       <input type="text" id="imp-city" value="${esc(impCity())}" placeholder="Nome da cidade" autocomplete="off" ${S.impBusy ? 'disabled' : ''}>
+      <label style="display:flex;gap:10px;align-items:center;font-size:14px"><input type="checkbox" id="imp-strict" style="width:22px;height:22px" ${impStrict() ? 'checked' : ''} ${S.impBusy ? 'disabled' : ''}>Só nomes que começam com "Condomínio"</label>
       <button class="ghost" data-admimport ${S.impBusy ? 'disabled' : ''}>${S.impBusy ? 'Buscando…' : 'Importar condomínios da região'}</button>
       ${S.impMsg ? `<small>${esc(S.impMsg)}</small>` : ''}
+      ${notCond ? `<button class="${S.rmNc ? 'no' : 'ghost'}" data-admrmnc>${S.rmNc ? `Confirmar: recusar os ${notCond}` : `Recusar importados que não começam com Condomínio (${notCond})`}</button>` : ''}
       ${other ? `<button class="${S.rmOther ? 'no' : 'ghost'}" data-admrmother>${S.rmOther ? `Confirmar: recusar os ${other}` : `Recusar importados fora de ${esc(impCity())} (${other})`}</button>` : ''}
       ${noAddr ? `<button class="${S.rmConfirm ? 'no' : 'ghost'}" data-admrmnoaddr>${S.rmConfirm ? `Confirmar: recusar os ${noAddr}` : `Recusar importados sem endereço (${noAddr})`}</button>` : ''}
       ${pend ? `<button class="${S.apConfirm ? 'no' : 'ok'}" data-admapproveall>${S.apConfirm ? `Confirmar: aprovar os ${pend}` : `Aprovar todos em análise (${pend})`}</button>` : ''}</div>`;
@@ -1341,13 +1346,13 @@
   const NOM_RE = new RegExp(OSM_NAME, 'i');
   async function nomTile(pt) {
     const dLat = 3.3 / 111.2, dLng = 3.3 / (111.2 * Math.cos(pt[0] * Math.PI / 180)), out = [];
-    for (const term of ['condomínio', 'residencial', 'torre', 'residence', 'edifício']) {
+    for (const term of (impStrict() ? ['condomínio'] : ['condomínio', 'residencial', 'torre', 'residence', 'edifício'])) {
       const c = new AbortController(), t = setTimeout(() => c.abort(), 12000);
       try {
         const r = await fetch('https://nominatim.openstreetmap.org/search?format=json&addressdetails=1&limit=50&countrycodes=br&bounded=1&viewbox=' + [pt[1] - dLng, pt[0] + dLat, pt[1] + dLng, pt[0] - dLat].join(',') + '&q=' + encodeURIComponent(term), { headers: { 'Accept-Language': 'pt-BR' }, signal: c.signal });
         if (!r.ok) throw new Error('HTTP ' + r.status);
         const j = await r.json(); clearTimeout(t);
-        j.forEach(x => { const f = fromNom(x); if (f && !/^(place|boundary|landuse|highway)$/.test(x.class || '') && (NOM_RE.test(f.name) || /^(building|apartments|residential)$/.test(x.type || ''))) { f.osm = (x.osm_type || 'n')[0] + x.osm_id; out.push(f); } });
+        j.forEach(x => { const f = fromNom(x); if (f && !/^(place|boundary|landuse|highway)$/.test(x.class || '') && (impStrict() ? startsCond(f.name) : NOM_RE.test(f.name) || /^(building|apartments|residential)$/.test(x.type || ''))) { f.osm = (x.osm_type || 'n')[0] + x.osm_id; out.push(f); } });
       } catch (e) { clearTimeout(t); if (!out.length && term === 'edifício') throw e; }
       await new Promise(r => setTimeout(r, 1100));
     }
@@ -1365,7 +1370,7 @@
   async function importOsm() {
     if (S.impBusy) return;
     S.impBusy = true; S.impMsg = 'Começando…'; render();
-    const city = impCity(), cityQ = city.replace(/["\\]/g, ''), me = (window.Cloud && Cloud.uid) || null;
+    const strict = impStrict(), city = impCity(), cityQ = city.replace(/["\\]/g, ''), me = (window.Cloud && Cloud.uid) || null;
     let pts = [];
     try {
       const gr = await fetchT('https://nominatim.openstreetmap.org/search?format=json&limit=1&countrycodes=br&q=' + encodeURIComponent(city + ', Brasil'), { headers: { 'Accept-Language': 'pt-BR' } }, 10000);
@@ -1386,11 +1391,12 @@
       try {
         let list;
         if (useNom) list = await nomTile(pt);
-        else { try { const A = `(around:6000,${pt[0].toFixed(5)},${pt[1].toFixed(5)})(area.m)`; list = await ovTile(`[out:json][timeout:20];area["boundary"="administrative"]["name"="${cityQ}"]->.m;(nwr["name"~"${OSM_NAME}",i]${A};nwr["building"="apartments"]["name"]${A};nwr["landuse"="residential"]["residential"~"apartments|gated"]["name"]${A};);out center tags 600;`); ovFail = 0; } catch (e) { if (++ovFail >= 2) useNom = true; list = await nomTile(pt); } }
+        else { try { const A = `(around:6000,${pt[0].toFixed(5)},${pt[1].toFixed(5)})(area.m)`; list = await ovTile(`[out:json][timeout:20];area["boundary"="administrative"]["name"="${cityQ}"]->.m;(${strict ? `nwr["name"~"^cond",i]${A};` : `nwr["name"~"${OSM_NAME}",i]${A};nwr["building"="apartments"]["name"]${A};nwr["landuse"="residential"]["residential"~"apartments|gated"]["name"]${A};`});out center tags 600;`); ovFail = 0; } catch (e) { if (++ovFail >= 2) useNom = true; list = await nomTile(pt); } }
         const add = [];
         list.forEach(x => {
           if (seen.has(x.osm)) return; seen.add(x.osm); found++;
           if (!core(x.name).length) return;
+          if (strict && !startsCond(x.name)) return;   // regra: todo condomínio começa com "Condomínio"
           if (x.area) return;   // bairro, loteamento ou área: não é um condomínio
           if (x.cidade && norm(x.cidade) !== norm(city)) return;   // só a cidade escolhida; o Overpass já limita pelo contorno do município
           if (CR.concat(add).some(c => c.status !== 'rejected' && subsetName(c.name, x.name) && (!hasGeo(c) || haversine(c, x) < 0.6))) return;
@@ -1411,8 +1417,20 @@
     S.impBusy = false; if (window.Cloud && Cloud.attachCondos) Cloud.attachCondos(); render();
   }
   document.addEventListener('input', e => { if (e.target && e.target.id === 'imp-city') S.impCity = e.target.value; });
+  document.addEventListener('change', e => { if (e.target && e.target.id === 'imp-strict') { S.impStrict = e.target.checked; try { localStorage.setItem('impStrict', e.target.checked ? '1' : '0'); } catch (x) {} } });
   document.addEventListener('click', async e => {
     if (e.target.closest('[data-admimport]')) { const el = document.getElementById('imp-city'); if (el) S.impCity = el.value; return importOsm(); }
+    if (e.target.closest('[data-admrmnc]')) {
+      if (!S.rmNc) { S.rmNc = true; return render(); }
+      S.rmNc = false;
+      const ids = CR.filter(isNotCond).map(c => c.id);
+      try {
+        if (window.CLOUD_ON) await Cloud.adm.removeMany(ids); else persistCR();
+        for (let i = CR.length - 1; i >= 0; i--) if (ids.includes(CR[i].id)) CR.splice(i, 1);
+        rebuildCondos(); toast(ids.length + ' recusados');
+      } catch (x) { toast('Erro: ' + (x.message || x)); }
+      return render();
+    }
     if (e.target.closest('[data-admrmother]')) {
       if (!S.rmOther) { S.rmOther = true; return render(); }
       S.rmOther = false;

@@ -727,7 +727,7 @@
     const fresh = p.month === monthKey();
     return { tier: p.tier === 'anual' && p.until > Date.now() ? 'anual' : 'free', until: p.until || 0, month: monthKey(), ads: fresh ? (p.ads | 0) : 0, boosts: fresh ? (p.boosts | 0) : 0 };
   }
-  const APP_VERSION = '2026-11-06.57';
+  const APP_VERSION = '2026-11-06.58';
   window.APP_VERSION = APP_VERSION;
   const savePlan = p => store.set('plan', p);
   window.refundAd = () => { const w = wallet(); const p = plan(); if (p.ads > 0) { p.ads--; savePlan(p); } };
@@ -1720,6 +1720,11 @@
   };
   const sameSpot = x => CONDOS.some(c => norm(c[0]) === norm(x.name) && norm(c[3] || '') === norm(x.cidade) && norm(c[2] || '') === norm(x.bairro))
     || CR.some(c => c.status !== 'rejected' && norm(c.name) === norm(x.name) && cep8(c.cep) === cep8(x.cep));
+  (function () { const s = document.createElement('style'); s.textContent = `
+  .sug button[data-rfpick],.bub button[data-geosug]{background:#E3F6EA!important;border:1.5px solid #8FD6AB!important;color:#12263F!important}
+  .sug button[data-rfpick] small,.bub button[data-geosug] small{color:#2D6A47!important}
+  html[data-theme=dark] .sug button[data-rfpick],html[data-theme=dark] .bub button[data-geosug]{background:#15382B!important;border-color:#2F7F57!important;color:#E7F7EE!important}
+  html[data-theme=dark] .sug button[data-rfpick] small,html[data-theme=dark] .bub button[data-geosug] small{color:#9ADBB5!important}`; document.head.appendChild(s); })();
   let rfQT;
   document.addEventListener('input', e => {       // digitar na busca: atualiza só a lista (sem redesenhar a tela, sem piscar)
     const id = e.target && e.target.id; if (id !== 'o-q' && id !== 'c-q') return;

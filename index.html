@@ -738,7 +738,7 @@ function mapSheet(){
 }
 function condoSheet(){
  return `<div class="ov" data-ovclose><div class="sheet" id="sheet"><div class="handle"></div><button class="close" data-close>✕</button>
- <div class="form"><h2>Trocar condomínio</h2><p style="margin:0;color:var(--gray);font-size:14px">Atual: <b style="color:#fff">${esc(S.user.condo)}</b></p>${condoPicker('sheet')}</div></div></div>`;
+ <div class="form"><h2>Trocar condomínio</h2><p style="margin:0;color:var(--gray);font-size:14px">Atual: <b style="color:inherit">${esc(S.user.condo)}</b></p>${condoPicker('sheet')}</div></div></div>`;
 }
 function saveCondo(){
  const g=S.reg;const name=g.name.trim();

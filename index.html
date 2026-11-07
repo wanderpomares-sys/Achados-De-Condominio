@@ -640,7 +640,7 @@ if(window.DEMO&&!store.get('demoSeeded',false)){
 }
 
 let S={
- user:store.get('user',window.DEMO?{id:'demo',name:'Síndico',apt:'Administração',condo:'Residencial Vila Serena',cityShort:'Mogi'}:null),
+ user:store.get('user',window.DEMO?{id:'demo',name:'Ricardo',apt:'A-21',condo:'Residencial Vila Serena',cityShort:'Mogi'}:null),
  posts:(window.CLOUD_ON?[]:store.get('posts',null))||SEED.map(p=>({...p,ts:now()-p.ago,boostedUntil:0})),
  interests:store.get('interests',[]),
  favs:store.get('favs',[]),

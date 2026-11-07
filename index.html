@@ -438,6 +438,14 @@ html[data-theme=dark] .onb .form input[type=text],html[data-theme=dark] .onb .fo
 html[data-theme=dark] .onb .form input:focus{background:#0A1630;border-color:#4C93FF;box-shadow:0 0 0 4px rgba(76,147,255,.22)}
 html[data-theme=dark] .onb .form .cta48:disabled{background:#1B2D55;color:#6F82A8}
 html[data-theme=dark] .onb .form .sug{background:#0A1630;border-color:#244079}
+/* botões "Quero" / "Ver" e selo "Patrocinado" mais discretos */
+html .quero,html .layout .quero,html[data-theme=dark] .quero,html[data-theme=dark] .layout .quero{width:auto!important;min-width:0;height:26px!important;padding:0 11px!important;font-size:12px!important;font-weight:700;border-radius:7px!important;box-shadow:none!important;background:rgba(15,46,107,.09)!important;color:#0F2E6B!important}
+html[data-theme=dark] .quero,html[data-theme=dark] .layout .quero{background:rgba(47,140,255,.18)!important;color:#8EC0FF!important}
+html .card .bot,html .layout .card .bot{align-items:center}
+html .card .want,html .layout .card .want,html[data-theme=dark] .layout .card .want{font-size:12px!important}
+html .sponsor .lbl{font-size:9px!important;padding:1px 5px!important;letter-spacing:.3px;opacity:.85}
+html .sponsor .quero,html[data-theme=dark] .sponsor .quero,html[data-theme=dark] .layout .sponsor .quero{background:transparent!important;color:var(--dark)!important;border:1px solid rgba(15,46,107,.35)!important}
+html[data-theme=dark] .sponsor .quero,html[data-theme=dark] .layout .sponsor .quero{color:#FFB020!important;border-color:rgba(255,176,32,.6)!important}
 </style>
 <script src="firebase-config.js"></script>
 <script>window.DEMO=/[?&]demo(=|&|$)/.test(location.search);window.CLOUD_ON=!window.DEMO&&!!(window.FIREBASE_CONFIG&&window.FIREBASE_CONFIG.apiKey);if(window.DEMO)document.documentElement.className+=' demo'</script>

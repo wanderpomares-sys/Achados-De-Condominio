@@ -440,7 +440,8 @@ html[data-theme=dark] .onb .form .cta48:disabled{background:#1B2D55;color:#6F82A
 html[data-theme=dark] .onb .form .sug{background:#0A1630;border-color:#244079}
 </style>
 <script src="firebase-config.js"></script>
-<script>window.CLOUD_ON=!!(window.FIREBASE_CONFIG&&window.FIREBASE_CONFIG.apiKey)</script>
+<script>window.DEMO=/[?&]demo(=|&|$)/.test(location.search);window.CLOUD_ON=!window.DEMO&&!!(window.FIREBASE_CONFIG&&window.FIREBASE_CONFIG.apiKey);if(window.DEMO)document.documentElement.className+=' demo'</script>
+<style>.demo [data-adminopen]{display:none!important}</style>
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-0016959676386450" crossorigin="anonymous"></script>
 </head>
 <body>
@@ -584,6 +585,34 @@ const SEED=[
  {id:'p11',title:'Notebook usado — i5, 8GB, SSD 256',price:1400,originalPrice:2800,type:'venda',emoji:'💻',distance:.3,building:'Cond. Flores • Bloco 3',ago:34*H,seller:'André',apt:'3-14',verified:true,views:51,wants:11,description:'Notebook funcionando perfeitamente, bateria com 3h de autonomia. Com carregador original.',isMy:false},
  {id:'p12',title:'Curso de brigadeiro gourmet',price:30,type:'curso',emoji:'🍫',distance:0,building:'Cond. Solar • Salão de festas',ago:40*H,seller:'Ana',apt:'307',verified:true,views:33,wants:8,description:'Aprenda 5 sabores de brigadeiro gourmet. Sábado 14h, 8 vagas restantes. Material incluso.',isMy:true},
 ];
+
+/* ---------- modo demonstração (?demo): condomínio fictício, tudo só no aparelho, sem Firebase ---------- */
+if(window.DEMO){
+ CONDOS.splice(0,CONDOS.length,['Residencial Vila Serena',0,'Jardim Aeroporto','Mogi das Cruzes'],['Cond. Bosque dos Ipês',0.4,'Jardim Aeroporto','Mogi das Cruzes'],['Cond. Villa Toscana',0.9,'Vila Oliveira','Mogi das Cruzes'],['Cond. Recanto do Sol',1.5,'Vila Oliveira','Mogi das Cruzes'],['Cond. Parque das Acácias',2.3,'Centro','Mogi das Cruzes']);
+ const VS='Residencial Vila Serena';
+ SEED.splice(0,SEED.length,
+ {id:'d1',title:'Coleta de lixo e reciclagem: dias e horários',price:null,type:'aviso',emoji:'♻️',distance:0,building:VS+' • Administração',ago:2*H,seller:'Síndico',apt:'—',verified:true,views:96,wants:11,isMy:true,description:'Lixo comum: segundas, quartas e sextas, com sacos bem fechados nos contêineres da garagem a partir das 19h. Recicláveis: terças e sábados, separados e limpos, no ponto do térreo. Volumosos (móveis, colchões): avisar a portaria com 24h de antecedência. Vamos manter o condomínio limpo, obrigado!'},
+ {id:'d2',title:'Horário de silêncio',price:null,type:'aviso',emoji:'🤫',distance:0,building:VS+' • Administração',ago:5*H,seller:'Síndico',apt:'—',verified:true,views:81,wants:6,isMy:true,description:'Lembramos que o horário de silêncio vai das 22h às 7h, de segunda a sábado, e das 22h às 9h aos domingos e feriados. Nesse período, evitar som alto, festas, arrastar móveis e batidas nas áreas comuns. Se algo estiver incomodando, converse primeiro com o vizinho e, se precisar, procure a portaria.'},
+ {id:'d3',title:'Obras e reformas: horários permitidos',price:null,type:'aviso',emoji:'🔨',distance:0,building:VS+' • Administração',ago:9*H,seller:'Síndico',apt:'—',verified:true,views:64,wants:4,isMy:true,description:'Obras e reformas nos apartamentos: de segunda a sexta, das 8h às 17h, e aos sábados das 9h às 13h. Proibido aos domingos e feriados. Avise a portaria antes de começar e informe o nome da empresa e dos prestadores. Entulho deve ser retirado no mesmo dia, sem deixar nas áreas comuns.'},
+ {id:'d4',title:'Mudanças: como agendar',price:null,type:'aviso',emoji:'📦',distance:0,building:VS+' • Administração',ago:14*H,seller:'Síndico',apt:'—',verified:true,views:52,wants:3,isMy:true,description:'Mudanças de entrada ou saída: de segunda a sábado, das 8h às 17h, nunca aos domingos e feriados. Agende na portaria com 48h de antecedência. Usar somente o elevador de serviço, com as proteções colocadas, e comunicar a placa do caminhão para liberar a entrada.'},
+ {id:'d5',title:'Churrasqueira: regras e valores',price:null,type:'aviso',emoji:'🍖',distance:0,building:VS+' • Área de lazer',ago:20*H,seller:'Síndico',apt:'—',verified:true,views:120,wants:17,isMy:true,description:'Reserva na portaria com até 7 dias de antecedência. Taxa de limpeza: R$ 60, paga no ato. Funcionamento até as 22h, com no máximo 15 pessoas por reserva. Carvão e utensílios por conta do morador, e a churrasqueira deve ser entregue limpa. O morador responsável pelo uso precisa estar presente o tempo todo.'},
+ {id:'d6',title:'Salão de festas: regras, taxa e caução',price:null,type:'aviso',emoji:'🎉',distance:0,building:VS+' • Salão de festas',ago:26*H,seller:'Síndico',apt:'—',verified:true,views:143,wants:21,isMy:true,description:'Taxa de uso: R$ 250. Caução de R$ 300, devolvida em até 5 dias úteis após a vistoria. Capacidade de 40 pessoas, com música permitida até as 22h e saída até as 23h. Uma reserva por apartamento ao mês, solicitada com no mínimo 15 dias de antecedência na portaria. Limpeza pesada e decoração ficam por conta do morador.'},
+ {id:'d7',icon:'check',title:'Melhor dia para a assembleia de dezembro?',price:null,type:'enquete',emoji:'🗳️',distance:0,building:VS+' • Administração',ago:3*H,seller:'Síndico',apt:'—',verified:true,views:74,wants:9,isMy:true,poll:['Quarta, 19h30','Quinta, 19h30','Sábado, 10h'],description:'Para a assembleia ordinária de dezembro (prestação de contas e previsão de 2027), vote no dia e horário que for melhor para você. Vamos marcar o mais votado.'},
+ {id:'d8',icon:'check',title:'Qual melhoria priorizar em 2027?',price:null,type:'enquete',emoji:'🗳️',distance:0,building:VS+' • Administração',ago:11*H,seller:'Síndico',apt:'—',verified:true,views:88,wants:13,isMy:true,poll:['Pintura da fachada','Reforma da academia','Mais câmeras na garagem','Paisagismo e jardim'],description:'Com o fundo de obras, vamos escolher a prioridade do próximo ano. Vote na opção que você considera mais importante para o condomínio.'},
+ {id:'d9',icon:'chat',title:'Alguém indica eletricista de confiança?',price:null,type:'pergunta',emoji:'❓',distance:0,building:VS+' • Bloco B',ago:4*H,seller:'Renata',apt:'B-72',verified:true,views:39,wants:5,isMy:true,description:'Preciso trocar o quadro de luz do apartamento e colocar novas tomadas na cozinha. Se alguém já contratou um eletricista bom e com preço justo, me passa o contato, por favor!'},
+ {id:'d10',icon:'chat',title:'Quem quer montar um grupo de caminhada de manhã?',price:null,type:'pergunta',emoji:'❓',distance:0,building:VS+' • Bloco A',ago:16*H,seller:'Marcos',apt:'A-31',verified:true,views:27,wants:4,isMy:true,description:'Estava pensando em caminhar por volta das 6h, em volta do condomínio e na pracinha ao lado. Quem tem interesse em se juntar? Pode ser 3 vezes por semana.'},
+ {id:'d11',icon:'box',title:'Geladeira Frost Free 375L — branca',price:1100,originalPrice:2300,type:'venda',emoji:'🧊',distance:0,building:VS+' • Bloco C',ago:7*H,seller:'Cláudia',apt:'C-44',verified:true,views:58,wants:8,isMy:true,description:'Geladeira Frost Free de 375 litros, 2 portas, branca, com 3 anos de uso. Funcionando perfeitamente, sem amassados. Estou me mudando e preciso vender até o fim do mês. Retirada no apartamento.'},
+ {id:'d12',icon:'baby',title:'Carrinho de bebê com bebê conforto',price:280,originalPrice:900,type:'venda',emoji:'👶',distance:0.4,building:'Cond. Bosque dos Ipês • Bloco 2',ago:12*H,seller:'Juliana',apt:'2-83',verified:true,views:44,wants:9,description:'Carrinho de bebê 3 em 1 com bebê conforto e base para o carro, cor cinza. Usado por poucos meses, bem conservado. Retirada na portaria do meu condomínio.'},
+ {id:'d13',icon:'bike',title:'Bicicleta infantil aro 16',price:120,originalPrice:350,type:'venda',emoji:'🚲',distance:0.9,building:'Cond. Villa Toscana • Torre A',ago:22*H,seller:'André',apt:'A-12',verified:false,views:31,wants:3,description:'Bicicleta infantil aro 16 com rodinhas laterais, rosa, em ótimo estado. Meu filho cresceu. Combino a entrega na portaria dos condomínios aqui da região.'},
+ {id:'d14',icon:'book',title:'Estante de livros de madeira — doação',price:0,type:'doacao',emoji:'📚',distance:0,building:VS+' • Bloco A',ago:30*H,seller:'Helena',apt:'A-64',verified:true,views:36,wants:7,isMy:true,description:'Estante com 5 prateleiras, em madeira clara, 1,80 m de altura. Pequenos riscos, mas muito firme. Quem puder retirar pode vir na quarta ou quinta à noite.'},
+ {id:'d15',icon:'book',title:'Aulas de inglês para crianças',price:70,type:'curso',emoji:'🔤',distance:0,building:VS+' • Bloco B',ago:36*H,seller:'Fernanda',apt:'B-23',verified:true,views:47,wants:6,isMy:true,description:'Aulas de inglês para crianças de 6 a 12 anos, em pequenos grupos de até 4. Terças e quintas, às 17h, no salão de jogos. Mensalidade de R$ 70. Primeira aula experimental sem custo.'},
+ {id:'d16',title:'Procuro faxineira 2x por semana',price:null,type:'preciso',emoji:'🧹',distance:0,building:VS+' • Bloco A',ago:40*H,seller:'Paulo',apt:'A-52',verified:true,views:29,wants:5,isMy:true,description:'Procuro faxineira de confiança para o apartamento, terças e sextas, das 8h às 14h. Se alguém tiver uma indicação de profissional que já trabalhou bem, me avisa por favor.'},
+ {id:'d17',icon:'key',title:'Controle de portão encontrado na garagem',price:null,type:'achado',emoji:'🔑',distance:0,building:VS+' • Portaria',ago:6*H,seller:'Portaria',apt:'—',verified:true,views:41,wants:3,isMy:true,description:'Controle remoto de portão, com chaveiro azul, encontrado perto das vagas do bloco B. Está guardado na portaria. Quem perdeu pode retirar com um documento.'},
+ {id:'d18',icon:'party',title:'Confraternização de fim de ano — 14/12',price:0,type:'evento',emoji:'🥂',distance:0,building:VS+' • Salão de festas',ago:24*H,seller:'Síndico',apt:'—',verified:true,views:102,wants:38,isMy:true,description:'Vamos celebrar o fim de ano com os vizinhos! Domingo, 14/12, às 12h, no salão de festas. Cada família leva um prato ou uma bebida. Confirme a presença aqui no app.'},
+ {id:'d19',icon:'sparkle',title:'Nova lixeira de recicláveis instalada no térreo',price:null,type:'novidade',emoji:'🌱',distance:0,building:VS+' • Térreo',ago:48*H,seller:'Síndico',apt:'—',verified:true,views:70,wants:12,isMy:true,description:'Instalamos um novo ponto de coleta de recicláveis ao lado da portaria, com separação de papel, plástico, vidro e metal. Ajude a manter tudo separado e limpo.'},
+ {id:'d20',title:'Vaga de garagem coberta para alugar',price:180,type:'vaga',emoji:'🅿️',distance:0,building:VS+' • G1',ago:52*H,seller:'Roberto',apt:'C-18',verified:true,views:34,wants:6,isMy:true,description:'Aluguel de vaga coberta e fácil de manobrar, perto do elevador. R$ 180 por mês. Disponível a partir de dezembro.'}
+ );
+}
 const SPONSORS=[
  {id:'s1',title:'Pizzaria Forno a Lenha — 15% OFF para moradores',emoji:'🍕',sub:'Cupom: ACHADOS15 • entrega no condomínio'},
  {id:'s2',title:'Lavanderia Express — retirada na portaria',emoji:'👕',sub:'Primeira lavagem grátis para vizinhos'},
@@ -593,16 +622,25 @@ const AGENDA=[
  {c:'#10B981',d:'INAUGUROU',t:'Mercadinho Self Service',m:'📍 2º andar • Aberto 24h'},
  {c:'#EC4899',d:'SÁB • 14h',t:'Curso de brigadeiro gourmet',m:'📍 Salão de festas • R$ 30 • <span class="scar">Só 8 vagas restantes!</span>'},
  {c:'#3498DB',d:'TER/QUI • 7h',t:'Aula funcional',m:'📍 Academia do condomínio • Grátis'}];
+if(window.DEMO){
+ AGENDA.splice(0,AGENDA.length,{c:'#0F2E6B',d:'QUA • 19h30',t:'Assembleia ordinária (dia a definir)',m:'📍 Salão de festas • Vote na enquete'},{c:'#EC4899',d:'DOM • 12h',t:'Confraternização de fim de ano',m:'📍 Salão de festas • Traga um prato'},{c:'#10B981',d:'NOVIDADE',t:'Ponto de reciclagem no térreo',m:'📍 Ao lado da portaria'});
+}
 
 /* ---------- storage (protótipo: localStorage; produção: Firebase) ---------- */
 const store={
- get(k,d){try{const v=localStorage.getItem('achados_'+k);return v?JSON.parse(v):d}catch(e){return d}},
- set(k,v){try{localStorage.setItem('achados_'+k,JSON.stringify(v))}catch(e){}}
+ get(k,d){try{const v=localStorage.getItem((window.DEMO?'achados_demo_':'achados_')+k);return v?JSON.parse(v):d}catch(e){return d}},
+ set(k,v){try{localStorage.setItem((window.DEMO?'achados_demo_':'achados_')+k,JSON.stringify(v))}catch(e){}}
 };
 const mem={};
 CONDOS.push(...store.get('condos',[]));
+if(window.DEMO&&!store.get('demoSeeded',false)){
+ store.set('nbVotes',{d7:[0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,2,2,2,2],d8:[0,0,0,0,0,0,1,1,1,1,1,1,1,1,2,2,2,2,2,2,2,2,2,3,3,3]});
+ store.set('nbAns',{d9:[{id:'a1',name:'Camila',apt:'A-41',text:'Uso o Seu Antônio há anos, ele é muito caprichoso e cobra justo. Te mando o contato no privado!',ts:now()-3*H},{id:'a2',name:'Rodrigo',apt:'C-12',text:'Recomendo também o Edson, ele fez o quadro de luz aqui em casa em um dia.',ts:now()-2*H}],d10:[{id:'a3',name:'Patrícia',apt:'B-33',text:'Eu topo! Qualquer dia depois das 6h30 está ótimo para mim.',ts:now()-12*H},{id:'a4',name:'Luís',apt:'A-71',text:'Conta comigo também, terça e quinta fica bom.',ts:now()-9*H}]});
+ store.set('demoSeeded',true);
+}
+
 let S={
- user:store.get('user',null),
+ user:store.get('user',window.DEMO?{id:'demo',name:'Síndico',apt:'Administração',condo:'Residencial Vila Serena',cityShort:'Mogi'}:null),
  posts:(window.CLOUD_ON?[]:store.get('posts',null))||SEED.map(p=>({...p,ts:now()-p.ago,boostedUntil:0})),
  interests:store.get('interests',[]),
  favs:store.get('favs',[]),

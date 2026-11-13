@@ -785,7 +785,7 @@
     const fresh = p.month === monthKey();
     return { tier: p.tier === 'anual' && p.until > Date.now() ? 'anual' : 'free', until: p.until || 0, month: monthKey(), ads: fresh ? (p.ads | 0) : 0, boosts: fresh ? (p.boosts | 0) : 0 };
   }
-  const APP_VERSION = '2026-11-13.67';
+  const APP_VERSION = '2026-11-13.68';
   window.APP_VERSION = APP_VERSION;
   const savePlan = p => store.set('plan', p);
   window.refundAd = () => { const w = wallet(); const p = plan(); if (p.ads > 0) { p.ads--; savePlan(p); } };
@@ -1105,7 +1105,8 @@
   const SP_DEMO = SPONSORS.slice();
   const HOUSE_ADS = [
     { id: 'h1', title: 'Babá do Pet: app grátis para cuidar do seu pet', img: 'assets/ads/babadopet.jpg', house: true, sub: 'Vacinas, ração, passeios e consultas. Sem cadastro.', link: 'https://babadopet.com.br' },
-    { id: 'h2', title: 'Smart Finance Family: finanças da família', img: 'assets/ads/smartfinance.jpg', house: true, sub: 'Importa extratos e mostra CDI, Selic e IPCA. 7 dias grátis.', link: 'https://smartfinancefamily.com.br' }
+    { id: 'h2', title: 'Smart Finance Family: finanças da família', img: 'assets/ads/smartfinance.jpg', house: true, sub: 'Importa extratos e mostra CDI, Selic e IPCA. 7 dias grátis.', link: 'https://smartfinancefamily.com.br' },
+    { id: 'h3', title: 'Gemmo Combo: jogo grátis de combinar gemas', img: 'assets/ads/gemmo.jpg', house: true, sub: '300+ fases. Instale no celular.', link: 'https://gemmo.com.br' }
   ];
   const spStore = () => store.get('sponsors', []) || [];
   const spAll = () => window.CLOUD_ON ? ((window.Cloud && Cloud.sponsors) || []) : spStore();

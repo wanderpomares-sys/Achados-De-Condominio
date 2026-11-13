@@ -31,13 +31,13 @@
     ex(11, 'preciso', '🧹', 'Procuro faxineira 2x por semana', null, 'd16', 0.6, 'Residencial Vila Serena • Bloco A', 40, 'Paulo', 'Preciso de faxina completa duas vezes por semana, apartamento de 2 quartos. Indicações são bem-vindas.'),
     ex(12, 'evento', '🥂', 'Confraternização de fim de ano', 0, 'd18', 0.3, 'Residencial Vila Serena • Salão de festas', 24, 'Administração', 'Venha celebrar com os vizinhos. Cada família leva um prato ou uma bebida. Crianças são bem-vindas.'),
     ex(13, 'novidade', '🌱', 'Nova lixeira de recicláveis no térreo', null, 'd19', 0.9, 'Residencial Vila Serena • Térreo', 48, 'Administração', 'O térreo ganhou uma lixeira para recicláveis. Separe vidro, papel, plástico e metal.'),
-    ex(14, 'venda', '🛋️', 'Sofá 3 lugares retrátil, impecável', 400, null, 1.2, 'Residencial Vila Serena • Bloco B', 9, 'Patrícia', 'Sofá retrátil de 3 lugares, tecido cinza, sem manchas. Retirada no condomínio.', 900),
-    ex(15, 'venda', '🍳', 'Air fryer 5 litros', 180, null, 1.6, 'Residencial Vila Serena • Bloco 1', 20, 'Marcos', 'Air fryer pouco usada, com todos os acessórios e caixa original.', 420),
-    ex(16, 'achado', '🐶', 'Cachorro pequeno encontrado perto da piscina', null, null, 0.8, 'Residencial Vila Serena • Piscina', 3, 'Renata', 'Cachorro pequeno, caramelo, com coleira azul. Está com a portaria aguardando o dono.'),
-    ex(17, 'curso', '✂️', 'Manicure e pedicure em casa', 50, null, 1.4, 'Residencial Vila Serena • Bloco 3', 28, 'Daniela', 'Atendo no seu apartamento, com horário marcado. Material esterilizado.'),
-    ex(18, 'doacao', '🧸', 'Brinquedos infantis em bom estado (doação)', 0, null, 1.9, 'Residencial Vila Serena • Bloco A', 33, 'Luciana', 'Caixa com brinquedos de 2 a 6 anos. Para retirar no condomínio.'),
-    ex(19, 'curso', '🐕', 'Passeio com cães, manhã e tarde', 25, null, 2.2, 'Residencial Vila Serena • Torre B', 45, 'Rafael', 'Passeios de 30 minutos com fotos no final. Atendo moradores do condomínio e arredores.'),
-    ex(20, 'venda', '💻', 'Notebook usado, i5, 8GB, SSD 256', 1400, null, 2.5, 'Residencial Vila Serena • Bloco 3', 34, 'Thiago', 'Notebook em bom estado, bateria com boa duração, carregador original. Aceito ver o aparelho funcionando antes.', 2800)
+    ex(14, 'venda', '🛋️', 'Sofá 3 lugares retrátil, impecável', 400, 'e14', 1.2, 'Residencial Vila Serena • Bloco B', 9, 'Patrícia', 'Sofá retrátil de 3 lugares, tecido cinza, sem manchas. Retirada no condomínio.', 900),
+    ex(15, 'venda', '🍳', 'Air fryer 5 litros', 180, 'e15', 1.6, 'Residencial Vila Serena • Bloco 1', 20, 'Marcos', 'Air fryer pouco usada, com todos os acessórios e caixa original.', 420),
+    ex(16, 'achado', '🐶', 'Cachorro pequeno encontrado perto da piscina', null, 'e16', 0.8, 'Residencial Vila Serena • Piscina', 3, 'Renata', 'Cachorro pequeno, caramelo, com coleira azul. Está com a portaria aguardando o dono.'),
+    ex(17, 'curso', '✂️', 'Manicure e pedicure em casa', 50, 'e17', 1.4, 'Residencial Vila Serena • Bloco 3', 28, 'Daniela', 'Atendo no seu apartamento, com horário marcado. Material esterilizado.'),
+    ex(18, 'doacao', '🧸', 'Brinquedos infantis em bom estado (doação)', 0, 'e18', 1.9, 'Residencial Vila Serena • Bloco A', 33, 'Luciana', 'Caixa com brinquedos de 2 a 6 anos. Para retirar no condomínio.'),
+    ex(19, 'curso', '🐕', 'Passeio com cães, manhã e tarde', 25, 'e19', 2.2, 'Residencial Vila Serena • Torre B', 45, 'Rafael', 'Passeios de 30 minutos com fotos no final. Atendo moradores do condomínio e arredores.'),
+    ex(20, 'venda', '💻', 'Notebook usado, i5, 8GB, SSD 256', 1400, 'e20', 2.5, 'Residencial Vila Serena • Bloco 3', 34, 'Thiago', 'Notebook em bom estado, bateria com boa duração, carregador original. Aceito ver o aparelho funcionando antes.', 2800)
   ];
   let exPatched = false;
   function patchCloudEx() {
@@ -785,7 +785,7 @@
     const fresh = p.month === monthKey();
     return { tier: p.tier === 'anual' && p.until > Date.now() ? 'anual' : 'free', until: p.until || 0, month: monthKey(), ads: fresh ? (p.ads | 0) : 0, boosts: fresh ? (p.boosts | 0) : 0 };
   }
-  const APP_VERSION = '2026-11-13.64';
+  const APP_VERSION = '2026-11-13.65';
   window.APP_VERSION = APP_VERSION;
   const savePlan = p => store.set('plan', p);
   window.refundAd = () => { const w = wallet(); const p = plan(); if (p.ads > 0) { p.ads--; savePlan(p); } };
@@ -1103,13 +1103,22 @@
 
   /* ---------- patrocinados: R$ 29,90 por semana (card amarelo a cada 4 anúncios) ---------- */
   const SP_DEMO = SPONSORS.slice();
+  const HOUSE_ADS = [
+    { id: 'h1', title: 'Babá do Pet: app grátis para cuidar do seu pet', emoji: '🐾', house: true, sub: 'Vacinas, ração, passeios e consultas. Sem cadastro.', link: 'https://babadopet.com.br' },
+    { id: 'h2', title: 'Smart Finance Family: finanças da família', emoji: '💰', house: true, sub: 'Importa extratos e mostra CDI, Selic e IPCA. 7 dias grátis.', link: 'https://smartfinancefamily.com.br' }
+  ];
   const spStore = () => store.get('sponsors', []) || [];
   const spAll = () => window.CLOUD_ON ? ((window.Cloud && Cloud.sponsors) || []) : spStore();
   function syncSponsors() {
     const act = spAll().filter(x => x.status === 'active' && x.until > Date.now());
-    SPONSORS.length = 0; (act.length ? act : SP_DEMO).forEach(x => SPONSORS.push(x));
+    SPONSORS.length = 0; HOUSE_ADS.concat(act.length ? act : SP_DEMO).forEach(x => SPONSORS.push(x));
   }
   window.applySponsors = () => { syncSponsors(); render(); };
+  const _spCard = window.sponsorCard;
+  window.sponsorCard = function (sp) {
+    const h = _spCard(sp);
+    return sp && sp.house ? h.replace(/<span class="em">[\s\S]*?<\/span><\/div>/, '<span class="em" style="font-size:56px;line-height:1">' + sp.emoji + '</span></div>') : h;
+  };
   function spUrl(v) {
     v = String(v || '').trim(); if (!v) return '';
     if (/^https?:\/\//i.test(v)) return v;

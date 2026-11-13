@@ -785,7 +785,7 @@
     const fresh = p.month === monthKey();
     return { tier: p.tier === 'anual' && p.until > Date.now() ? 'anual' : 'free', until: p.until || 0, month: monthKey(), ads: fresh ? (p.ads | 0) : 0, boosts: fresh ? (p.boosts | 0) : 0 };
   }
-  const APP_VERSION = '2026-11-13.65';
+  const APP_VERSION = '2026-11-13.66';
   window.APP_VERSION = APP_VERSION;
   const savePlan = p => store.set('plan', p);
   window.refundAd = () => { const w = wallet(); const p = plan(); if (p.ads > 0) { p.ads--; savePlan(p); } };
@@ -1104,8 +1104,8 @@
   /* ---------- patrocinados: R$ 29,90 por semana (card amarelo a cada 4 anúncios) ---------- */
   const SP_DEMO = SPONSORS.slice();
   const HOUSE_ADS = [
-    { id: 'h1', title: 'Babá do Pet: app grátis para cuidar do seu pet', emoji: '🐾', house: true, sub: 'Vacinas, ração, passeios e consultas. Sem cadastro.', link: 'https://babadopet.com.br' },
-    { id: 'h2', title: 'Smart Finance Family: finanças da família', emoji: '💰', house: true, sub: 'Importa extratos e mostra CDI, Selic e IPCA. 7 dias grátis.', link: 'https://smartfinancefamily.com.br' }
+    { id: 'h1', title: 'Babá do Pet: app grátis para cuidar do seu pet', img: 'assets/ads/babadopet.jpg', house: true, sub: 'Vacinas, ração, passeios e consultas. Sem cadastro.', link: 'https://babadopet.com.br' },
+    { id: 'h2', title: 'Smart Finance Family: finanças da família', img: 'assets/ads/smartfinance.jpg', house: true, sub: 'Importa extratos e mostra CDI, Selic e IPCA. 7 dias grátis.', link: 'https://smartfinancefamily.com.br' }
   ];
   const spStore = () => store.get('sponsors', []) || [];
   const spAll = () => window.CLOUD_ON ? ((window.Cloud && Cloud.sponsors) || []) : spStore();
@@ -1116,8 +1116,8 @@
   window.applySponsors = () => { syncSponsors(); render(); };
   const _spCard = window.sponsorCard;
   window.sponsorCard = function (sp) {
-    const h = _spCard(sp);
-    return sp && sp.house ? h.replace(/<span class="em">[\s\S]*?<\/span><\/div>/, '<span class="em" style="font-size:56px;line-height:1">' + sp.emoji + '</span></div>') : h;
+    if (sp && sp.house) return '<article class="card sponsor" style="padding:0;overflow:hidden;display:block"><button data-sp="' + sp.id + '" aria-label="' + esc(sp.title) + '" style="display:block;width:100%;padding:0;border:0;background:none;cursor:pointer;"><span style="display:block;background:#FFE082;color:#5a4300;font-size:11px;font-weight:700;padding:4px 10px;text-align:left;letter-spacing:.4px">PATROCINADO</span><img src="' + sp.img + '" alt="' + esc(sp.title) + '" loading="lazy" style="display:block;width:100%;height:auto"></button></article>';
+    return _spCard(sp);
   };
   function spUrl(v) {
     v = String(v || '').trim(); if (!v) return '';

@@ -10,6 +10,64 @@
   const fmtDate = ts => new Date(ts).toLocaleDateString('pt-BR');
   window.daysLeft = daysLeft;
 
+  /* ---------- anúncios de exemplo: aparecem só enquanto o app tem pouco conteúdo real ---------- */
+  const EXH = 36e5, EX_LIMIT = 20;
+  const ex = (n, type, emoji, title, price, img, dist, bld, ago, seller, desc, orig) => ({
+    id: 'ex' + n, type, emoji, title, price, originalPrice: orig, imageUrl: img ? 'assets/demo/' + img + '.jpg' : undefined,
+    distance: 0.4, building: bld, ago: ago * EXH, seller, apt: '—', verified: false, views: 18 + n * 4, wants: 2 + (n % 6),
+    description: desc, reach: 'viz', isMy: false, mine: false, boostedUntil: 0, example: true
+  });
+  const EXAMPLES = [
+    ex(1, 'aviso', '♻️', 'Coleta de lixo e reciclagem: dias e horários', null, 'd1', 0.3, 'Residencial Vila Serena • Administração', 2, 'Administração', 'Lixo comum às segundas, quartas e sextas, em sacos bem fechados. Recicláveis às terças e sábados, separados e limpos. Volumosos: avisar a portaria com 24h de antecedência.'),
+    ex(2, 'venda', '🧊', 'Geladeira Frost Free 375L, branca', 1100, 'd11', 0.5, 'Residencial Vila Serena • Bloco C', 7, 'Cláudia', 'Geladeira branca, 2 portas, funcionando perfeitamente. Motivo da venda: mudança. Retirada no condomínio, com horário combinado.', 2300),
+    ex(3, 'aviso', '🤫', 'Horário de silêncio', null, 'd2', 0.3, 'Residencial Vila Serena • Administração', 5, 'Administração', 'O horário de silêncio vai das 22h às 7h. Evite som alto, festas e arrastar móveis. Se algo incomodar, converse primeiro com o vizinho e, se precisar, procure a portaria.'),
+    ex(4, 'venda', '👶', 'Carrinho de bebê com bebê conforto', 280, 'd12', 0.4, 'Residencial Vila Serena • Bloco 2', 12, 'Juliana', 'Carrinho 3 em 1 com bebê conforto, em ótimo estado. Acompanha capa de chuva.', 900),
+    ex(5, 'doacao', '📚', 'Estante de livros de madeira (doação)', 0, 'd14', 0.9, 'Residencial Vila Serena • Bloco A', 30, 'Helena', 'Estante de madeira com 5 prateleiras. Para retirar no condomínio, quem chegar primeiro.'),
+    ex(6, 'achado', '🔑', 'Controle de portão encontrado na garagem', null, 'd17', 0.4, 'Residencial Vila Serena • Portaria', 6, 'Portaria', 'Controle de portão preto encontrado na garagem. Quem perdeu pode retirar na portaria.'),
+    ex(7, 'curso', '🔤', 'Aulas de inglês para crianças', 70, 'd15', 0.6, 'Residencial Vila Serena • Bloco B', 36, 'Fernanda', 'Aulas em pequenos grupos, de 6 a 12 anos, duas vezes por semana, no salão de festas.'),
+    ex(8, 'venda', '🚲', 'Bicicleta infantil aro 16', 120, 'd13', 0.9, 'Residencial Vila Serena • Torre A', 22, 'André', 'Bicicleta infantil com rodinhas, pouco usada. Pneus novos.', 350),
+    ex(9, 'aviso', '🍖', 'Churrasqueira: regras e valores', null, 'd5', 0.3, 'Residencial Vila Serena • Área de lazer', 20, 'Administração', 'Reserva na portaria com até 7 dias de antecedência. Taxa de limpeza de R$ 60. Funciona até as 22h, com no máximo 15 pessoas. A churrasqueira deve ser entregue limpa.'),
+    ex(10, 'vaga', '🅿️', 'Vaga de garagem coberta para alugar', 180, 'd20', 0.7, 'Residencial Vila Serena • G1', 52, 'Roberto', 'Vaga coberta, fácil acesso, perto do elevador. Aluguel mensal.'),
+    ex(11, 'preciso', '🧹', 'Procuro faxineira 2x por semana', null, 'd16', 0.6, 'Residencial Vila Serena • Bloco A', 40, 'Paulo', 'Preciso de faxina completa duas vezes por semana, apartamento de 2 quartos. Indicações são bem-vindas.'),
+    ex(12, 'evento', '🥂', 'Confraternização de fim de ano', 0, 'd18', 0.3, 'Residencial Vila Serena • Salão de festas', 24, 'Administração', 'Venha celebrar com os vizinhos. Cada família leva um prato ou uma bebida. Crianças são bem-vindas.'),
+    ex(13, 'novidade', '🌱', 'Nova lixeira de recicláveis no térreo', null, 'd19', 0.9, 'Residencial Vila Serena • Térreo', 48, 'Administração', 'O térreo ganhou uma lixeira para recicláveis. Separe vidro, papel, plástico e metal.'),
+    ex(14, 'venda', '🛋️', 'Sofá 3 lugares retrátil, impecável', 400, null, 1.2, 'Residencial Vila Serena • Bloco B', 9, 'Patrícia', 'Sofá retrátil de 3 lugares, tecido cinza, sem manchas. Retirada no condomínio.', 900),
+    ex(15, 'venda', '🍳', 'Air fryer 5 litros', 180, null, 1.6, 'Residencial Vila Serena • Bloco 1', 20, 'Marcos', 'Air fryer pouco usada, com todos os acessórios e caixa original.', 420),
+    ex(16, 'achado', '🐶', 'Cachorro pequeno encontrado perto da piscina', null, null, 0.8, 'Residencial Vila Serena • Piscina', 3, 'Renata', 'Cachorro pequeno, caramelo, com coleira azul. Está com a portaria aguardando o dono.'),
+    ex(17, 'curso', '✂️', 'Manicure e pedicure em casa', 50, null, 1.4, 'Residencial Vila Serena • Bloco 3', 28, 'Daniela', 'Atendo no seu apartamento, com horário marcado. Material esterilizado.'),
+    ex(18, 'doacao', '🧸', 'Brinquedos infantis em bom estado (doação)', 0, null, 1.9, 'Residencial Vila Serena • Bloco A', 33, 'Luciana', 'Caixa com brinquedos de 2 a 6 anos. Para retirar no condomínio.'),
+    ex(19, 'curso', '🐕', 'Passeio com cães, manhã e tarde', 25, null, 2.2, 'Residencial Vila Serena • Torre B', 45, 'Rafael', 'Passeios de 30 minutos com fotos no final. Atendo moradores do condomínio e arredores.'),
+    ex(20, 'venda', '💻', 'Notebook usado, i5, 8GB, SSD 256', 1400, null, 2.5, 'Residencial Vila Serena • Bloco 3', 34, 'Thiago', 'Notebook em bom estado, bateria com boa duração, carregador original. Aceito ver o aparelho funcionando antes.', 2800)
+  ];
+  let exPatched = false;
+  function patchCloudEx() {
+    if (exPatched || !window.Cloud) return; exPatched = true;
+    ['view', 'want', 'report', 'vote', 'answer'].forEach(k => {
+      const f = Cloud[k]; if (typeof f !== 'function') return;
+      Cloud[k] = function (a, ...r) { const id = a && typeof a === 'object' ? (a.id || a.postId) : a; if (typeof id === 'string' && id.indexOf('ex') === 0) return; return f.apply(this, [a, ...r]); };
+    });
+  }
+  window.__ensureEx = function () {
+    if (window.DEMO || !window.CLOUD_ON || typeof S === 'undefined' || !S.posts) return;
+    patchCloudEx();
+    const has = S.posts.some(p => p.example), real = S.posts.filter(p => !p.example).length;
+    if (real >= EX_LIMIT) { if (has) S.posts = S.posts.filter(p => !p.example); return; }
+    if (!has) { const t = Date.now(); S.posts = S.posts.concat(EXAMPLES.map(p => ({ ...p, ts: t - p.ago, expiresAt: t + 30 * DAY }))); }
+  };
+  document.addEventListener('click', e => {
+    const t = e.target.closest('[data-whats],[data-report]'); if (!t) return;
+    const id = t.dataset.whats || t.dataset.report;
+    if (typeof id !== 'string' || id.indexOf('ex') !== 0) return;
+    e.stopImmediatePropagation(); e.preventDefault();
+    toast(t.dataset.whats ? 'Este é um anúncio de exemplo. Publique o seu para receber contatos de verdade!' : 'Este anúncio é de exemplo.');
+  }, true);
+  const _detailEx = window.detail;
+  window.detail = function () {
+    let h = _detailEx(); const p = S.posts.find(x => x.id === S.detail);
+    if (p && p.example) h = h.replace(/<button class="mapbtn"[\s\S]*?<\/button>/, '');
+    return h;
+  };
+
   /* ---------- estilos ---------- */
   const st = document.createElement('style');
   st.textContent = `
@@ -727,7 +785,7 @@
     const fresh = p.month === monthKey();
     return { tier: p.tier === 'anual' && p.until > Date.now() ? 'anual' : 'free', until: p.until || 0, month: monthKey(), ads: fresh ? (p.ads | 0) : 0, boosts: fresh ? (p.boosts | 0) : 0 };
   }
-  const APP_VERSION = '2026-11-07.63';
+  const APP_VERSION = '2026-11-13.64';
   window.APP_VERSION = APP_VERSION;
   const savePlan = p => store.set('plan', p);
   window.refundAd = () => { const w = wallet(); const p = plan(); if (p.ads > 0) { p.ads--; savePlan(p); } };
@@ -1397,6 +1455,7 @@
   });
   const _render = window.render;
   window.render = function () {
+    if (window.__ensureEx) __ensureEx();
     purgeExpired(); syncSponsors();
     const all = S.posts;
     S.posts = all.filter(p => !hiddenFor(p));

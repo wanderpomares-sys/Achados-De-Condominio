@@ -71,7 +71,7 @@ nav a{display:inline-block;margin:2px 10px 2px 0;font-size:14px}footer{max-width
 <li>Conteúdo que você publica: anúncios, fotos, descrições e preços.</li>
 <li>Conta Google (opcional): se você escolher entrar com o Google, usamos o seu e-mail e nome apenas para manter seu cadastro e seus anúncios ao trocar de aparelho.</li>
 <li>WhatsApp informado por quem anuncia, usado só para os vizinhos interessados falarem com o anunciante.</li>
-<li>Dados técnicos de uso, como identificador anônimo de sessão, para o app funcionar.</li>
+<li>Dados técnicos de uso, como identificador anônimo de sessão, para o app funcionar e para medir o uso de forma anônima (Google Analytics).</li>
 </ul>
 <h3>Para que usamos</h3>
 <ul><li>Mostrar seus anúncios aos vizinhos certos, avisar sobre vencimento de anúncios, aplicar o plano contratado, moderar o conteúdo e manter o app seguro.</li></ul>
@@ -79,6 +79,7 @@ nav a{display:inline-block;margin:2px 10px 2px 0;font-size:14px}footer{max-width
 <ul>
 <li><b>Outros moradores</b> veem o que você publica e o nome do seu condomínio, conforme o tipo de anúncio e a visibilidade escolhida. O contato é feito por WhatsApp, por iniciativa de quem tem interesse.</li>
 <li><b>Google (Firebase)</b>: armazena os dados do app e faz a autenticação anônima.</li>
+<li><b>Google Analytics</b>: usamos o Google Analytics para medir, de forma anônima, quantas pessoas abrem o app e de que tipo de aparelho e navegador (telas abertas, aplicativo instalado ou não). O Google recebe um identificador anônimo gerado no aparelho, com o endereço de internet (IP) anonimizado. Não enviamos seu nome, e-mail, apartamento, WhatsApp nem o conteúdo dos seus anúncios, e não ativamos sinais de publicidade do Google Analytics. O uso dos dados pelo Google segue a política do Google.</li>
 <li><b>Mercado Pago</b>: processa pagamentos. Não recebemos nem guardamos dados de cartão.</li>
 <li><b>Anúncios:</b> este site usa o Google AdSense. O Google e seus parceiros podem usar cookies e identificadores para exibir e medir anúncios. Você pode gerenciar a personalização de anúncios em <a href="https://adssettings.google.com" rel="noopener">adssettings.google.com</a> e saber mais em <a href="https://policies.google.com/technologies/ads" rel="noopener">policies.google.com/technologies/ads</a>.</li>
 </ul>
@@ -87,4 +88,24 @@ nav a{display:inline-block;margin:2px 10px 2px 0;font-size:14px}footer{max-width
 <p>Não vendemos seus dados pessoais.</p></section>
 </main>
 <footer>© Achados de Condomínios — Mogi das Cruzes (SP) · <a href="mailto:achadosdecondominios@gmail.com">achadosdecondominios@gmail.com</a> · <a href="/">Abrir o aplicativo</a></footer>
+<script>
+/* ===== Google Analytics (GA4) — medição anônima de uso, sempre ligada (descrita na Política de Privacidade).
+   Nunca envia nome, e-mail, apartamento, WhatsApp nem conteúdo de anúncios. page_location vai sem ?query e #hash. ===== */
+(function(){
+  var GA_ID = 'G-DQJZF2ZTJP';
+  if(!GA_ID) return;
+  window.dataLayer = window.dataLayer || [];
+  window.gtag = function(){ dataLayer.push(arguments); };
+  window.addEventListener('load', function(){
+    var sc = document.createElement('script'); sc.async = true;
+    sc.src = 'https://www.googletagmanager.com/gtag/js?id=' + GA_ID;
+    document.head.appendChild(sc);
+    gtag('js', new Date());
+    var standalone = (window.matchMedia && matchMedia('(display-mode: standalone)').matches) || navigator.standalone;
+    gtag('config', GA_ID, { anonymize_ip: true, allow_google_signals: false, allow_ad_personalization_signals: false,
+      page_location: location.origin + location.pathname, page_referrer: '',
+      user_properties: { modo: standalone ? 'app_instalado' : 'navegador' } });
+  });
+})();
+</script>
 </body></html>

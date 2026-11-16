@@ -990,5 +990,25 @@ if(S.push)simulatePush();
 </script>
 <script src="features.js"></script>
 <script src="cloud.js"></script>
+<script>
+/* ===== Google Analytics (GA4) — medição anônima de uso, sempre ligada (descrita na Política de Privacidade).
+   Nunca envia nome, e-mail, apartamento, WhatsApp nem conteúdo de anúncios. page_location vai sem ?query e #hash. ===== */
+(function(){
+  var GA_ID = 'G-DQJZF2ZTJP';
+  if(!GA_ID) return;
+  window.dataLayer = window.dataLayer || [];
+  window.gtag = function(){ dataLayer.push(arguments); };
+  window.addEventListener('load', function(){
+    var sc = document.createElement('script'); sc.async = true;
+    sc.src = 'https://www.googletagmanager.com/gtag/js?id=' + GA_ID;
+    document.head.appendChild(sc);
+    gtag('js', new Date());
+    var standalone = (window.matchMedia && matchMedia('(display-mode: standalone)').matches) || navigator.standalone;
+    gtag('config', GA_ID, { anonymize_ip: true, allow_google_signals: false, allow_ad_personalization_signals: false,
+      page_location: location.origin + location.pathname, page_referrer: '',
+      user_properties: { modo: standalone ? 'app_instalado' : 'navegador' } });
+  });
+})();
+</script>
 </body>
 </html>

@@ -1,0 +1,820 @@
+nome;endereco;bairro;cep;cidade;lat;lng
+Condomínio ****;Rua Alfredo Rebello Filho, 322;Alto;25959215;Teresópolis;-22.4167;-42.97822
+Condomínio ******;Rua Sao Francisco, 1.214;Fatima;25957152;Teresópolis;-22.4167;-42.97822
+Condomínio A Flor do Imbui;Estrada do Frase, 240;Parque Imbui;25970460;Teresópolis;-22.4167;-42.97822
+Condomínio Afonso Arinos;Rua Afonso Arinos, 111;Alto;25958280;Teresópolis;-22.4167;-42.97822
+Condomínio Aktuell;Rua Adhemar Rizzi Lippi, 1522;Alto;25961330;Teresópolis;-22.4167;-42.97822
+Condomínio Alphaville;Estrada do Arakem, 125;Granja Guarani;25960270;Teresópolis;-22.4167;-42.97822
+Condomínio Alto da Boa Vista;Rua B, 195;Tijuca;25975035;Teresópolis;-22.4167;-42.97822
+Condomínio Amag;Rua Rui Barbosa, 216;Varzea;25963090;Teresópolis;-22.4167;-42.97822
+Condomínio Antonio Santiago;Rua Cel Antonio Santiago, 172;Varzea;25963220;Teresópolis;-22.4167;-42.97822
+Condomínio Apart-hotel Village Teresopolis;Avenida Alberto Torres, 130;Alto;25964002;Teresópolis;-22.4167;-42.97822
+Condomínio Arboretto;Rua Tenente Luiz Meirelles, 1.125;Bom Retiro;25954000;Teresópolis;-22.4167;-42.97822
+Condomínio Associacao dos Proprietarios e Moradores do Liberty Green;Estrada Antonio Carvalho Ventura;Albuquerque;25977280;Teresópolis;-22.4167;-42.97822
+Condomínio Bairro Residencial Quinta de Santo Antonio;Estrada Rio Bahia;Prata;25980001;Teresópolis;-22.4167;-42.97822
+Condomínio Barbeita do Minho;Rua Augusto do Amaral Peixoto, 100;Alto;25961165;Teresópolis;-22.4167;-42.97822
+Condomínio Bekaa Premium Residence;Rua Sebastiao Lacerda, 1189;Alto;25961070;Teresópolis;-22.4167;-42.97822
+Condomínio Bela Vista;Rua Brasilia, 306;Santa Cecilia;25958410;Teresópolis;-22.4167;-42.97822
+Condomínio Boa Vista;Rua Cel Silvio Lisboa da Cunha, 455;Nossa Senhora de Fatima;25964340;Teresópolis;-22.4167;-42.97822
+Condomínio Bosque Pimenteiras;Rua Guandu, 445;Pimenteiras;25963620;Teresópolis;-22.416044;-42.984235
+Condomínio Bosque da Tijuca;Rua Raquel Rodrigues Oliveira, 475;Tijuca;25975510;Teresópolis;-22.4167;-42.97822
+Condomínio Camoati;Estrada Granja Floresta, 199;Parque do Imbui;25966100;Teresópolis;-22.4167;-42.97822
+Condomínio Campos Sales;Rua Campos Sales, 269;Bom Retiro;25954045;Teresópolis;-22.4167;-42.97822
+Condomínio Canoas;Avenida A, SN;Vale dos Ade Dentro;25964390;Teresópolis;-22.4167;-42.97822
+Condomínio Carlos Alberto Werneck;Rua Sao Francisco, 1154;Araras;25957002;Teresópolis;-22.4167;-42.97822
+Condomínio Casa Grande;Avenida Oliveira Botelho, 1075;Teresopolis;25961143;Teresópolis;-22.4167;-42.97822
+Condomínio Casa Nostra;Estrada Jose Gomes da Costa Junior, 1005;Golfe;25974000;Teresópolis;-22.4167;-42.97822
+Condomínio Casa da Fonte;Etr Jose Gomes da Costa Jr, 4471;Posse;25964390;Teresópolis;-22.4167;-42.97822
+Condomínio Casa da Posse;Rua das Figueiras, 201;Posse;25973290;Teresópolis;-22.4167;-42.97822
+Condomínio Casa da Serra;Rua Dr Antonio O Salazar, 400;Vila Mariana;25965060;Teresópolis;-22.4167;-42.97822
+Condomínio Cascata dos Amores;Rua Manoel Pires Domingues, 241;Cascata dos Amores;25961295;Teresópolis;-22.4167;-42.97822
+Condomínio Caxanga Hill;Rua Samuel Vieira, 600;Alto;25957195;Teresópolis;-22.4167;-42.97822
+Condomínio Central Park Teresopolis - Edificio Normandy;Rua Alberto Torres, 1019;Centro;25964002;Teresópolis;-22.4167;-42.97822
+Condomínio Ceu Mar;Rua Mello Franco, 380;Alto;25953000;Teresópolis;-22.4167;-42.97822
+Condomínio Chacara Casa Branca;Rua Yeda, 781;Tijuca;25975560;Teresópolis;-22.4167;-42.97822
+Condomínio Chamonix;Avenida Alberto Torres, 781;Alto;25964002;Teresópolis;-22.4167;-42.97822
+Condomínio Clube Vale da Serra;Santa Rita - 2 Distrito;Cruzeiro;25964390;Teresópolis;-22.4167;-42.97822
+Condomínio Colina das Acacias;Estrada da Pedra D' Agua, 885;Posse;25973670;Teresópolis;-22.4167;-42.97822
+Condomínio Cond.bloco B-5 do Conjunto Habit. Prof.carlos A.werneck;Rua Sao Francisco, 1174;Bairro de Fatima;25957002;Teresópolis;-22.4167;-42.97822
+Condomínio Condomino do Jardim Imbui;Estrada Parque do Imbui, 313;Jardim do Imbui;25973661;Teresópolis;-22.4167;-42.97822
+Condomínio Condomnio Greenwood Village;Estrada Antonio Ventura;Albuquerque;25975441;Teresópolis;-22.4167;-42.97822
+Condomínio Condomnio Le Jardin;Rua Sebastiao Lacerda, 953;Alto;25961070;Teresópolis;-22.4167;-42.97822
+Condomínio Condomnio Recanto Verde;Estrada Vereador Alfredo Ferreira, 716;Albuquerque;25977060;Teresópolis;-22.4167;-42.97822
+Condomínio Condomnio Santa Fe;Estrada Teresopolis Friburgo, Km 9,5;Albuquerque;25976440;Teresópolis;-22.4167;-42.97822
+Condomínio Condomnio do Bloco A4 do Conjunto Habitacional Professor Carlos Alberto Werneck;Rua Sao Francisco, 1136;Nossa Senhora de Fatima;25957151;Teresópolis;-22.4167;-42.97822
+Condomínio Condomnio do Edificio Cortina D' Ampezzo;Rua Joao Batista Pires, 98;Agrioes;25964390;Teresópolis;-22.4167;-42.97822
+Condomínio Condomnio do Edificio Laura Chabu;Avenida Delfim Moreira, 777;Varzea;25953230;Teresópolis;-22.4167;-42.97822
+Condomínio Condomonio Residencial Bosque das Pimenteiras I;Estrada das Pimenteiras, 2084;Pimenteiras;25963007;Teresópolis;-22.4167;-42.97822
+Condomínio Conj. Res. Prof. Carlos Alberto Werneck - Bloco Ii;Rua Sao Francisco, 1204;Fatima;25957152;Teresópolis;-22.4167;-42.97822
+Condomínio Conjunto Residencial Condominio Casa dos Arcos;Rua Coronel Borges, 209;Varzea;25976415;Teresópolis;-22.4167;-42.97822
+Condomínio Conjunto Residencial Jardim Iguacu;Rua Iguacu, 355;Inga;25961200;Teresópolis;-22.4167;-42.97822
+Condomínio Conjunto Residencial Manoel Lebrao Bloco Ii;Rua Manoel Lebrao, 400;Varzea;25953000;Teresópolis;-22.4167;-42.97822
+Condomínio Conjunto Residencial Solar da Amizade;Rua Flavio Bortoluze Souza, 413;Alto;25964390;Teresópolis;-22.4167;-42.97822
+Condomínio Costa Fernandes;Rua Francisco Sa, 163;Varzea;25953011;Teresópolis;-22.4167;-42.97822
+Condomínio Dallas Flat;Rua Alfredo Rebello Filho, 356;Alto;25959215;Teresópolis;-22.4167;-42.97822
+Condomínio Diamond;Rua Marechal Taumaturgo, 50;Taumaturgo;25964350;Teresópolis;-22.4167;-42.97822
+Condomínio Don Pepe;Etr Frazer, 90;Parque do Imbui;25964390;Teresópolis;-22.4167;-42.97822
+Condomínio Dona Candida;Rua Dona Candida, 132;Bom Retiro;25955000;Teresópolis;-22.4167;-42.97822
+Condomínio Ed Marques de Caxias Marq de Olinda Marq Tamandare;Rua Alfredo Rebello, 607080;Jd Cascata;25964390;Teresópolis;-22.4167;-42.97822
+Condomínio Edf. Arinos;Jose Elias Zaquem, 1105;Agrioes;25964390;Teresópolis;-22.4167;-42.97822
+Condomínio Edf. Cristal;Rua Estado de Israel, 110;Reta;25963030;Teresópolis;-22.4167;-42.97822
+Condomínio Edf. Fenicios;Jose Mendonca Clark, 105;Centro;25964390;Teresópolis;-22.4167;-42.97822
+Condomínio Edf. Lua Nova;Rua Estado de Israel, 135;Reta;25963030;Teresópolis;-22.4167;-42.97822
+Condomínio Edf. Soberbo;Rua Carmela Dutra, 871;Agrioes;25963140;Teresópolis;-22.4167;-42.97822
+Condomínio Edificio Agrioes;Rua Rui Barbosa, 611;Agrioes;25963090;Teresópolis;-22.4167;-42.97822
+Condomínio Edificio Alberto Guberman;Rua Helena Rebello Pereira, 35;Agrioes;25963230;Teresópolis;-22.4167;-42.97822
+Condomínio Edificio Alda Forster;Avenida Alberto Torres, 1400;Alto;25964002;Teresópolis;-22.4167;-42.97822
+Condomínio Edificio Amalia;Rua Coronel Antonio Santiag, 181;Agrioes;25963220;Teresópolis;-22.4167;-42.97822
+Condomínio Edificio Amazonas;Avenida Feliciano Sodre, 1082;Varzea;25963025;Teresópolis;-22.4167;-42.97822
+Condomínio Edificio Angela;Rua Tenente Luiz Meirelles, 145;Varzea;25955001;Teresópolis;-22.4167;-42.97822
+Condomínio Edificio Angelica;Rua Djalma Monteiro, 92;Varzea;25963170;Teresópolis;-22.4167;-42.97822
+Condomínio Edificio Aprisco;Rua Prefeito Sabastiao Teixeira, 700;Tijuca;25953200;Teresópolis;-22.4167;-42.97822
+Condomínio Edificio Arco Iris;Rua Mal Taumaturgo, 110;Alto;25964350;Teresópolis;-22.4167;-42.97822
+Condomínio Edificio Argeu Pereira da Silva;Rua Rui Barbosa, 184;Varzea;25963090;Teresópolis;-22.4167;-42.97822
+Condomínio Edificio Burity;Avenida Feliciano Sodre, 34;Centro;25963025;Teresópolis;-22.4167;-42.97822
+Condomínio Edificio Cardeal;Avenida Lucio Meira, 1050;Varzea;25953004;Teresópolis;-22.4167;-42.97822
+Condomínio Edificio Carmela Dutra;Rua Carmela Dutra, 411;Varzea;25963140;Teresópolis;-22.4167;-42.97822
+Condomínio Edificio Carmem Monteiro;Praca Baltazar da Silveira, 68;Varzea;25953190;Teresópolis;-22.4167;-42.97822
+Condomínio Edificio Centauro;Avenida Almirante Lucio Meira, 88;Varzea;25953000;Teresópolis;-22.4167;-42.97822
+Condomínio Edificio Centro Profissional Tulio Spector;Travessa Ranulfo Feo, 36;Varzea;25953650;Teresópolis;-22.4167;-42.97822
+Condomínio Edificio Cesar Augusto;Avenida Feliciano Sodre, 1008;Varzea;25963025;Teresópolis;-22.4167;-42.97822
+Condomínio Edificio Chale Panorama;Rua Carmem Gomes, 333;Panorama;25963200;Teresópolis;-22.4167;-42.97822
+Condomínio Edificio Cidade de Teresopolis;Rua Francisco Sa e Rua Duque de Caxias, 185 E;Varzea;25953011;Teresópolis;-22.4167;-42.97822
+Condomínio Edificio Cond S 04;Rua Alfredo Rebello, 190;Jardim Cascata;25964390;Teresópolis;-22.4167;-42.97822
+Condomínio Edificio Conde de Teresopolis;Avenida Feliciano Sodre, 648;Varzea;25963025;Teresópolis;-22.4167;-42.97822
+Condomínio Edificio Confianca;Rua Djalma Monteiro, 96;Varzea;25953170;Teresópolis;-22.4167;-42.97822
+Condomínio Edificio Conforto;Rua Mage, 55;Agrioes;25963050;Teresópolis;-22.4167;-42.97822
+Condomínio Edificio Conjunto Habitacional Professor Carlos Alberto Werneck;Rua Sao Francisco, 1144;Fatima;25957002;Teresópolis;-22.4167;-42.97822
+Condomínio Edificio Del Carmen;Rua Olegario Bernardes, 35;Varzea;25953600;Teresópolis;-22.4167;-42.97822
+Condomínio Edificio Del Rey;Avenida Alberto Torres, 770;Alto;25964002;Teresópolis;-22.4167;-42.97822
+Condomínio Edificio El Shadai;Rua Sao Francisco, 1194;Nossa Senhora de Fatima;25957152;Teresópolis;-22.4167;-42.97822
+Condomínio Edificio Elvira Helena;Avenida Feliciano Sodre, 1021;Varzea;25963025;Teresópolis;-22.4167;-42.97822
+Condomínio Edificio Florida;Rua dos Artistas, 42;Artistas;25976045;Teresópolis;-22.4167;-42.97822
+Condomínio Edificio Francisco Sa;Avenida Feliciano Sodre, 1221;Varzea;25963025;Teresópolis;-22.4167;-42.97822
+Condomínio Edificio Gaspar Lopes;Rua Paru, 300;Agrioes;25963002;Teresópolis;-22.4167;-42.97822
+Condomínio Edificio Gercy;Rua Armando Farjado, 277;Cascata Guarani;25963130;Teresópolis;-22.4167;-42.97822
+Condomínio Edificio Girassol;Avenida Almte Lucio Meira, 1170;Varzea;25953004;Teresópolis;-22.4167;-42.97822
+Condomínio Edificio Green View;Rua Diogo Jose Ponciano, 720;Alto;25961255;Teresópolis;-22.4167;-42.97822
+Condomínio Edificio Guanabara;Avenida Feliciano Sodre, 242;Varzea;25963025;Teresópolis;-22.4167;-42.97822
+Condomínio Edificio Haroldo Martins;Avenida Feliciano Sodre, 900;Varzea;25963025;Teresópolis;-22.4167;-42.97822
+Condomínio Edificio Heitor de Moura Estevao;Avenida Feliciano Sodre, 912;Varzea;25963025;Teresópolis;-22.4167;-42.97822
+Condomínio Edificio Isabela;Avenida Delfim Moreira, 1105;Varzea;25953230;Teresópolis;-22.4167;-42.97822
+Condomínio Edificio Ivan Soriano;Avenida Feliciano Sodre, 750;Varzea;25963025;Teresópolis;-22.4167;-42.97822
+Condomínio Edificio Jardim Cascata;Rua Alfredo Rebello, 260;Jardim Cascata;25964390;Teresópolis;-22.4167;-42.97822
+Condomínio Edificio Jardim Comary;Rua Mello Franco, 202;Alto;25961020;Teresópolis;-22.4167;-42.97822
+Condomínio Edificio Julio Rosa;Rua Amandio Caetano Pinto, 11;Tijuca;25975720;Teresópolis;-22.4167;-42.97822
+Condomínio Edificio Jupiter;Rua Djalma Monteiro, 134;Varzea;25963170;Teresópolis;-22.4167;-42.97822
+Condomínio Edificio Kharen Place;Avenida Feliciano Sodre, 864;Varzea;25953970;Teresópolis;-22.4167;-42.97822
+Condomínio Edificio Las Palmas;Rua Jose Mendonca Clark, 55;Varzea;25953560;Teresópolis;-22.4167;-42.97822
+Condomínio Edificio Laurice Guberman;Rua Sebastiao Teixeira, 142;Varzea;25953200;Teresópolis;-22.4167;-42.97822
+Condomínio Edificio Luiz Mendes;Avenida Delfim Moreira, 1330;Varzea;25953230;Teresópolis;-22.4167;-42.97822
+Condomínio Edificio Mabruk;Avenida Oliveira Botelho, 459;Alto;25961143;Teresópolis;-22.4167;-42.97822
+Condomínio Edificio Marcilan;Rua Manoel Lebrao, 555;Varzea;25964390;Teresópolis;-22.4167;-42.97822
+Condomínio Edificio Maria Canano Arbex;Rua Nilza Chiapeta Fadigas, 515;Varzea;25963150;Teresópolis;-22.4167;-42.97822
+Condomínio Edificio Maria Celia;Avenida Alberto Torres, 558;Alto;25964002;Teresópolis;-22.4167;-42.97822
+Condomínio Edificio Maria Eugenia;Rua Olegario Bernardes, 208;Varzea;25953600;Teresópolis;-22.4167;-42.97822
+Condomínio Edificio Mearim;Avenida Alberto Torres, 895;Alto;25964002;Teresópolis;-22.4167;-42.97822
+Condomínio Edificio Mercurio;Avenida Almte Lucio Meira, 170;Varzea;25953001;Teresópolis;-22.4167;-42.97822
+Condomínio Edificio Miguel Guberman;Rua Jose Mendonca Clarck, 115;Varzea;25953560;Teresópolis;-22.4167;-42.97822
+Condomínio Edificio Mirante de Teresopolis;Rua Paru, 58;Varzea;25963002;Teresópolis;-22.4167;-42.97822
+Condomínio Edificio Monte Sinai;Rua Vereador Jose Elias Zaquem, 637;Agrioes;25963412;Teresópolis;-22.4167;-42.97822
+Condomínio Edificio Neves;Rua Alfredo Rebello Filho, 366;Alto;25959215;Teresópolis;-22.4167;-42.97822
+Condomínio Edificio Nossa Senhora das Gracas;Rua Heitor de Moura Estevao, 66;Varzea;25953090;Teresópolis;-22.4167;-42.97822
+Condomínio Edificio Oasis;Rua Nova Friburgo, 285;Varzea;25963020;Teresópolis;-22.4167;-42.97822
+Condomínio Edificio Ouro Verde;Rua Rui Barbosa, 282;Agri0es;25959090;Teresópolis;-22.4167;-42.97822
+Condomínio Edificio Palacio das Rosas;Rua Paru, 360;Varzea;25963002;Teresópolis;-22.4167;-42.97822
+Condomínio Edificio Paradise;Rua Carmela Dutra, 815;Varzea;25963140;Teresópolis;-22.4167;-42.97822
+Condomínio Edificio Paraguassu;Rua Augusto do Amaral Peixoto N., 77;Alto;25961165;Teresópolis;-22.4167;-42.97822
+Condomínio Edificio Paraiso;Rua Augusto Amaral Peixoto, 260;Alto;25964390;Teresópolis;-22.4167;-42.97822
+Condomínio Edificio Paraiso Verde;Rua Sebastiao Lacerda, 1.509;Alto;25961070;Teresópolis;-22.4167;-42.97822
+Condomínio Edificio Pax;Avenida Oliveira Botelho, 501;Alto;25961143;Teresópolis;-22.4167;-42.97822
+Condomínio Edificio Pedra do Sino;Avenida Feliciano Sodre, 456;Varzea;25963025;Teresópolis;-22.4167;-42.97822
+Condomínio Edificio Ph;Avenida Feliciano Sodre, 684;Varzea;25963027;Teresópolis;-22.4167;-42.97822
+Condomínio Edificio Portal da Reta;Avenida Feliciano Sodre, 285;Varzea;25963025;Teresópolis;-22.4167;-42.97822
+Condomínio Edificio Portal da Serra;Rua Carmela Dutra, 410;Varzea;25963140;Teresópolis;-22.4167;-42.97822
+Condomínio Edificio Primavera;Rua Augusto Amaral Peixoto, 292;Alto;25964390;Teresópolis;-22.4167;-42.97822
+Condomínio Edificio Principado de Monaco;Rua Goncalo de Castro, 231;Alto;25960090;Teresópolis;-22.4167;-42.97822
+Condomínio Edificio Rainha Elizabeth;Rua Papa Pio Xii, 200;Jrd Cascata;25964330;Teresópolis;-22.4167;-42.97822
+Condomínio Edificio Regencia;Rua Mello Franco, 661;Alto;25960531;Teresópolis;-22.4167;-42.97822
+Condomínio Edificio Renata;Rua Muqui, 40;Varzea;25953680;Teresópolis;-22.4167;-42.97822
+Condomínio Edificio Residencial Barra;Rua das Paineiras, 1064;Paineiras;25965700;Teresópolis;-22.4167;-42.97822
+Condomínio Edificio Residencial Merim;Rua Sebastiao Lacerda, 834;Alto;25961070;Teresópolis;-22.4167;-42.97822
+Condomínio Edificio Rex;Rua Nova Friburgo, 150;Varzea;25963020;Teresópolis;-22.4167;-42.97822
+Condomínio Edificio Rio Grande;Rua Ferreira de Castro, 229;Varzea;25963010;Teresópolis;-22.4167;-42.97822
+Condomínio Edificio Rio Madeira;Avenida Alberto Torres, 1105;Alto;25964002;Teresópolis;-22.4167;-42.97822
+Condomínio Edificio Rodrigo Cesar;Rua Carmela Dutra, 99;Agrioes;25963140;Teresópolis;-22.4167;-42.97822
+Condomínio Edificio Rosangela;Rua Djalma Monteiro, 20;Varzea;25963170;Teresópolis;-22.4167;-42.97822
+Condomínio Edificio Saint Tropez;Rua Ferreira de Castro, 86;Agrioes;25963010;Teresópolis;-22.4167;-42.97822
+Condomínio Edificio San Diego;Avenida Alberto Torres, 200;Alto;25964002;Teresópolis;-22.4167;-42.97822
+Condomínio Edificio Santo Antonio Alto;Rua Goncalo de Castro¨, 320;Alto;25960090;Teresópolis;-22.4167;-42.97822
+Condomínio Edificio Santorini;Rua Paru, 278;Agrioes;25963002;Teresópolis;-22.4167;-42.97822
+Condomínio Edificio Sao Francisco;Avenida J J de Araujo Regadas, 49;Varzea|;25953040;Teresópolis;-22.4167;-42.97822
+Condomínio Edificio Sao Mamede;Rua Benigno Hermida, 61;Vale do Paraiso;25976255;Teresópolis;-22.4167;-42.97822
+Condomínio Edificio Sao Matheus;Rua Coronel Borges, 180;Artistas;25976415;Teresópolis;-22.4167;-42.97822
+Condomínio Edificio Serra Azul;Rua Mello Franco, 580;Alto;25961020;Teresópolis;-22.4167;-42.97822
+Condomínio Edificio Serra Verde;Rua Paranapanema, 261;Agrioes;25963070;Teresópolis;-22.4167;-42.97822
+Condomínio Edificio Sion;Rua Carmela Dutra, 835;Varzea;25953600;Teresópolis;-22.4167;-42.97822
+Condomínio Edificio Solar Itapicuru;Rua Heitor de Moura Estevao, 471;Varzea;25953000;Teresópolis;-22.4167;-42.97822
+Condomínio Edificio Solar da Serra;Rua Jose Mendonca Clarck, 40;Varzea;25953560;Teresópolis;-22.4167;-42.97822
+Condomínio Edificio Solar da Tijuca;Rua Armando Rosa, 67;Tijuca;25975760;Teresópolis;-22.4167;-42.97822
+Condomínio Edificio Solar das Hortensias;Rua Carmela Dutra, 400;Varzea;25963140;Teresópolis;-22.4167;-42.97822
+Condomínio Edificio Solar das Safiras;Rua Carmela Dutra, 619;Agrioes;25963140;Teresópolis;-22.4167;-42.97822
+Condomínio Edificio Solar das Turmalinas;Rua Paru, 238;Agrioes;25963002;Teresópolis;-22.4167;-42.97822
+Condomínio Edificio Stella Polaris;Rua Taquari, 40;Varzea;25963100;Teresópolis;-22.4167;-42.97822
+Condomínio Edificio Studio;Praca John Fitzgerald Kennedy, 30;Santa Cecilia;25961160;Teresópolis;-22.4167;-42.97822
+Condomínio Edificio Sumare;Rua Sebastiao Lacerda, 1213;Alto;25961070;Teresópolis;-22.4167;-42.97822
+Condomínio Edificio Suzana;Rua Emile Ducumunn, 85;Varzea;25953050;Teresópolis;-22.4167;-42.97822
+Condomínio Edificio Torre de Lapela;Rua Ivai, 91;Santa Cecilia;25961340;Teresópolis;-22.4167;-42.97822
+Condomínio Edificio Tupinambas;Rua Tupinambas, 25;Meudon;25954250;Teresópolis;-22.4167;-42.97822
+Condomínio Edificio Varandas do Alto;Rua Mello Franco, 1555;Alto;25961020;Teresópolis;-22.4167;-42.97822
+Condomínio Edificio Varzea;Rua Edmundo Bittencourt, 34;Varzea;25953030;Teresópolis;-22.4167;-42.97822
+Condomínio Edificio Varzea Palace;Avenida Almte Lucio Meira, 625;Varzea;25953003;Teresópolis;-22.4167;-42.97822
+Condomínio Edificio Vermont Residences;Avenida Alfredo Rebello, 225;Jardim Cascata;25963030;Teresópolis;-22.4167;-42.97822
+Condomínio Edificio Versatile Residence;Rua Nova Friburgo, 109;Varzea;25963020;Teresópolis;-22.4167;-42.97822
+Condomínio Edificio Vila Real;Avenida Oliveira Botelho, 695;Alto;25961143;Teresópolis;-22.4167;-42.97822
+Condomínio Edificio Virginia Jahara;Rua Coronel Claussen, 15;Varzea;25953470;Teresópolis;-22.4167;-42.97822
+Condomínio Edificio Vitoria;Avenida J. J. de Araujo Regadas, 142;Centro;25953040;Teresópolis;-22.4167;-42.97822
+Condomínio Edificio Vivenda de Taumaturgo;Rua Marechal Taumaturgo, 120;Taumaturgo;25964350;Teresópolis;-22.4167;-42.97822
+Condomínio Eng Joao Americo Gentile de Carvalho Mello;Rua Flavio Bortoluzi de Souza, 258;Alto;25959139;Teresópolis;-22.4167;-42.97822
+Condomínio Engenheiro Sydney M.g. dos Santos;Rua Hidegardo de Noronha, 1.514;Alto;25961260;Teresópolis;-22.4167;-42.97822
+Condomínio Estancia Del Sol;Estrada Doutor Rogerio de Moura Estevao, 3600;Albuquerque;25976440;Teresópolis;-22.4167;-42.97822
+Condomínio Fazenda da Paz;Estrada Jose Gomes da Costa Junior, 3556;Posse;25973003;Teresópolis;-22.4167;-42.97822
+Condomínio Fazenda das Pedras;Rua Carlos Guimaraes;Vargem Grande;25975441;Teresópolis;-22.4167;-42.97822
+Condomínio Fonte Santa Helena;Estrada Jose Gomes da Costa Jr, 2600;Posse;25964390;Teresópolis;-22.4167;-42.97822
+Condomínio Green Hills;Entrada Antonio Carvalho Ventura, 25;Albuquerque;25977280;Teresópolis;-22.4167;-42.97822
+Condomínio Green Life Residence;Rua Joao Baptista Vaz, 141;Santa Cecilia;25961355;Teresópolis;-22.4167;-42.97822
+Condomínio Green Park Residences;Rua Carlos Smille, 97;Soberbo;25960580;Teresópolis;-22.4167;-42.97822
+Condomínio Green Village;Estrada Teresopolis-itaipava, 3003;Quebra-frascos;25966200;Teresópolis;-22.4167;-42.97822
+Condomínio Hilea Residencias;Rua Jose Janotti Primo, 743;Iucas;25964200;Teresópolis;-22.4167;-42.97822
+Condomínio Horizontal Cabanas;Rua Jose Maria A Regadas, 200;Ermitagem;25964390;Teresópolis;-22.4167;-42.97822
+Condomínio Horizontal Chale;Rua Pres Castelo Branco, 233;Centro;25964120;Teresópolis;-22.4167;-42.97822
+Condomínio Horizontal Comari;Rua Carlos Guinle, 100;Alto;25958400;Teresópolis;-22.4167;-42.97822
+Condomínio Imbui Houses I;Estrada das Raposas, 251;Parque Imbui;25970700;Teresópolis;-22.4167;-42.97822
+Condomínio Imbui Residences I;Estrada Circuito da Gameleira, 1200;Parque do Imbui;25970390;Teresópolis;-22.4167;-42.97822
+Condomínio Integrado Mamore;Rua Mamore, 613;Alto;25964390;Teresópolis;-22.4167;-42.97822
+Condomínio Jaguaquara;Rua Regina de Morais, 100;Barra do Imbui;25965340;Teresópolis;-22.4167;-42.97822
+Condomínio Jardim;Rua Carmela Dutra, 377;Agrioes;25963140;Teresópolis;-22.4167;-42.97822
+Condomínio Jardim Pinheiro;Rua Jose Rebello, 665;Barra do Imbui;25965270;Teresópolis;-22.4167;-42.97822
+Condomínio Jardim do Alto;Rua Ernesto da Silveira, 301;Jardim do Alto;25964390;Teresópolis;-22.4167;-42.97822
+Condomínio Jardim do Eden;Rua Marechal Taumaturgo, 165;Taumaturgo;25964350;Teresópolis;-22.4167;-42.97822
+Condomínio Jardins da Serra Village;Rua Viriato Correia, 441;Ermitage;25975540;Teresópolis;-22.4167;-42.97822
+Condomínio Jardins da Tijuca;Rua Yeda, 210;Tijuca;25975560;Teresópolis;-22.4167;-42.97822
+Condomínio Jurua e Assai;Rua Goncalo de Castro, 470;Alto;25960090;Teresópolis;-22.4167;-42.97822
+Condomínio Kalipal;Rua Estrada da Posse;Posse;25973740;Teresópolis;-22.4167;-42.97822
+Condomínio La Dolce Vita;Alameda Iracema, 688;Granja Guarani;25960410;Teresópolis;-22.4167;-42.97822
+Condomínio Ladeira do Sol;Rua do Sol, 401;Cascata do Imbui;25974210;Teresópolis;-22.4167;-42.97822
+Condomínio Le Refuge;Lote 29 - Parque da Varginha, LT 29;Canoas;25977000;Teresópolis;-22.4167;-42.97822
+Condomínio Loft One;Rua Adhemar Rizzi Lippi, 1375;Alto;25961330;Teresópolis;-22.4167;-42.97822
+Condomínio M. Madeiras;Avenida Delfim Moreira, 2051;Vale do Paraiso;25976016;Teresópolis;-22.4167;-42.97822
+Condomínio Maggiore Residencial;Avenida Alberto Torres, 1021;Alto;25964002;Teresópolis;-22.4167;-42.97822
+Condomínio Mirante do Alto;Rua Sebastiao Lacerda, 1.556;Alto;25961070;Teresópolis;-22.4167;-42.97822
+Condomínio Miss Brasil;Rua Edmundo Bittencourt, 139;Varzea;25953030;Teresópolis;-22.4167;-42.97822
+Condomínio Moncao do Minho;Rua Pref Sebastiao Teixeira, 457;Tijuca;25953200;Teresópolis;-22.4167;-42.97822
+Condomínio Morada Verde da Paz;Rua Sao Judas Tadeu, 88;Agrioes;25963380;Teresópolis;-22.4167;-42.97822
+Condomínio Morada dos Ferreiras;Rua Governador Roberto Silveira, 260;Sao Pedro;25955050;Teresópolis;-22.4167;-42.97822
+Condomínio Moradas da Colina;Rua Jequie, 15;Fazendinha;25955280;Teresópolis;-22.4167;-42.97822
+Condomínio Moradas do Bomsucesso;Estrada Rj 130;Bonsucesso;25995260;Teresópolis;-22.4167;-42.97822
+Condomínio Moradas do Comary I;Embaixador Altamir de Moura, 85;Carlos Guinle;25953000;Teresópolis;-22.4167;-42.97822
+Condomínio Moradas do Comary Ii e Iii;Rua Otavio de Gouvea Freire, 43/59;Carlos Guinle;25958340;Teresópolis;-22.4167;-42.97822
+Condomínio Moradas do Taumaturgo;Rua Barreto Dantas, 401;Taumaturgo;25964110;Teresópolis;-22.4167;-42.97822
+Condomínio Moradas do Vale;Estrada da Cascata, 247;Parque do Imbui;25970380;Teresópolis;-22.4167;-42.97822
+Condomínio Moradas dos Agrioes;Rua Paru, 331;Agrioes;25963002;Teresópolis;-22.4167;-42.97822
+Condomínio Multifamiliar Sweet Home Village;Alameda das Petunias, 449;Albuquerque;25977285;Teresópolis;-22.4167;-42.97822
+Condomínio Nova Primavera;Rua Tte Luiz Meireles, 2051;Meudon;25955001;Teresópolis;-22.4167;-42.97822
+Condomínio Novo Mundo;Rua Yeda, 783;Tijuca;25975560;Teresópolis;-22.4167;-42.97822
+Condomínio Oslo 50;Estrada Noruega, 50;Albuquerque;25977050;Teresópolis;-22.4167;-42.97822
+Condomínio Paje;Rua Alipio de Miranda, 121;Alto;25964040;Teresópolis;-22.4167;-42.97822
+Condomínio Palmira Moura;Rua Sloper, 279;Alto;25961271;Teresópolis;-22.4167;-42.97822
+Condomínio Paradiso;Estrada Isaias Vidal;Albuquerque;25976810;Teresópolis;-22.4167;-42.97822
+Condomínio Parque Residencial 1500;Rua Sebastiao Lacerda, 1500;Alto;25961070;Teresópolis;-22.4167;-42.97822
+Condomínio Parque Residencial Josinda Marques Teixeira;Rua Prefeito Sebastiao Teixeira, 145;Varzea;25953200;Teresópolis;-22.4167;-42.97822
+Condomínio Parque Residencial Panorama;Rua Oscar Jose da Silva, 300;Pimenteiras;25963690;Teresópolis;-22.4167;-42.97822
+Condomínio Parque Residencial Serra dos Orgaos;Avenida Presidente Roosevelt, 1665;Barra do Imbui;25965001;Teresópolis;-22.4167;-42.97822
+Condomínio Parque Residencial Village de Comary;Rua Afonso Arinos, 200;Granja Comary;25953000;Teresópolis;-22.4167;-42.97822
+Condomínio Parque das Araras;Rua Mello Franco, 1169;Alto;25961020;Teresópolis;-22.4167;-42.97822
+Condomínio Parque das Azaleias;Estrada Rio Bahia Br.116, KM 80;Ermitage;25975000;Teresópolis;;
+Condomínio Parque das Camelias;Estrada Rio Bahia Br.116, KM 80;Ermitage;25975000;Teresópolis;;
+Condomínio Parque das Hortencias;Estrada Rio Bahia Br.116, KM 80;Ermitage;25975000;Teresópolis;;
+Condomínio Parque das Margaridas;Estrada Rio Bahia Br.116, KM 80;Ermitage;25975000;Teresópolis;;
+Condomínio Parque das Orquideas;Estrada Rio Bahia Br.116, KM 80;Ermitage;25975000;Teresópolis;;
+Condomínio Parque das Rosas Clube Residencial;Rua Doutor Augusto Ricardo Teixeira Castilho, 300;Vargem Grande;25990120;Teresópolis;-22.4167;-42.97822
+Condomínio Parque dos Girassois;Estrada Rio Bahia Br.116, KM 80;Ermitage;25975000;Teresópolis;;
+Condomínio Parque dos Lirios;Estrada Rio Bahia Br.116, KM 80;Ermitage;25975000;Teresópolis;;
+Condomínio Pedra da Ermitagem;Rua Machado de Assis, 382;Ermitagem;25975460;Teresópolis;-22.4167;-42.97822
+Condomínio Pedra de Agrioes;Rua Jose Elias Zaquem, 601;Agrioes;25963402;Teresópolis;-22.4167;-42.97822
+Condomínio Pedro Kassouf;Rua Hildegardo de Noronha, 1205;Alto;25961260;Teresópolis;-22.4167;-42.97822
+Condomínio Pirai;Rua Tte Luis Meirelles, 2682;Meudom;25955001;Teresópolis;-22.4167;-42.97822
+Condomínio Podame do Minho;Rua Mello Franco, 1443;Alto;25960531;Teresópolis;-22.4167;-42.97822
+Condomínio Portal do Jacuy;Rua Jacuy, 422;Alto;25964390;Teresópolis;-22.4167;-42.97822
+Condomínio Portal do Quebra Frascos;Estrada Francisco Smolka, 200;Quebra Frascos;25966105;Teresópolis;-22.4167;-42.97822
+Condomínio Preludio.;Rua Marechal Taumaturgo, 205;Taumaturgo;25964350;Teresópolis;-22.4167;-42.97822
+Condomínio Premier Vargem Grande;Estrada Diogenes Pedro da Costa, 234;Vargem Grande;25990110;Teresópolis;-22.4167;-42.97822
+Condomínio Professor Carlos Alberto Werneck;Rua Sao Francisco, 1164;Fatima;25957002;Teresópolis;-22.4167;-42.97822
+Condomínio Professora Edite Machado Alves;Rua Augusto do Amaral Peixoto, 90;Alto;25961165;Teresópolis;-22.4167;-42.97822
+Condomínio Quatro Estacoes.;Rua Guimaraes Rosa, 99;Ermitage;25975380;Teresópolis;-22.4167;-42.97822
+Condomínio Real Engenho;Rua Alfredo Rebello Filho, 376;Alto;25959215;Teresópolis;-22.4167;-42.97822
+Condomínio Rebello de Castro;Rua Arnaldo Rizzi Lippi, 151;Parque Sao Luiz;25953250;Teresópolis;-22.4167;-42.97822
+Condomínio Recanto Conjunto Residencial;Rua Cel Silvio Lisboa da Cunha, 75;Alto;25964340;Teresópolis;-22.4167;-42.97822
+Condomínio Recanto da Cascata;Rua Manoel Pires Domingues, 699;Cascatas do Amores;25961295;Teresópolis;-22.4167;-42.97822
+Condomínio Recanto da Quinta;Rua Dolores Duran, 350;Quinta da Barra;25965530;Teresópolis;-22.4167;-42.97822
+Condomínio Recanto das Araucarias;Etr Teresopolis Friburgo, KM/13;Centro;25975442;Teresópolis;-22.4167;-42.97822
+Condomínio Recanto das Montanhas;Estrada Casemiro Bussinger, 188;Albuquerque;25976510;Teresópolis;-22.4167;-42.97822
+Condomínio Recanto das Pedras;Rua Ademar Rizzi Lippi, 1247;Alto;25964390;Teresópolis;-22.4167;-42.97822
+Condomínio Recanto das Pimenteiras Ii;Estrada das Pimenteiras, 2400;Pimenteiras;25963007;Teresópolis;-22.4167;-42.97822
+Condomínio Recanto das Pimenteiras Iii;Alameda Monte Castelo, 182;Quebra Frascos;25966252;Teresópolis;-22.4167;-42.97822
+Condomínio Recanto de Araras;Rua Paraiba, 59;Araras;25957265;Teresópolis;-22.4167;-42.97822
+Condomínio Recanto do Alto;Rua Alfredo Rebello Filho, 478;Alto;25960011;Teresópolis;-22.4167;-42.97822
+Condomínio Recanto dos Artistas;Alameda Euclydes Cotrim, 136;Vale do Paraiso;25976187;Teresópolis;-22.4167;-42.97822
+Condomínio Recanto dos Bangalos;Rua Sloper, 880;Alto;25959311;Teresópolis;-22.4167;-42.97822
+Condomínio Recanto dos Passaros I;Estrada Circuito da Gameleira, 46;Parque do Imbui;25970390;Teresópolis;-22.4167;-42.97822
+Condomínio Recanto dos Passaros Ii;Estrada Circuito da Gameleira, 80;Parque do Imbui;25970390;Teresópolis;-22.4167;-42.97822
+Condomínio Refugio Alpino;Alameda Jacauna, 160;Granja Guarany;25960420;Teresópolis;-22.4167;-42.97822
+Condomínio Refugio da Serra;Estrada Parque do Imbui, 343;Parque do Imbui;25973661;Teresópolis;-22.4167;-42.97822
+Condomínio Res. Reserva do Bosque;Estrada Doutor Rogerio de Moura Estevao, 109;Prata;25975440;Teresópolis;-22.4167;-42.97822
+Condomínio Reserva do Alto;Rua Diogo Jose Ponciano, 879;Alto;25961255;Teresópolis;-22.4167;-42.97822
+Condomínio Reserva do Vale I;Estrada Antonio Carvalho Ventura, 1800;Albuquerque;25977280;Teresópolis;-22.4167;-42.97822
+Condomínio Reserva do Vale Ii;Estrada Antonio Carvalho Ventura;Albuquerque;25977280;Teresópolis;-22.4167;-42.97822
+Condomínio Resid. Jardins de Monet;Rua Alfredo Rebello Filho, 1068;Alto;25961150;Teresópolis;-22.4167;-42.97822
+Condomínio Residence Mavis;Rua Manuel Jose Lebrao, 914;Varzea;25976025;Teresópolis;-22.4167;-42.97822
+Condomínio Residence Ville Leblon;Rua Irati, 72;Alto;25961170;Teresópolis;-22.4167;-42.97822
+Condomínio Residencial;Rua Paraguai, 131;Albuquerque;25977080;Teresópolis;-22.4167;-42.97822
+Condomínio Residencial 878;Rua Manoel Jose Lebrao, 878;Varzea;25976025;Teresópolis;-22.4167;-42.97822
+Condomínio Residencial Albuquerque;Estrada Doutor Rogerio de Moura Estevao, 7025;Albuquerque;25976440;Teresópolis;-22.4167;-42.97822
+Condomínio Residencial Alto da Boa Vista;Avenida Alberto Torres, 60;Alto;25964005;Teresópolis;-22.4167;-42.97822
+Condomínio Residencial Arakem;Estrada Arakem, 680;Granja Guarani;25960270;Teresópolis;-22.4167;-42.97822
+Condomínio Residencial Araras;Rua Alagoas, 311;Araras;25957010;Teresópolis;-22.4167;-42.97822
+Condomínio Residencial Araucaria;Rua Capitao Edmundo Nascimento, 360;Varzea;25953400;Teresópolis;-22.4167;-42.97822
+Condomínio Residencial Arvoredo;Rua dos Andarays, 99;Cascata do Imbui;25974100;Teresópolis;-22.4167;-42.97822
+Condomínio Residencial Azaleia;Rua Mauricio Werner, 89;Bom Retiro;25955620;Teresópolis;-22.4167;-42.97822
+Condomínio Residencial Beija Flor;Rua Regina de Morais, 702;Barra do Imbui;25965340;Teresópolis;-22.4167;-42.97822
+Condomínio Residencial Bella Vista;Rua Waldemar de Assis Ribeiro, 37;Cascata Guarani;25963110;Teresópolis;-22.4167;-42.97822
+Condomínio Residencial Bella Vista Ii;Rua Raymundo Correa, 55;Comary;25958375;Teresópolis;-22.4167;-42.97822
+Condomínio Residencial Bom Retiro;Rua Tenente Luiz Meirelles, 1847;Varzea;25955001;Teresópolis;-22.4167;-42.97822
+Condomínio Residencial Bom Retiro;Rua Heron Domingues, 85;Bom Retiro;25955570;Teresópolis;-22.4167;-42.97822
+Condomínio Residencial Bosque Serrano;Rua Guandu, 690;Pimenteiras;25963620;Teresópolis;-22.416044;-42.984235
+Condomínio Residencial Bosque das Araras;Rua Amazonas, 133;Alto;25957020;Teresópolis;-22.4167;-42.97822
+Condomínio Residencial Bougainville;Estrada J.a. Josetti, 665;Posse;25973420;Teresópolis;-22.4167;-42.97822
+Condomínio Residencial Casas do Golf;Rua Francisco Lisboa, 1600;Golf;25966061;Teresópolis;-22.4167;-42.97822
+Condomínio Residencial Cascata dos Amores;Rua Sebastiao Lacerda, 1401;Alto;25961070;Teresópolis;-22.4167;-42.97822
+Condomínio Residencial Caxanga I;Rua Cecilia Meirelles, 8;Santa Cecilia;25958520;Teresópolis;-22.4167;-42.97822
+Condomínio Residencial Chateau Alpin;Rua Yeda Rosa, 560;Tijuca;25975560;Teresópolis;-22.4167;-42.97822
+Condomínio Residencial Clara Kassouf;Rua Wancler Fonseca, 222;Agrioes;25963070;Teresópolis;-22.4167;-42.97822
+Condomínio Residencial Del Paraiso;Estrada de Sebastiana, S N;Segundo Distrito;25995420;Teresópolis;-22.4167;-42.97822
+Condomínio Residencial Don Antonio;Rua Regina de Moraes, 630;Barra do Imbui;25965340;Teresópolis;-22.4167;-42.97822
+Condomínio Residencial Estrela da Manha;Rua Padre Tintorio, 179;Varzea;25953360;Teresópolis;-22.4167;-42.97822
+Condomínio Residencial Excelence;Rua Sebastiao Lacerda, 919;Alto;25961070;Teresópolis;-22.4167;-42.97822
+Condomínio Residencial Firenze;Rua Rio Grande do Sul, 230;Barroso;25957185;Teresópolis;-22.4167;-42.97822
+Condomínio Residencial Flamboyant Comary;Rua Arthur Lundgrem, 401;Carlos Guinle;25958370;Teresópolis;-22.4167;-42.97822
+Condomínio Residencial Floresta Boa Vista;Estrada Jose Gomes da Costa Junior, 3663;Posse;25973003;Teresópolis;-22.4167;-42.97822
+Condomínio Residencial Fonte Judith;Rua Flavio Bortulozzi de Souza, 670;Alto;25964390;Teresópolis;-22.4167;-42.97822
+Condomínio Residencial Forever;Estrada Vargem Grande, 245;Vargem Grande;25990105;Teresópolis;-22.4167;-42.97822
+Condomínio Residencial Genesis;Avenida Alberto Torres, 1168;Alto;25964002;Teresópolis;-22.4167;-42.97822
+Condomínio Residencial George March;Rua George March, 98;Alto;25959145;Teresópolis;-22.4167;-42.97822
+Condomínio Residencial Golden Green;Estrada Doutor Rogerio de Moura Estevao, 4400;Albuquerque;25976440;Teresópolis;-22.4167;-42.97822
+Condomínio Residencial Golden Green;Rua Principal Abilio Augusto da Costa, 54;Varzea;25976485;Teresópolis;-22.4167;-42.97822
+Condomínio Residencial Golden Place;Rua Oscar Jose da Silva, 350;Jardim Pimenteiras;25963690;Teresópolis;-22.4167;-42.97822
+Condomínio Residencial Green Hill;Rua Jose Elias Zaquem, 1053;Agrioes;25963402;Teresópolis;-22.4167;-42.97822
+Condomínio Residencial Green Life Club;Estrada Santa Rita;Colonia Alpina;25980250;Teresópolis;-22.4167;-42.97822
+Condomínio Residencial Guaicurus;Rua Guaicurus, 271;Jardim Meudon;25954025;Teresópolis;-22.4167;-42.97822
+Condomínio Residencial Hill Valley;Rua Rui Barbosa, 330;Varzea;25963090;Teresópolis;-22.4167;-42.97822
+Condomínio Residencial Holanda;Estrada Holanda, 375;Albuquerque;25977125;Teresópolis;-22.4167;-42.97822
+Condomínio Residencial Ideale;Rua Aguapei, 76;Alto;25960630;Teresópolis;-22.4167;-42.97822
+Condomínio Residencial Infinity;Rua Manoel Jose Lebrao, 574;Varzea;25976025;Teresópolis;-22.4167;-42.97822
+Condomínio Residencial Isabel;Rua Conceicao, 119;Prata;25976150;Teresópolis;-22.4167;-42.97822
+Condomínio Residencial Isabela;Rua Mello Franco, 1379;Alto;25960531;Teresópolis;-22.4167;-42.97822
+Condomínio Residencial Jardim Pinheiros;Rua Olegario Bernardes, 322;Varzea;25953600;Teresópolis;-22.4167;-42.97822
+Condomínio Residencial Jardim Trombetas;Rua Oscar Jose da Silva, 185;Pimenteiras;25963690;Teresópolis;-22.4167;-42.97822
+Condomínio Residencial Jardim Trombetas;Rua Professora Carmen Gomes, 430;Panorama;25963200;Teresópolis;-22.4167;-42.97822
+Condomínio Residencial Jardins;Rua Coelho Neto, 478;Carlos Guinle;25958540;Teresópolis;-22.4167;-42.97822
+Condomínio Residencial Jardins da Colina;Rua Fileuterpe, 1010;Sao Pedro;25956005;Teresópolis;-22.4167;-42.97822
+Condomínio Residencial Jardins da Serra 01;Rua Viriato Correia, SN;Ermitage;25975540;Teresópolis;-22.4167;-42.97822
+Condomínio Residencial Jardins da Serra Exclusive;Rua Viriato Correia, 164;Ermitage;25975540;Teresópolis;-22.4167;-42.97822
+Condomínio Residencial Jardins da Serra Hills;Rua Viriato Correia, 224;Ermitage;25975540;Teresópolis;-22.4167;-42.97822
+Condomínio Residencial Jardins de Provence;Rua Alfredo Rebello Filho, 1.053;Alto;25961150;Teresópolis;-22.4167;-42.97822
+Condomínio Residencial Jardins do Inga;Rua Mario Freire, 145;Inga;25953000;Teresópolis;-22.4167;-42.97822
+Condomínio Residencial La Fontana;Rua Diogo Jose Ponciano, 768;Alto;25961255;Teresópolis;-22.4167;-42.97822
+Condomínio Residencial Le Brizze;Rua Hildegardo de Noronha, 839;Alto;25961260;Teresópolis;-22.4167;-42.97822
+Condomínio Residencial Lord Araras;Rua Bahia, 684;Araras;25957025;Teresópolis;-22.4167;-42.97822
+Condomínio Residencial Manaca da Serra;Rua Antonio Florencio de Queiroz, 201;Bom Retiro;25955560;Teresópolis;-22.4167;-42.97822
+Condomínio Residencial Manuela;Rua Ary Parreiras, 90;Varzea;25953080;Teresópolis;-22.4167;-42.97822
+Condomínio Residencial Mello Franco;Rua Mello Franco, 9;Alto;25961020;Teresópolis;-22.4167;-42.97822
+Condomínio Residencial Milano;Rua Tenente Luiz Meirelles, 2089;Bom Retiro;25955001;Teresópolis;-22.4167;-42.97822
+Condomínio Residencial Minha Casa;Rua Tomaz Coelho, 361;Granja Florestal;25974340;Teresópolis;-22.4167;-42.97822
+Condomínio Residencial Mirante Bom Retiro;Rua Campos Sales, 205;Bom Retiro;25954045;Teresópolis;-22.4167;-42.97822
+Condomínio Residencial Mirante das Araras;Rua Amapa, 227;Araras;25957015;Teresópolis;-22.4167;-42.97822
+Condomínio Residencial Mirante das Pimenteiras;Rua Doutor Oliveira, 1133;Barra do Imbui;25965176;Teresópolis;-22.4167;-42.97822
+Condomínio Residencial Mirante de Agrioes;Rua Professora Carmen Gomes, 1001;Agrioes;25964370;Teresópolis;-22.4167;-42.97822
+Condomínio Residencial Mirante dos Alpes;Rua Rodolfo Amoedo, 320;Golfe;25966155;Teresópolis;-22.4167;-42.97822
+Condomínio Residencial Montana;Alameda Tapuia, 80;Granja Guarany;25960590;Teresópolis;-22.4167;-42.97822
+Condomínio Residencial Moradas da Cascata;Estrada das Taboinhas, 211;Cascata dos Amores;25961000;Teresópolis;-22.4167;-42.97822
+Condomínio Residencial Moradas do Bom Retiro;Rua Coronel Senra, 320;Bom Retiro;25955690;Teresópolis;-22.4167;-42.97822
+Condomínio Residencial Novo Albuquerque;Estrada do Suspiro, 237;Albuquerque;25973830;Teresópolis;-22.4167;-42.97822
+Condomínio Residencial Novo Inga;Rua Omar Magalhaes, 295;Parque do Inga;25961245;Teresópolis;-22.4167;-42.97822
+Condomínio Residencial Parque da Colina;Rua Waldemar de Assis Ribeiro, 155;Cascata Guarany;25963110;Teresópolis;-22.4167;-42.97822
+Condomínio Residencial Peninsula Iberica;Rua Juruena, 123;Agrioes;25963040;Teresópolis;-22.4167;-42.97822
+Condomínio Residencial Pimenteiras;Etr das Pimenteiras, 24;Jd Pimenteiras;25963007;Teresópolis;-22.4167;-42.97822
+Condomínio Residencial Porta do Sol;Rua Mello Franco, 605;Alto;25960531;Teresópolis;-22.4167;-42.97822
+Condomínio Residencial Portal Serrano;Rua Wilhelm Cristian Kleme, 535;Ermitage;25975550;Teresópolis;-22.4167;-42.97822
+Condomínio Residencial Prime Hills;Rua Sebastiao Lacerda, 1070;Alto;25961070;Teresópolis;-22.4167;-42.97822
+Condomínio Residencial Quebra Frascos;Estrada Francisco Smolka, 640;Quebra Frascos;25966105;Teresópolis;-22.4167;-42.97822
+Condomínio Residencial Quintas de Agrioes;Rua Jose Janotti Primo, 495;Agrioes;25964200;Teresópolis;-22.4167;-42.97822
+Condomínio Residencial Recanto da Nogueira;Rua Adhemar Rizzi Lippi, 1180;Alto;25961330;Teresópolis;-22.4167;-42.97822
+Condomínio Residencial Recanto da Tijuca;Rua Padre Jose Anchieta, 296;Tijuca;25975365;Teresópolis;-22.4167;-42.97822
+Condomínio Residencial Recanto das Flores;Rua Padre Tintorio, 408;Varzea;25953380;Teresópolis;-22.4167;-42.97822
+Condomínio Residencial Recanto das Pimenteiras I;Estrada das Pimenteiras, 2188;Pimenteiras;25963007;Teresópolis;-22.4167;-42.97822
+Condomínio Residencial Recanto de Agrioes;Rua Jose Elias Zaquem, 630;Agrioes;25963411;Teresópolis;-22.4167;-42.97822
+Condomínio Residencial Recanto do Bom Retiro;Rua Conde do Pinhal, 100;Bom Retiro;25955660;Teresópolis;-22.4167;-42.97822
+Condomínio Residencial Recanto dos Alpes;Rua Mello Franco, 773;Alto;25961020;Teresópolis;-22.4167;-42.97822
+Condomínio Residencial Refugio da Serra;Rua Tenente Luiz Meirelles, 1649;Bom Retiro;25955001;Teresópolis;-22.4167;-42.97822
+Condomínio Residencial Reserva de Araras;Rua Para, 172;Araras;25957260;Teresópolis;-22.4167;-42.97822
+Condomínio Residencial Reserva do Marques;Rua Doutor Oliveira, 1342;Barra do Imbui;25965176;Teresópolis;-22.4167;-42.97822
+Condomínio Residencial Ricardo Nunes de Sa;Avenida das Hortencias, 430;Albuquerque;25977145;Teresópolis;-22.4167;-42.97822
+Condomínio Residencial San Diego;Rua Prefeito Sebastiao Teixeira, 380;Varzea;25953200;Teresópolis;-22.4167;-42.97822
+Condomínio Residencial San Martin Unique;Rua Helena Rebello Pereira, 99;Agrioes;25963230;Teresópolis;-22.4167;-42.97822
+Condomínio Residencial Santceloni;Rua Mage, 78;Agrioes;25963050;Teresópolis;-22.4167;-42.97822
+Condomínio Residencial Santorini;Rua Padre Tintorio, 366;Varzea;25953380;Teresópolis;-22.4167;-42.97822
+Condomínio Residencial Serra das Araras;Rua Acre, 100;Araras;25957005;Teresópolis;-22.4167;-42.97822
+Condomínio Residencial Serraparque;Rua Tenente Egon Prates, 306;Cascata Guarani;25963180;Teresópolis;-22.4167;-42.97822
+Condomínio Residencial Service Serrabella;Avenida Oliveira Botelho, 645;Alto;25961143;Teresópolis;-22.4167;-42.97822
+Condomínio Residencial Sol da Tijuca;Rua Roberto Rosa, 1050;Tijuca;25975530;Teresópolis;-22.4167;-42.97822
+Condomínio Residencial Solar Imbui;Estrada Jose Gomes da Costa Junior, 3533;Posse;25973003;Teresópolis;-22.4167;-42.97822
+Condomínio Residencial Solar Pimenteiras;Estrada das Pimenteiras, 500;Pimenteiras;25963007;Teresópolis;-22.4167;-42.97822
+Condomínio Residencial Spazio Tijuca;Rua Julio Rosa, 232;Tijuca;25975450;Teresópolis;-22.4167;-42.97822
+Condomínio Residencial Sunny Palace;Rua Alfredo Rebello Filho, 357;Alto;25959215;Teresópolis;-22.4167;-42.97822
+Condomínio Residencial Tangaras;Estrada Jose Gomes da Costa Junior, 3355;Posse;25973003;Teresópolis;-22.4167;-42.97822
+Condomínio Residencial Top Hill;Rua Adhemar Rizzi Lippi, 1409;Alto;25961330;Teresópolis;-22.4167;-42.97822
+Condomínio Residencial Toufic Kassouf;Rua Jorge Lossio, 795;Alto;25961265;Teresópolis;-22.4167;-42.97822
+Condomínio Residencial Trulli;Rua Ferreira de Castro, 161;Agrioes;25963010;Teresópolis;-22.4167;-42.97822
+Condomínio Residencial Vale da Harmonia;Rua Rui Ribeiro Couto, 560;Carlos Guinle;25958405;Teresópolis;-22.4167;-42.97822
+Condomínio Residencial Vale das Araras;Rua Bahia, 33;Araras;25957025;Teresópolis;-22.4167;-42.97822
+Condomínio Residencial Varandas Peneda-geres;Rua Alfredo Rebello Filho, 1.172;Alto;25959215;Teresópolis;-22.4167;-42.97822
+Condomínio Residencial Victoriano;Rua Julio Rosa, 89;Tijuca;25975450;Teresópolis;-22.4167;-42.97822
+Condomínio Residencial Vila Positano;Rua Amapa, CASA;Araras;25957015;Teresópolis;-22.4167;-42.97822
+Condomínio Residencial Vilage Tijuca;Rua Yeda, 735;Tijuca;25975560;Teresópolis;-22.4167;-42.97822
+Condomínio Residencial Villa do Spagnol;Rua Elviro Joaquim da Cunha, 131;Vargem Grande;25990170;Teresópolis;-22.4167;-42.97822
+Condomínio Residencial Village Alpina;Rua Eliseu Visconti, 450;Golf;25966050;Teresópolis;-22.4167;-42.97822
+Condomínio Residencial Village Genesis;Rua Para, 227;Araras;25957260;Teresópolis;-22.4167;-42.97822
+Condomínio Residencial Village Pinheiros;Rua Gustavo Perret, 530;Jardim Salaco;25974430;Teresópolis;-22.4167;-42.97822
+Condomínio Residencial Village da Fonte;Rua Doutor Oliveira, 1240;Barra do Imbui;25965176;Teresópolis;-22.4167;-42.97822
+Condomínio Residencial Vista Bela;Rua Pastor Virgilio de Miranda, 151;Panorama;25963370;Teresópolis;-22.4167;-42.97822
+Condomínio Residencial Vista das Montanhas;Rua Primeiro de Agosto, 505;Tijuca;25975500;Teresópolis;-22.4167;-42.97822
+Condomínio Residencial Vista do Bosque;Rua Guandu, 670;Pimenteiras;25963620;Teresópolis;-22.416044;-42.984235
+Condomínio Residencial Vitoria;Rua Aguapei, 110;Alto;25960630;Teresópolis;-22.4167;-42.97822
+Condomínio Residencial Vitoria Regia;Rodovia Teresopolis Itaipava, 485;Quebra Frascos;25964390;Teresópolis;-22.4167;-42.97822
+Condomínio Residencial Volendans Farm;Estrada Palmital;Vieira;25977400;Teresópolis;-22.4167;-42.97822
+Condomínio Residencial Yunam;Rua Guandu, 147;Pimenteiras;25963620;Teresópolis;-22.416044;-42.984235
+Condomínio Residencial do Lago;Alameda Bambuzal, 70;Posse;25973130;Teresópolis;-22.4167;-42.97822
+Condomínio Residencias Matisse;Rua Prefeito Sebastiao Teixeira, 548;Varzea;25953201;Teresópolis;-22.4167;-42.97822
+Condomínio Residencias Ville Du Montagne;Estrada Francisco Smolka, 2855;Quebra Frascos;25970000;Teresópolis;-22.4167;-42.97822
+Condomínio Retiro Feliz;Rua Ari Barroso, 110;Taumaturgo;25964390;Teresópolis;-22.4167;-42.97822
+Condomínio Riverside Residence;Estrada Francisco Smolka, 27;Quebra Frascos;25970000;Teresópolis;-22.4167;-42.97822
+Condomínio Rosa de Sarom;Rua Guimaraes Rosa, 200;Tijuca;25975380;Teresópolis;-22.4167;-42.97822
+Condomínio Roseiral;Estrada Adelmar Tavares, 100;Parque do Imbui;25970260;Teresópolis;-22.4167;-42.97822
+Condomínio Sandra;Rua Rui Barbosa, 720;Varzea;25963090;Teresópolis;-22.4167;-42.97822
+Condomínio Santa Catarina;Rua Santa Catarina ,, 373;Santa Cecilia;25958500;Teresópolis;-22.4167;-42.97822
+Condomínio Santa Monica;Rua Goitacases, 613;Jardim Meudon;25954020;Teresópolis;-22.4167;-42.97822
+Condomínio Savyon;Rua Cecilia Meirelles, 86;Barroso;25958520;Teresópolis;-22.4167;-42.97822
+Condomínio Serra Azul;Estrada das Magnolias, 333;Albuquerque;25976525;Teresópolis;-22.385258;-42.955106
+Condomínio Serra Green;Rua Paquequer, 106;Bom Retiro;25955650;Teresópolis;-22.4167;-42.97822
+Condomínio Serra Verde;Avenida Alberto Torres, 661;Alto;25964002;Teresópolis;-22.4167;-42.97822
+Condomínio Serra da Estrela;Rua Sebastiao Lacerda, 85;Alto;25961070;Teresópolis;-22.4167;-42.97822
+Condomínio Serra da Estrela Ii;Rua Adhemar Rizzi Lippi;Alto;25961330;Teresópolis;-22.4167;-42.97822
+Condomínio Serra e Mar;Avenida Feliciano Sodre, 53;Varzea;25963080;Teresópolis;-22.421236;-42.975895
+Condomínio Sierra Ville Residence;Rua Paquequer, 380;Bom Retiro;25955650;Teresópolis;-22.4167;-42.97822
+Condomínio Sitio Amendoeira;Estrada do Imbiu;Terceiro;25990250;Teresópolis;-22.4167;-42.97822
+Condomínio Sitio Bonfim;Etr Mulher de Pedra;Vargem Grande;25964390;Teresópolis;-22.4167;-42.97822
+Condomínio Sloper;Rua Sloper, 749;Alto;25959311;Teresópolis;-22.4167;-42.97822
+Condomínio Soberbo Green;Avenida Rotariana, 1611;Soberbo;25960602;Teresópolis;-22.4167;-42.97822
+Condomínio Sol Poente;Rua Diogenes Pedro da Costa, 333;Vargem Grande;25990110;Teresópolis;-22.4167;-42.97822
+Condomínio Solar Vile;Alameda Monte Castelo, 60;Quebra Frascos;25966252;Teresópolis;-22.4167;-42.97822
+Condomínio Solar das Montanhas;Rua Bahia, 620;Araras;25957025;Teresópolis;-22.4167;-42.97822
+Condomínio Solar das Pimenteiras;Rua Oscar Jose da Silva, 547;Pimenteiras;25963690;Teresópolis;-22.4167;-42.97822
+Condomínio Sun Valley;Rua Carlos Nioac, 250;Cascata do Imbui;25974140;Teresópolis;-22.4167;-42.97822
+Condomínio Sunflower Village;Rua Amapa, 185;Araras;25975015;Teresópolis;-22.4167;-42.97822
+Condomínio Teresopolis Trade Center;Avenida Delfim Moreira, 266;Varzea;25953230;Teresópolis;-22.4167;-42.97822
+Condomínio The City Homes;Rua Prefeito Sebastiao Teixeira, 112;Varzea;25953201;Teresópolis;-22.4167;-42.97822
+Condomínio The Garden;Rua Ministro Renault Leite, 601;Prata;25975437;Teresópolis;-22.4167;-42.97822
+Condomínio Toca da Raposa;Jardim Comary;Comary;25964390;Teresópolis;-22.4167;-42.97822
+Condomínio Top Green Residencias;Rua Hidelgardo Noronha, 1072;Alto;25964390;Teresópolis;-22.4167;-42.97822
+Condomínio Unique Agrioes;Rua Juruena, 275;Agrioes;25963040;Teresópolis;-22.4167;-42.97822
+Condomínio Vale Os Ipes;Estrada Manoel Correia da Silva Junior, 837;Vargem Grande;25990050;Teresópolis;-22.4167;-42.97822
+Condomínio Vale das Estrelas;Rua Panama, 390;Albuquerque;25977070;Teresópolis;-22.4167;-42.97822
+Condomínio Vale das Hortencias;Rua Ministro Renault Leite, 143;Prata;25975437;Teresópolis;-22.4167;-42.97822
+Condomínio Vale das Hortencias Tres;Estrada Doutor Rogerio de Moura Estevao, 820;Prata;25953000;Teresópolis;-22.4167;-42.97822
+Condomínio Vale das Nacoes Residencial;Estrada Diogenes Pedro da Costa, 2001;Vargem Grande;25990110;Teresópolis;-22.4167;-42.97822
+Condomínio Vale do Alamo;Rua Jacui, 245;Alto;25959195;Teresópolis;-22.4167;-42.97822
+Condomínio Vale do Sino;Estrada Jose Gomes da Costa Junior, 2665;Posse;25973003;Teresópolis;-22.4167;-42.97822
+Condomínio Vale do Sol;Rua Argentina, 941;Albuquerque;25977360;Teresópolis;-22.4167;-42.97822
+Condomínio Vale dos Esquilos;Estrada da Serrinha;Vargem Grande;25964390;Teresópolis;-22.4167;-42.97822
+Condomínio Vale dos Eucaliptos;Estrada Teresopolis Itaipava, 3000;Quebra Frascos;25964390;Teresópolis;-22.4167;-42.97822
+Condomínio Vale dos Passaros Residencial;Estrada Fazenda da Prata, 70;Prata;25976200;Teresópolis;-22.4167;-42.97822
+Condomínio Valenca do Minho;Rua Iraty, 100;Fatima;25964390;Teresópolis;-22.4167;-42.97822
+Condomínio Venda Nova I;Estrada Teresopolis-friburgo;Venda Nova;25976442;Teresópolis;-22.4167;-42.97822
+Condomínio Verde Vale;Alameda Euclydes Cotrim, 84;Vale do Paraiso;25976187;Teresópolis;-22.4167;-42.97822
+Condomínio Verdi;9a Rua Paru, 405;Agrioes;25963002;Teresópolis;-22.4167;-42.97822
+Condomínio Vereda das Araras I e Ii;Alameda Iracema, 515;Granja Guarani;25960410;Teresópolis;-22.4167;-42.97822
+Condomínio Viana do Castelo;Rua Mello Franco, 868;Alto;25960531;Teresópolis;-22.4167;-42.97822
+Condomínio Vibrant Agrioes;Rua Ipojuca, 500;Agrioes;25963330;Teresópolis;-22.4167;-42.97822
+Condomínio Vila Guarani;Rua Armando Fajardo, 400;Cascata Guarani;25963130;Teresópolis;-22.4167;-42.97822
+Condomínio Vila Residencial Guarany;Rua Gonalves Ledo, 207;Granja Guarany;25960360;Teresópolis;-22.4167;-42.97822
+Condomínio Villa da Serra;Rua Hildegard de Noronha, 886;Alto;25964390;Teresópolis;-22.4167;-42.97822
+Condomínio Village Bela Vista;Avenida Delfim Moreira, 2180;Vale do Paraiso;25976017;Teresópolis;-22.4167;-42.97822
+Condomínio Village Bom Retiro;Rua Conde do Pinhal, 77;Bom Retiro;25955660;Teresópolis;-22.4167;-42.97822
+Condomínio Village Bougainville;Estrada das Taboinhas, 973;Cascata dos Amores;25961001;Teresópolis;-22.4167;-42.97822
+Condomínio Village Caxanga;Rua Samuel Vieira;Barroso;25957195;Teresópolis;-22.4167;-42.97822
+Condomínio Village Flamboyant;Rua Manoel Jose Lebrao, 1000;Ermitage;25976025;Teresópolis;-22.4167;-42.97822
+Condomínio Village Giverny;Estrada Francisco Smolka, 1.420;Quebra Frascos;25966105;Teresópolis;-22.4167;-42.97822
+Condomínio Village Green;Rua Jose Janotti Primo, 990;Iucas;25964201;Teresópolis;-22.4167;-42.97822
+Condomínio Village Normandy;Alameda Iracema, 801;Granja Guarany;25960410;Teresópolis;-22.4167;-42.97822
+Condomínio Village Panorama;Rua Professora Carmem Gomes, 360;Panorama;25963200;Teresópolis;-22.4167;-42.97822
+Condomínio Village Parque do Imbui;Estrada Novo Circuito, 343;Parque do Imbui;25970600;Teresópolis;-22.4167;-42.97822
+Condomínio Village Suisse;Rua Goncalo de Castro,, 44;Alto;25960090;Teresópolis;-22.4167;-42.97822
+Condomínio Village da Colina;Rua Salvador de Mendonca, 150;Fazendinha;25955320;Teresópolis;-22.4167;-42.97822
+Condomínio Village das Iucas;Rua Capitao Julio Gameiro, 600;Iucas;25964230;Teresópolis;-22.4167;-42.97822
+Condomínio Village de Monte Carlo;Rua Elizeu Visconti, 300;Golfe;25966050;Teresópolis;-22.4167;-42.97822
+Condomínio Ville Neuve;Rua Manoel Jose Lebrao, 1219;Varzea;25975201;Teresópolis;-22.404765;-42.966648
+Condomínio Vista Bela;Avenida Delfim Moreira, 311;Varzea;25953230;Teresópolis;-22.4167;-42.97822
+Condomínio Vista Comary;Rua Roraima, 189;Caxanga;25957190;Teresópolis;-22.4167;-42.97822
+Condomínio Vista da Serra;Ramal Manoel de Abreu, 31;Parque Sao Luiz;25953330;Teresópolis;-22.4167;-42.97822
+Condomínio Vista da Serra;Estrada da Medalha Milagrosa, 106;Albuquerque;25977100;Teresópolis;-22.4167;-42.97822
+Condomínio Vista do Lago;Rua Samuel Vieira, 234;Barroso;25957195;Teresópolis;-22.4167;-42.97822
+Condomínio Vista do Paraiso;Rua Florentino de Paula, 359;Vale do Paraiso;25976185;Teresópolis;-22.4167;-42.97822
+Condomínio Vivenda Lirio dos Vales;Rua Augusto Ricardo Teixeira Castilho, 200;Vargem Grande;25990120;Teresópolis;-22.4167;-42.97822
+Condomínio Vivenda das Araras;Rua Pernambuco, 605;Araras;25958190;Teresópolis;-22.4167;-42.97822
+Condomínio Vivendas Comary;Rua Raimundo Correia, 70;Carlos Guinle;25958375;Teresópolis;-22.4167;-42.97822
+Condomínio Vivendas da Serra;Rua Samuel Vieira, 188;Araras;25957195;Teresópolis;-22.4167;-42.97822
+Condomínio Vivendas do Alto;Rua Goncalo de Castro, 541;Alto;25960090;Teresópolis;-22.4167;-42.97822
+Condomínio Vivendas do Alto Ii;Rua Cecilia Meirelles, 71;Alto;25958520;Teresópolis;-22.4167;-42.97822
+Condomínio Vuvendas Mitre;Rua Tenente Luis Meirelles, 2800;Bom Retiro;25964390;Teresópolis;-22.4167;-42.97822
+Condomínio Wolendans Farm;Lug Palmital;Vieira;25977400;Teresópolis;-22.4167;-42.97822
+Condomínio da Gleba V Em Comary;Rua Silva Ramos, 20;Comary;25958465;Teresópolis;-22.4167;-42.97822
+Condomínio de Telefonia Rural da Igrejinha;Rua Rei Alberto, 290;Centro;25953420;Teresópolis;-22.4167;-42.97822
+Condomínio do Bairro Residencial Paco de Sao Luiz;Estrada Francisco Smolka, 3500;Quebra Frascos;25966105;Teresópolis;-22.4167;-42.97822
+Condomínio do Bloco A 5 do Conjunto Habitacional Professor Carlos Alberto Werneck;Rua Sao Francisco, 1124;Nossa Senhora de Fatima;25957152;Teresópolis;-22.4167;-42.97822
+Condomínio do Centro Profissional Cabo Frio;Rua Edmundo Nascimento, 34;Varzea;25953030;Teresópolis;-22.4167;-42.97822
+Condomínio do Conjunto Parque Residencial Pousada;Rua Sao Judas Tadeu, 55;Agrioes;25963380;Teresópolis;-22.4167;-42.97822
+Condomínio do Conjunto Res Manoel Lebrao Partes Comuns;Rua Manoel Lebrao, 420;Varzea;25964390;Teresópolis;-22.4167;-42.97822
+Condomínio do Conjunto Residencial Parque Guinlem;Rua Pablo Picasso, 320;Comary;25959130;Teresópolis;-22.4167;-42.97822
+Condomínio do Conjunto Residencial Varzea;Rua Carmela Dutra, 861;Varzea;25963140;Teresópolis;-22.4167;-42.97822
+Condomínio do Ed Chalet;Rua Manoel Jose Lebrao, 651;Varzea;25976025;Teresópolis;-22.4167;-42.97822
+Condomínio do Ed Marco Central;Avenida Lucio Meira, 350;Varzea;25953001;Teresópolis;-22.4167;-42.97822
+Condomínio do Ed Roger de Souza Malhardes;Rua Fernando Martins, 118;Varzea;25953100;Teresópolis;-22.4167;-42.97822
+Condomínio do Ed. Davi Guberman;Rua Carmela Dutra, 425;Varzea;25963140;Teresópolis;-22.4167;-42.97822
+Condomínio do Ed. Miguel Guberman;Rua Jose Mendonca Clark, 115;Varzea;25953560;Teresópolis;-22.4167;-42.97822
+Condomínio do Ed. Sunny Place;Avenida Delfim Moreira, 1091;Centro;25953230;Teresópolis;-22.4167;-42.97822
+Condomínio do Edf. Belvedere;Avenida Alberto Torres, 10;Alto;25964002;Teresópolis;-22.4167;-42.97822
+Condomínio do Edf. Iberico;Avenida Presidente Roosevelt, 1260;Barra So Imbui;25965001;Teresópolis;-22.4167;-42.97822
+Condomínio do Edf. Vivenda da Serra;Rua Hildegard de Noronha, 888;Alto;25964390;Teresópolis;-22.4167;-42.97822
+Condomínio do Edficio Raio Azul;Rua Mage, 97;Reta;25963050;Teresópolis;-22.4167;-42.97822
+Condomínio do Edif. Bernardo Goncalves;Praca Higino da Silveira, 84;Alto;25961025;Teresópolis;-22.4167;-42.97822
+Condomínio do Edif. L'essence;Rua Alfredo Rebello, 195;Jardim Cascata;25964030;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio 28 de Maio;Rua Augusto Amaral Peixoto, 213;Alto;25964390;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Agrioes Living;Rua Coronel Antonio Santiago, 260;Agrioes;25963220;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Albatroz;Rua Melo Franco, 1460;Alto;25961020;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Alberto David Sion;Rua Coronel Borges, 89;Varzea;25976415;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Alberto Ribeiro;Rua Cel Silvio L da Cunha, 55;Taumaturgo;25964340;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Alberto Torres;Avenida Alberto Torres, 1135;Alto;25964002;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Alessandra;Rua Pref Sebastiao Teixeira, 274;Varzea;25953200;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Alessandra;Rua Tabeliao Luiz Bessa, 45;Vila Muqui;25953120;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Alfredo Rodrigues Junior;Avenida Delfim Moreira, 243;Varzea;25953233;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Alia;Rua Augusto Amaral Peixoto, 630;Alto;25960600;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Amadeus Flat Service;Rua Augusto do A Peixoto, 577;Alto;25964390;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Ana Luiza;Avenida Delfim Moreira, 708;Varzea;25953236;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Ana Nery;Rua Edmundo Bittencourt, 92;Varzea;25953030;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Angelina Biassi;Praca Higino da Silveira, 214;Alto;25961025;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Anita;Rua Mello Franco, 681;Alto;25961020;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Antonio Siqueira;Rua Alfredo Rebello Filho, 432;Alto;25959215;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Apa Blue;Rua Tiete, 293;Alto;25961110;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Arcos dos Agrioes;Rua Carmela Dutra, 123;Agrioes;25963140;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Athenas Residence;Rua Juruena, 335;Agrioes;25963040;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Atlantico;Rua Jorge Lossio, 310;Alto;25961265;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Banco Predial;Rua Francisco Sa, 131;Varzea;25953010;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Banerj;Rua Edmundo Bittencourt, 15;Varzea;25953030;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Barra;Avenida Presidente Roosevelt, 1272;Barra do Imbui;25965001;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Bel Cintia;Avenida Oliveira Botelho, 131;Alto;25961143;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Bel Vera;Avenida Oliveira Botelho, 141;Alto;25961143;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Bel-air;Rua Cel.silvio Lisboa da Cunha, 194;Taumaturgo;25964340;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Bela Vista;Avenida Delfim Moreira, 311;Varzea;25953230;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Bem Viver;Rua Edmundo Bittencourt, 70;Varzea;25953030;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Beverly Hills;Rua Carmela Dutra, 500;Agrioes;25953000;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Branca de Neve;Avenida Feliciano Sodre, 241;Varzea;25963025;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Brilhante;Rua Dr Aleixo, 120;Varzea;25953070;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Cedro do Libano;Rua Dr. Jose Mendonca Clark, 60;Varzea;25953560;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Celia;Rua Edmundo Bittencourt, 59;Varzea;25953030;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Central Parking;Rua Francisco Sa, 330;Varzea;25953010;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Century;Rua Rui Barbosa, 150;Varzea;25963090;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Chalet Sacre Coeur;Rua Candido Portinari, 660;Golf;25966035;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Chateau Du Fleurs;Rua Mello Franco, 1288;Alto;25961020;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Chateauneuf Du Pape;Rua Sebastiao Lacerda, 1235;Alto;25961070;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Cidade de Campos;Rua Jose Mendonca Clark, 130;Varzea;25953560;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Clayvert de Gusmao;Rua Paru, 310;Agrioes;25963002;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Clefer Center;Rua Francisco Sa, 336;Varzea;25953010;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Club Turismo Teresopolis;Avenida Feliciano Sodre, 396;Centro;25963025;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Coimbra;Rua Cel Borges, 45;Vale do Paraiso;25964390;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Colonial;Rua Pref Sebastiao Teixeira, 136;Varzea;25953200;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Columbia;Avenida Feliciano Sodre, 500;Varzea;25963025;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Comodoro;Avenida J J de Araujo Regadas, 210;Varzea;25953040;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Concordia;Rua Goncalo de Castro, 241;Alto;25960090;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Condor;Rua Melo Franco, 1510;Alto;25961020;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Contemporaneo;Rua Carmela Dutra, 167;Agrioes;25963140;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Copacabana;Rua Olegario Bernardes, 132;Varzea;25953600;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Cosenza;Rua Cel Silvio Lisboa Cunha, 243;Taumaturgo;25964340;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Costa Verde;Rua Carmela Dutra, 352;Agrioes;25963140;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio D Pedro;Rua Heitor de Moura Estevao, 395;Varzea;25953090;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Davi Guberman;Rua Carmela Dutra, 425;Agrioes;25963140;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Delfim Moreira;Avenida Feliciano Sodre, 587;Varzea;25963025;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Diniz Martins;Rua Tenente Luiz Meireles, 1049;Varzea;25953000;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Divan;Avenida Feliciano Sodre, 749;Varzea;25963025;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Dom Fain;Rua Mello Franco, 1195;Alto;25961020;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Dom Felipe;Rua Yeda Rosa, 528;Tijuca;25964390;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Dom Victor;Rua Juruena, 80;Agrioes;25963040;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Don Frederico;Avenida Delfim Moreira, 181;Varzea;25953233;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Dona Amelia;Rua Manoel Lebrao, 259;Varzea;25964390;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Dora;Rua Carmela Dutra, 432;Varzea;25963140;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Dreams;Rua Ferreira de Castro, 137;Agrioes;25963010;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Duque de Alba;Rua Augusto do Amaral Peixoto, 294;Alto;25961165;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Eden;Rua Jorge Lossio, 370;Alto;25961265;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Edith;Aven Oliveira Botelho, 120;Alto;25961143;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Elba;Rua Armando Farjado, 280;Cascata Guarani;25963130;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Elbim;Rua Alfredo Rebello Filho, 706;Alto;25959215;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Elza;Avenida Lucio Meira, 607;Varzea;25953006;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Emen;Rua Melo Franco, 701;Alto;25964390;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Ermindo Jose Pinheiro;Rua Travessa Portugal, 65;Varzea;25953660;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Estoril;Rua Edmundo Bittencourt, 71;Varzea;25953030;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Estoril da Serra;Rua Manoel Jose Lebrao, 1321;Varzea;25975202;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Federal;Avenida Delfim Moreira, 394;Varzea;25953230;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Feliciano Sodre 266;Avenida Feliciano Sodre, 266;Varzea;25963081;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Firenze;Rua Dr Alipio de Miranda, 145;Taumaturgo Alto;25964040;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Fit Agrioes;Rua Jari, 10;Panorama;25963340;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Flor dos Alpes;Rua Carmela Dutra, 365;Varzea;25963140;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Four Seasons;Rua Ferreira de Castro, 79;Agrioes;25963010;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Freitas Nobre;Rua Rui Barbosa, 136;Varzea;25963090;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Galeria Sao Pedro;Rua Duque de Caxias, 115;Varzea;25953390;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Galil;Rua Augusto do A Peixoto, 647;Alto;25964390;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Garagem Teresopolis;Rua Manuel Madruga, 10;Varzea;25953060;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Geny;Rua Armando Fajardo, 301;Cascata Guarany;25963130;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Giacomo Puccini;Prc Higino da Silveira N 40, 40;Alto;25964390;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Gilda;Rua Rui Barbosa, 310;Varzea;25963090;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Golf Residence;Avenida Presidente Roosevelt, 2135;Golfe;25966001;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Gran Serrano;Rua Rui Barbosa, 645;Varzea;25963090;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Granado;Avenida Lucio Meira, 522;Varzea;25953003;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Green Park;Estrada das Pimenteiras, 2.002;Pimenteiras;25963007;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Guanabarino;Avenida Oliveira Botelho, 100;Alto;25961143;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Guarany;Rua Jose Elias Zaquem, 930;Agrioes;25963402;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Henry;Rua Cel Antonio Santiago, 65;Agrioes;25963220;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio High Windows;Avenida Feliciano Sodre, 800;Varzea;25963027;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Higino I;Rua Jorge Lossio, 405;Alto;25961265;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Horizonte Azul;Avenida Alberto Torres, 162;Alto;25964002;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Iberia;Avenida Oliveira Botelho, 511;Alto;25961143;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Icarai;Rua Barreto Dantas, 145;Taumaturgo;25964110;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Ida Guberman;Rua Francisco Sa, 71;Varzea;25953011;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Idalina Figueiredo;Avenida Alberto Torres, 1218;Alto;25964002;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Ilha Terceira;Rua Joao Batista Vaz, 78;Alto;25964390;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Imperial;Rua Duque de Caxias, 82;Varzea;25953390;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Inaza e Mansur Habib;Rua Manoel Jose Lebrao, 1233;Ermitagem;25975201;Teresópolis;;
+Condomínio do Edificio Ipanema;Rua Olegario Bernardes, 150;Varzea;25953600;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Ipe;Avenida Feliciano Sodre, 654;Reta;25963025;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Ita;Rua Estado de Israel, 111;Varzea;25963030;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Itapemirim;Avenida Alberto Torres, 865;Alto;25964002;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Jacyra;Rua Monte Libano, 131;Varzea;25953020;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Japura;Rua Desemb Barreto Dantas, 36;Taumaturgo;25964110;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Jardim;Rua Augusto Amaral Peixoto, 277;Alto;25964390;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Jardim Europa;Avenida Lucio Meira, 135;Varzea;25953000;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Jardim Guapore;Rua Guapore, 147;Alto;25961335;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Jardim de Allah;Rua Carmela Dutra, 444;Agrioes;25963140;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Jardim do Alto;Avenida Alberto Torres, 444;Alto;25964002;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Jardins de Braga;Rua Maranhao, 244;Alto;25961080;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Jocelyn Martins;Rua Paru, 351;Agrioes;25963002;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Jose Augusto Dias;Avenida Alexandre Fleming, 90;Varzea;25976065;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Joy Living;Rua Coronel Borges, 252;Artistas;25976415;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Juliana;Avenida Alberto Torres, 312;Fatima;25964002;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Julio Cesar;Avenida Lucio Meira, 65;Varzea;25953000;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Julio Gomes Brizido Batista;Avenida Oliveira Botelho, 499;Alto;25961145;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Julio Muniz;Avenida Feliciano Sodre, 1054;Varzea;25963025;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Kimus Dias;Rua Jose Elias Zaquem, 1027;Agrioes;25963402;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio La Brique;Rua Vereador Jose Elias Zaquem, 517;Agrioes;25964400;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Le Blanc;Rua Carmela Dutra, 73;Agrioes;25963140;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Les Roches Fleuries;Rua Desembargador B Dantas, 55;Alto;25964110;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Licio Vivas;Rua Augusto Amaral Peixoto, 222;Alto;25961165;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Lucio Meira 100;Avenida Lucio Meira, 100;Varzea;25953000;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Luiza;Rua Desembargador Barreto Dantas, 161;Taumaturgo;25964110;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Luiza;Avenida Lucio Meira, 128;Varzea;25953003;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio M Soares;Rua Rui Barbosa, 608;Varzea;25963090;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Magnum;Rua Joao Batista Pires, 91;Agrioes;25963003;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Maison Daniselle;Avenida Oliveira Botelho, 436;Alto;25961143;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Maison Fenia;Rua Silvio Lisboa da Cunha, 400;Alto;25964340;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Maison Maini;Avenida Oliveira Botelho, 470;Alto;25961143;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Maison de Fleurs;Rua Monte Libano, 58;Varzea;25953020;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Manhatan;Avenida Feliciano Sodre, 1073;Varzea;25953000;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Manoel Francisco;Avenida Delfim Moreira, 1581;Vale do Paraiso;25976230;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Manoel Lebrao Bloco I;Rua Manoel Jose Lebrao, 420;Varzea;25976025;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Maragil;Avenida Oliveira Botelho, 221;Alto;25961143;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Marcia;Avenida Feliciano Sodre, 1020;Varzea;25963025;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Marco Antonio;Rua Djalma Monteiro, 190;Varzea;25963170;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Maria Celeste;Rua Alfredo Rebello, 15;Jardim Cascata;25964030;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Maria Gomes Martins;Rua Paru, 387;Agrioes;25963002;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Maria da Fonte;Rua Chaves de Faria, 265;Varzea;25955090;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Maria da Piedade;Rua Alfredo Rebelo Filho, 422;Alto;25964390;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Matos Marra I;Rua Vereador Jose Elias Zaquem, 674;Agrioes;25963411;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Matos Marra Ii;Rua Tiete, 253;Nossa Senhora de Fatima;25957155;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Milano;Rua Desembargador Barreto Dantas, 175;Taumaturgo;25964350;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Mondrian;Rua Ari Barroso, 90;Alto;25961345;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Monica;Rua Alfredo Rebello, 10;Jardim Cascata;25964390;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Montanhes;Rua Hildergado de Noronha, 1456;Alto;25964390;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Monte Blanche;Rua Sebastiao Teixeira, 444;Varzea;25953200;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Monte Carlo;Rua Carmela Dutra, 800;Varzea;25963140;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Monte Claro;Rua Jorge Lossio, 474;Alto;25961265;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Monte Libano;Rua Monte Libano, 22;Varzea;25953020;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Monterey;Avenida Alberto Torres, 270;Alto;25964002;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Morada Caxanga;Rua Caxanga, 400;Caxanga;25958510;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Morada dos Gomes;Rua Vereador Jose Elias Zaquem, 620;Agrioes;25963411;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Moradas da Serra;Rua Carmela Dutra, 130;Agrioes;25963140;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Motta;Rua Augusto Amaral Peixoto, 297;Alto;25964390;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Muse;Rua Hildegardo de Noronha, 1185;Alto;25961260;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Nevada;Rua Djalma Monteiro, 411;Varzea;25963170;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio New Fashion Center;Rua Prefeito Sebastiao Teixeira, 20;Varzea;25953200;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Nigri;Rua Edmundo Bittencourt, 130;Varzea;25953030;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Norma;Avenida Oliveira Botelho, 160;Alto;25961143;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Olimpico;Rua Heitor de Moura Estevao, 16;Varzea;25953090;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Orihon;Rua Cotinguiba, 488;Varzea;25963150;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Oro;Rua Sao Judas Tadeu, 78;Corta Vento;25963390;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Ouro Preto;Avenida Alberto Torres, 790;Alto;25964002;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Paineira;Rua Tiete, 321;Fatima;25961110;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Paladium;Rua Joao Batista Pires, 120;Agrioes;25963003;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Palais Royal;Rua Prefeito Sebastiao Teixeira, 649;Tijuca;25953200;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Palazzo Monteverdi;Rua Cel Silvio Lisboa Cunha, 211;Taumaturgo;25964340;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Pam;Avenida Presidente Roosevelt, 30;Varzea;25965001;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Panorama;Rua Jose Elias Zaquem, 965;Agrioes;25963402;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Paquequer;Avenida Feliciano Sodre, 1110;Varzea;25963025;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Paraguassu;Rua Augusto Amaral Peixoto, 77;Alto;25961165;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Paraiso da Cascata;Rua Hildegardo de Noronha, 1466;Alto;25961260;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Parque Serra dos Orgaos;Rua Carlos Smile, 571;Soberbo;25960580;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Parque das Araras;Rua Mello Franco, 1169;Alto;25960530;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Paulo Jose;Avenida Delfim Moreira, 529;Varzea;25953230;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Pedrosa's;Avenida Delfim Moreira, 1641;Vale do Paraiso;25976016;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Peninsular;Avenida Presidente Roosevelt, 1280;Barra do Imbui;25965001;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Pimenteiras;Rua Djalma Monteiro, 70;Varzea;25963170;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Pio X;Rua Papa Pio Xii, 40;Jardim Cascata;25964330;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Planalto;Rua Sebastiao Teixeira, 300;Centro;25953200;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Ponte Vedra;Avenida Delfim Moreira, 1650;Vale do Paraiso;25976017;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Portal de Agrioes;Rua Rua Tenente Luiz Meirelles, 51;Varzea;25955000;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Portal de Agrioes;Rua Tenente Luiz Meirelles, 51;Varzea;25955001;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Pouso Alegre;Rua Wancler Fonseca, 240;Agrioes;25963070;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Primeiro de Agosto;Rua Emille Ducumunn, 20;Varzea;25953050;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Privilege;Rua Muqui, 155;Varzea;25953680;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Profissional;Avenida Lucio Meira, 256;Varzea;25953001;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Raphael Kassouf;Rua Marechal Taumaturgo, 100;Taumaturgo;25964350;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Recanto de Nazareth;Rua Chaves de Faria, 221;Varzea;25955090;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Recreio da Serra;Avenida Delfim Moreira, 840;Varzea;25953230;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Refugio Alpino;Rua Sebastiao Lacerda, 1645;Alto;25961070;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Residencia;Avenida Feliciano Sodre, 930;Varzea;25963025;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Residencial Aldebara;Rua Cotinguiba, 495;Varzea;25963150;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Residencial Apa Rainbow;Estrada Rio - Bahia, KM76,5;Quinta de S. Antonio;25977390;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Residencial Aschar;Rua Roberto Rosa, 920;Tijuca;25975530;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Residencial Dom Bosco;Rua Pref Sebastiao Teixeira, 533;Tijuca;25953200;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Residencial Ermitage;Rua Wilhelm Cristian Kleme, 320;Ermitage;25975550;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Residencial Gomes;Avenida Delfim Moreira, 940;Varzea;25953236;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Residencial Larissa;Rua Mello Franco, 631;Alto;25960531;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Residencial Serra Loft;Rua Jorge Lossio, 500;Alto;25961265;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Residential Green;Estrada Teresopolis Friburgo, KM 4;Albuquerque;25975442;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Reverie;Rua Sao Francisco, 339;Alto;25957002;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Rian;Rua Olegario Bernardes, 07;Varzea;25953600;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Rio Negro;Avenida Feliciano Sodre, 735;Varzea;25963025;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Riviera Week End;Rua Pref Sebastiao Teixeira, 94;Centro;25953200;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Rubi;Rua Emille Ducumunn, 45;Varzea;25953050;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Ruth;Rua Rui Barbosa, 209;Varzea;25963090;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Salome;Rua Nova Friburgo, 264;Varzea;25963020;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio San Geraldo;Avenida Feliciano Sodre, 770;Varzea;25963025;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio San Rafael;Avenida Alberto Torres, 184;Alto;25964002;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio San Remo I;Rua Cel Antonio Santiago, 16;Agrioes;25963220;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio San Siro;Rua Wancler Fonseca, 82;Agrioes;25963070;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Sans Souci;Rua Carmela Dutra, 640;Agrioes;25963140;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Santa Fe;Rua Ruy Barbosa, 588;Varzea;25963090;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Santa Ines;Rua Carmela Dutra, 239;Agrioes;25963140;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Santa Maria;Rua Francisco Sa, 211;Varzea;25953011;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Santa Monica;Rua Jose Maria Araujo Regadas, 138;Ermitagem;25953345;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Santa Teresa;Rua Prefeito Sebastiao Teixeira, 410;Varzea;25953200;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Santa Teresa;Praca Baltazar da Silveira, 128;Varzea;25953190;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Santo Antonio Varzea;Avenida J J de Araujo Regadas, 36;Varzea;25953040;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Santos Dumont;Rua Ary Parreiras, 111;Varzea;25953080;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Sao Bento;Avenida J J Araujo Regadas, 87;Varzea;25953040;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Sao Joao;Avenida Jose J Araujo Regadas, 31;Centro;25953040;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Sao Jose;Avenida J J de Araujo Regadas, 80;Varzea;25953040;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Sao Luiz;Rua Doutor Waldir Barbosa Moreira, 169;Varzea;25955010;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Sao Marcos;Rua Coronel Borges, 208;Artista;25976415;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Sao Paulo;Rua Goncalo de Castro, 370;Alto;25960090;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Seis de Julho;Avenida Oliveira Botelho, 210;Alto;25961143;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Selma;Avenida Feliciano Sodre, 1191;Varzea;25963025;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Serra Dourada;Rua Alipio de Miranda, 225;Taumaturgo;25964040;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Serra Linda;Rua Rui Barbosa, 129;Varzea;25963090;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Serra Real;Avenida Feliciano Sodre, 1155;Varzea;25963025;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Serra dos Orgaos;Avenida Oliveira Botelho, 280;Alto;25961144;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Serro Classi;Rua Augusto Amaral Peixoto, 306;Alto;25964390;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Sesal;Rua Cel Silvio L da Cunha, 630;Jardim Cascata;25964340;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Severiano Gomes;Rua Heitor de Moura Estevao, 102;Varzea;25953090;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Shangri La;Rua Carmela Dutra, 701;Varzea;25963140;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Sharon;Rua Adhemar Rizzi Lippi, 1325;Alto;25961330;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Smart Life Concept;Rua Ferreira de Castro, 52;Agrioes;25963010;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Soares;Rua Olegario Bernardes, 162;Varzea;25953600;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Solar;Rua Paranapanema, 260;Agride;25963070;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Solar da Pedra;Rua Agusto Amaral Peixoto, 680;Alto;25961165;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Solar das Esmeraldas;Rua Ary Parreiras, 31;Varzea;25953080;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Solar das Margaridas;Rua Pref Sebastao Teixeira, 528;Varzea;25953200;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Solar de Agrioes;Rua Yamato, 23;Agrioes;25964367;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Solar do Vale;Rua Coronel Borges, 106;Artistas;25976415;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Solemar;Rua Mello Franco, 377;Alto;25961020;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Sonia Maria;Rua Marechal Rondon, 65;Vila Muqui;25953110;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Stella Magnus;Rua Rui Barbosa, 662;Varzea;25963090;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Stella Solaris;Rua Rui Barbosa, 597;Agrioes;25963090;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Studio Ii;Rua Augusto Amaral Peixoto, 700;Alto;25964390;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Studio Portinari;Rua Coronel Silvio Lisboa da Cunha, 350;Alto;25964340;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Tania;Rua Armando Farjado, 321;Cascata Guarany;25953130;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Teresopolis;Avenida Oliveira Botelho, 365;Alto;25961143;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Teresopolis Residence Service;Avenida Oliveira Botelho, 87;Alto;25961143;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Terrasse;Rua Gal. Esp. Santo Cardoso, 320;Varzea;25953440;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Tetis;Rua Goncalo de Castro, 268;Alto;25960090;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Thais;Rua Emille Ducumunn, 130;Varzea;25953050;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Thais Netta;Avenida Presidente Roosevelt, 1008;Barra do Imbui;25965001;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio The Place;Rua Mendonca Clark, 71;Varzea;25953560;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Therezinha Tavares;Avenida Oliveira Botelho, 479;Alto;25961143;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Tibagy;Rua Tibagy, 100;Fatima;25961100;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Tiradentes;Avenida Feliciano Sodre, 1158;Varzea;25963025;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Torino;Rua Alipio de Miranda, 180;Taumaturgo;25964040;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Torre Atlantico Sul;Avenida Feliciano Sodre, 460;Varzea;25953000;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Tres Condes;Rua Alfredo Rebello, 65;Jardim Cascata;25964390;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Trevo;Rua Augusto do Amaral Peixoto, 191;Alto;25961165;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Uniao;Avenida Presidente Roosevelt, 1215;Barra do Imbui;25965001;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Universitario Fleming;Rua Adhemar Rizzi Lippi, 1550;Alto;25961330;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Valle dos Agrioes;Rua Ario de Menezes, 64;Agrioes;25963280;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Varandas Itapicuru;Rua Rua Heitor de Moura Estevao, 295;Varzea;25953090;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Varandas da Serra;Rua Cotinguiba, 677;Varzea;25963150;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Varandas de Agrioes;Rua Ipojuca, 666;Agrioes;25963330;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Vera Cruz;Avenida Delfim Moreira, 53;Varzea;25953230;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Vicente Apa;Rua Jorge Lossio, 40;Alto;25961265;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Vieira de Castro;Avenida Lucio Meira, 671;Varzea;25953003;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Vila Franca;Rua Duque de Caxias, 148;Varzea;25953390;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Vila Rica.;Rua Alfredo Rebello Filho, 65;Alto;25960011;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Vila do Sol;Praca Nilo Pecanha, 19;Alto;25961030;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Villa Iris;Avenida Oliveira Botelho, 09;Alto;25961143;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Villa Rizzi;Rua Jose Elias Zaquem, 442;Agrioes;25963402;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Village Apart Hotel Teresopolis;Avenida Alberto Torres, 124/36;Alto;25964002;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Village Belvedere;Avenida Oliveira Botelho, 261;Alto;25961143;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Village Varzea;Rua Carmela Dutra, 886;Varzea;25963140;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Villemont Lifestyle;Rua Paru, 205;Agrioes;25963002;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Vista Serrana;Rua Tenente Egon Prates, 188;Cascata Guarani;25963180;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Vista Soberba;Rua Goncalo de Castro, 275;Alto;25960090;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Vitalle;Avenida Oliveira Botelho, 650;Alto;25961148;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Yara;Rua Rui Barbosa, 210;Varzea;25963090;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Yeda Ii;Rua Armando Rosa, 131;Tijuca;25975760;Teresópolis;-22.4167;-42.97822
+Condomínio do Edificio Zoraide;Rua Monte Libano, 67;Varzea;25953020;Teresópolis;-22.4167;-42.97822
+Condomínio do Green Houses;Estrada Antonio Ventura, 1116;Albuquerque;25964390;Teresópolis;-22.4167;-42.97822
+Condomínio do Recreio da Serrinha;Parque Recreativo, SN;Selis da Paciencia;25964390;Teresópolis;-22.4167;-42.97822
+Condomínio do Residencial Jardim;Rua Carlos Gomes, 125;Quinta da Barra;25965470;Teresópolis;-22.4167;-42.97822
+Condomínio dos Bangalos Vila Nova do Paquequer.;Rua Armando Farjado, 35;Cascata Guarani;25963130;Teresópolis;-22.4167;-42.97822
+Condomínio dos Ed Leonardo da Vinci e Michelangelo;Avenida Delfim Moreira, 1017 E;Varzea;25953237;Teresópolis;-22.4167;-42.97822
+Condomínio dos Edificios Cecy/pery;Rua Alfredo Rebello, 30/44;Jardim Cascata;25964390;Teresópolis;-22.4167;-42.97822
+Condomínio dos Edificios Danubio/moldavia;Rua Armando Farjado, 300;Cascata Guarany;25963030;Teresópolis;-22.4167;-42.97822
+Condomínio dos Edificios Marcus e Viviane;Rua Alfredo Rebello, 34/35;Alto;25964390;Teresópolis;-22.4167;-42.97822
+Condomínio dos Edificios Solar das Rosas e Margaridas;Rua Pref Sebastiao Teixeira, 528;Varzea;25953200;Teresópolis;-22.4167;-42.97822
+Condomínio dos Edificios Valeria Mansur, Thalita Mansur e Francine Mansur;Rua Manoel Jose Lebrao, 1259;Ermitage;25975202;Teresópolis;-22.4167;-42.97822
+Condomínio dos Predios Santa Therezinha;Avenida Delfim Moreira, 622;Varzea;25953235;Teresópolis;-22.4167;-42.97822

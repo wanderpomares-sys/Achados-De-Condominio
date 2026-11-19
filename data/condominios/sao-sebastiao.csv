@@ -1,0 +1,463 @@
+nome;endereco;bairro;cep;cidade;lat;lng
+''condominio Atlantis'';Avenida Francisco Loup, 2401;Sao Sebastiao;11600200;São Sebastião;-23.76;-45.40972
+Condominio;Rua Valinhos, 51;Barra do Una;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Acquamarine;Rua Lino de Matos, 72;Boicucanga;11618083;São Sebastião;-23.76;-45.40972
+Condomínio Aldeia da Baleia Ii;Avenida . Hipocampus, 500;Maresias;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Aldeia do Cambury;Rua Olimpio Faustino, 201;Camburi;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Aldeia do Mar;Rua Imirim, 40;Maresias;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Aloha Flat;Rua Bartolomeu Bueno, 100;Juquehy;11623232;São Sebastião;-23.76;-45.40972
+Condomínio Ambara Eco Village;Avenida Baleia Azil, 82;Praia da Baleia;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Amocc;Rua Onofre Francisco de Oliveira, 75;Pauba;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Ancoradouro Juquehy Flat Residence;Avenida Mae Bernarda, 2850-A;Juquehy;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Apoena;Rua Maria Moreira do Espirito Santo, 625;Pauba;11617124;São Sebastião;-23.76;-45.40972
+Condomínio Aram Praia da Baleia;Avenida Baleia Azul, 270;Baleia;11621630;São Sebastião;-23.76;-45.40972
+Condomínio Areias Brancas;Avenida Mae Bernarda, 1395;Juquehy;11623304;São Sebastião;-23.76;-45.40972
+Condomínio Areias de Camburi;Estrada do Camburi, 1188;Camburi;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Associacao dos Proprietarios do Conjunto Residencial Multifamiliar Golfinhos;Rua dos Corais, 51;Maresias;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Atlantis;Avenida Mae Bernarda, 2000;Juquehy;11623304;São Sebastião;-23.76;-45.40972
+Condomínio Baleia Azul Dream House;Rodovia Sao Paulo 55, NAOINF;Praia da Baleia;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Baleia Bay;Avenida Deble Luiza Derani, 2047;Baleia;11621600;São Sebastião;-23.76;-45.40972
+Condomínio Bali Maresais;Rua Sebastiao Romao Cesar, 322;Maresias;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Balneario Guaeca - Quadra 2;Rua Bras Cubas, 319;Guaeca;11614233;São Sebastião;-23.76;-45.40972
+Condomínio Barequecaba Prive;Rua Cantidio de M.campos, 656;Barequecaba;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Barra Jangadas;Avenida Mae Bernarda, 1458;Praia Juquehy;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Barra de Juquehy;Avenida Benedito Isidoro de Moraes, 251;Praia de Juquehy;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Barra do Una;Rua Cravinhos, 425;Barra do Una;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Barra do Una;Rua Biritiba Mirim, 20;Barra do Una;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Bela Vista;Alameda Bela Vista, 185;Pontal da Cruz;11606121;São Sebastião;-23.76;-45.40972
+Condomínio Better Point;Rua Benedito Izidoro de Moares, 40;Juquehy;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Boicucanga Flat;Estrada do Boi, 39;Boissucanga;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Breeze Juquehy;Rua Maria Madalena Faustino, 112;Juquehy;11623268;São Sebastião;-23.76;-45.40972
+Condomínio Brisa do Mar;Rua Verao, 197;Praia de Juquehy;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Brisa do Una;Avenida Magno dos Passos Bittencourt, 1371;Barra do Una;11624103;São Sebastião;-23.76;-45.40972
+Condomínio Brisas de Camburyzinho;Avenida Doutor Manoel Hipolito do Rego, 900;Camburi;11619353;São Sebastião;-23.76;-45.40972
+Condomínio Brisas de Juquehy Resort;Avenida Mae Bernarda, 2298;Juquehy;11623304;São Sebastião;-23.76;-45.40972
+Condomínio Brisas do Engenho;Avenida Magno dos Passos Bittencourt, 3641;Engenho;11625170;São Sebastião;-23.76;-45.40972
+Condomínio Brisas do Sahy;Travessa Loanda, 70;Barra do Sahy;11622142;São Sebastião;-23.76;-45.40972
+Condomínio Camboja's Jungle Juice;Rua Piau, 280;Camburizinho;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Camburi 14;Estrada do Camburi, 1750;Camburi;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Camburita;Rua do Zezito, 105;Camburi;11619380;São Sebastião;-23.76;-45.40972
+Condomínio Cambury Bay;Rua do Telegrafo, 1576;Camburi;11619440;São Sebastião;-23.76;-45.40972
+Condomínio Cambury Residence;Rua das Rosas, 261;Camburi;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Cambury Residence Ii;Alameda Patriarca Antonio Jose Marques, 696;Camburi;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Caminho do Sol;Rua Claudio Izidoro do Espirito Santo, 572;Juquey;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Canto Bravo;Travessa Tatui, 222;Praia do Sahy;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Canto da Barra;Avenida Mae Bernarda, 1638;Praia Juquehy;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Canto da Mata;Avenida Monte Alto, 485;Juquehy;11623454;São Sebastião;-23.76;-45.40972
+Condomínio Canto das Cigarras;Rua da Jangada, 500;Cigarras;11603271;São Sebastião;-23.76;-45.40972
+Condomínio Canto das Palmeiras;Avenida Mae Bernarda, 2995;Juquehy;11623304;São Sebastião;-23.76;-45.40972
+Condomínio Canto do Moreira;Rua Mairinque, 90;Maresias;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Canto do Rio - Residencial;Rua Benedito Carlos Almeida;Juquehy;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Canto do Rio Juquehy;Avenida Mae Bernarda, 123;Juquehy;11623304;São Sebastião;-23.76;-45.40972
+Condomínio Canto do Sahyra;Avenida Doutor Manoel Hipolito do Rego, 999;Camburi;11619353;São Sebastião;-23.76;-45.40972
+Condomínio Canto do Tangara;Rua Ana, 54;Juquehy;11623487;São Sebastião;-23.76;-45.40972
+Condomínio Capitania de Guaeca;Rua do Carmo, 275;Guaeca;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Capitania de Pauba;Rua Blumenau, 180;Pauba;11617139;São Sebastião;-23.76;-45.40972
+Condomínio Carmell Juquehy;Rua Peruibe, 117;Bairro de Juquehy;11623313;São Sebastião;-23.76;-45.40972
+Condomínio Carpe Diem;Avenida Mae Bernarda, 1510;Juquehy;11623304;São Sebastião;-23.76;-45.40972
+Condomínio Casa Del Mar;Rua Joao Antonio dos Santos, 128;Juquehy;11623265;São Sebastião;-23.76;-45.40972
+Condomínio Casa das Maresias;Avenida Doutor Francisco Loup, 1680;Maresias;11628115;São Sebastião;-23.76;-45.40972
+Condomínio Casarao;Rua do Canal, 16;Cigarras;11603298;São Sebastião;-23.76;-45.40972
+Condomínio Celebration Flat;Rua Peruibe, 31;Juquehy;11623313;São Sebastião;-23.76;-45.40972
+Condomínio Ch - Sao Sebastiao F - Quadra D/lote 04;Rua Carreador da Enseada, 150;Jaragua;11600400;São Sebastião;-23.76;-45.40972
+Condomínio Chacara Santa Cecilia;Avenida Adelino Tavares, 1853;Sahi;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Chateau Mata Atlantica;Rua Vital Brasil, 46;Boissucanga;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Cidade de Santos;Rua Cidade de Santos, 113;Vila Amelia;11609042;São Sebastião;-23.76;-45.40972
+Condomínio Cisne Branco;Avenida Adelino Tavares, 120;B Sahy Maresias;11620000;São Sebastião;;
+Condomínio Condomnio Cigarras;Rua Praia Linda, 134;Cigarras;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Condomnio Hotel Residencia Villa do Una;Rua Itaipava, 200;Barra do Una-maresia;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Conjunto Mar A Vista Flat;Rua Vitoria Regia, 230;Barequecaba;11612785;São Sebastião;-23.76;-45.40972
+Condomínio Conjunto Residencial Atlantico;Rua Doutor Silvio Borges, 129;Juquehy;11623430;São Sebastião;-23.76;-45.40972
+Condomínio Conjunto Residencial Cambara;Rua Claudio Izidoro do Espirito Santo, 667;Juquehy;11623223;São Sebastião;-23.76;-45.40972
+Condomínio Conjunto Residencial Condominio Santiago Bay;Rodovia Prestes Maia (sp-55);Praia de Santiago;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Conjunto Residencial Condominio Vila da Baleia;Avenida Deble Luiza Derani, 2035;Baleia;11621600;São Sebastião;-23.76;-45.40972
+Condomínio Conjunto Residencial Condominio Villa Marae;Rua Dr. Francisco Loup, 1852;Maresias;11620000;São Sebastião;;
+Condomínio Conjunto Residencial Flat Parque dos Colibris;Caminho do Cacador, 115;Sertao do Juquehy;11622621;São Sebastião;-23.76;-45.40972
+Condomínio Conjunto Residencial Flat Villa Kristal;Rua Abelardo de Moraes, 150;Juquehy;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Conjunto Residencial Flat Villa Verano Ii;Avenida Mae Bernarda, 390;Juquehy;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Conjunto Residencial Gamboa;Rua Altino do Espirito Santo, 249;Juquehy;11623277;São Sebastião;-23.76;-45.40972
+Condomínio Conjunto Residencial Northampton;Avenida Dr. Francisco Loup, 1509;Maresias;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Conjunto Residencial Pontal da Cruz I;Rua Cristovao Colombo, 76;Pontal da Cruz;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Conjunto Residencial Pontal da Cruz Ii;Rua Francelizio Oliveira Coelho Filho, 105;Pontal da Cruz;11606160;São Sebastião;-23.76;-45.40972
+Condomínio Conjunto Residencial Praia de Barequecaba;Rua dos Comendadores, 105;Barequecaba;11612713;São Sebastião;-23.76;-45.40972
+Condomínio Conjunto Residencial Sun Village;Rua Benicio Joao dos Santos, 108;Juquey;11600973;São Sebastião;;
+Condomínio Conjunto Residencial Vila Amarilis;Rua das Rosas, 300;Camburi;11619410;São Sebastião;-23.76;-45.40972
+Condomínio Conjunto Residencial Vila de Maresias;Avenida Francisco Loup, 2599;Maresias;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Costa Verde;Avenida Mae Bernarda, 476;Juquehy;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Dakota Comburi;Estrada do Comburi, 2305;Sao Sebastiao;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Delta Maresias Club;Avenida Paqueta, 22;Maresias;11628127;São Sebastião;-23.76;-45.40972
+Condomínio Dolphins;Avenida Deble Luiza Derani, 220;Baleia;11621600;São Sebastião;-23.76;-45.40972
+Condomínio Dona Lucinda Buzzini Pierotti;Rua Prefeito Mansueto Pierotti, 391;Vila Amelia;11609003;São Sebastião;-23.76;-45.40972
+Condomínio Ecovila;Rua Videira, 31;Barra do Una;11624200;São Sebastião;-23.76;-45.40972
+Condomínio Edif Santorino;Avenida Manoel Hipolito do Rego, 981;Pontal da Cruz;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Edificio Ancoradouro;Avenida Dr Manoel H Rego, 1860;Pontal da Cruz;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Edificio Barlavento;Avenida Doutor Manoel Hipolito do Rego, 1950;Praia do Arrastao;11605136;São Sebastião;-23.76;-45.40972
+Condomínio Edificio Novo Mundo;Rua Almirante Nogueira, 27;Centro;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Edificio O Solar da Barra;Avenida Magno P.bittencourt, 1049;Centro;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Edificio Paineiras;Rua Sao Geraldo, 112;Vila Amelia;11609039;São Sebastião;-23.76;-45.40972
+Condomínio Edificio Ponta do Arrastao;Avenida Doutor Manoel Hipolito do Rego, 2431;Praia do Arrastao;11605136;São Sebastião;-23.76;-45.40972
+Condomínio Edificio Pontal da Cruz;Avenida Doutor Manoel Hipolito do Rego, 1.352;Pontal da Cruz;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Edificio Rhodes;Rua Fabio Cassio, 39;Porto Grande;11608242;São Sebastião;-23.76;-45.40972
+Condomínio Edificio Santana;Avenida Manoel Hipolito do Rego, 1270;Pontal da Cruz;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Edificio Sao Francisco;Rua Sao Luiz, 101;Centro;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Edificio Scorpius;Alameda das Lagostas, 234;Praia do Arrastao;11605106;São Sebastião;-23.76;-45.40972
+Condomínio Empreendimento Pousada da Villa;Viela 1 da Estrada do Cascalho, 51;Boissucanga;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Encosta do Mar;Rua Sebastiao Romao Cezar, 679;Maresias;11628228;São Sebastião;-23.76;-45.40972
+Condomínio Enseada Norte;Avenida Debble Luiza Derani, 720;Praia da Baleia;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Enseada Norte Ii;Rua Doutor Olavo Pazzanese, 350;Praia da Baleia;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Estrela da Baleia;Avenida Deble Luiza Derani, 620;Praia da Baleia;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Estrela do Cambury;Rua Olimpio Faustino, 419;Camburi;11619428;São Sebastião;-23.76;-45.40972
+Condomínio Farol do Moleque;Avenida Vereador Antonio Borges, 1808;Praia Grande;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Fiji;Avenida Doutor Francisco Loup, 2029;Maresias;11628115;São Sebastião;-23.76;-45.40972
+Condomínio Flamboyant;Rua Joao Antunes Santos, 343;Engenho;11625173;São Sebastião;-23.76;-45.40972
+Condomínio Flat Areias Brancas de Juquehy;Avenida Mae Bernarda, 1414;Juquehy;11623304;São Sebastião;-23.76;-45.40972
+Condomínio Flat Bali House;Rua Brasilia, 202;Barra do Una;11624194;São Sebastião;-23.76;-45.40972
+Condomínio Flat Bella Vida Juquehy;Avenida Geroncio Bento Pereira, 84;Juquehy;11623262;São Sebastião;-23.76;-45.40972
+Condomínio Flat Green Forest;Rua Aracatuba, 397;Barra do Uma;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Flat Juquehy;Rua Silvio Borges, 181;Juquehy;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Flat Juquehy Beach House;Rua Benedito do Espirito Santo, 42;Juquehy;11623283;São Sebastião;-23.76;-45.40972
+Condomínio Flat Juquehy Viii;Rua Altino do Espirito Santo, 160;Juquehy;11623277;São Sebastião;-23.76;-45.40972
+Condomínio Flat Manaca;Rua Peruibe, 36;Juquehy;11623313;São Sebastião;-23.76;-45.40972
+Condomínio Flat Maresias;Avenida Francisco Loup, 1818;Maresias;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Flat Reserva Embauba Barequecaba;Rua Hugo Dehn, 691;Barequecaba;11612734;São Sebastião;-23.76;-45.40972
+Condomínio Flat Residencia Mata Verde;Rua Claudio Izidoro do Espirito Santo, 522;Juquey;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Flat Residencial Confort;Rua Athayde Izidoro dos Santos, 696;Juquehy;11623241;São Sebastião;-23.76;-45.40972
+Condomínio Flat Residencial Juqueymar;Avenida Mauricio Benedito Faustino, 270;Juquehy;11623250;São Sebastião;-23.76;-45.40972
+Condomínio Flat Residencial Manaca;Rua Maria Madalena Faustino;Juquey;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Flat Residencial Perola de Juquehy;Rua Maria Madalena Faustino, 175;Juquehy;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Flat Residencial Reserva Camburi;Avenida Patriarca Antonio Jose Marques, 1085;Camburi;11619392;São Sebastião;-23.76;-45.40972
+Condomínio Flat Residencial Reserva Imperial;Estrada do Cascalho, 707;Boicucanga;11618342;São Sebastião;-23.76;-45.40972
+Condomínio Flat Residencial Rosa Nautica Barequecaba;Rua Luiz Lemos do Val, 385;Barequecaba;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Flat Residencial Vila dos Corais;Rua Geroncio Bento Pereira, 46;Juquehy;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Flat Residencial Villa de Guaeca;Rua Marechal Arthur da Costa e Silva, 15;Guaeca;11614215;São Sebastião;-23.76;-45.40972
+Condomínio Flat Vila das Primaveras;Rua Benedito Carlos de Almeida, 299;Juquehy;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Flat Village Maresias;Rua Francisco Loup, 2470;Maresias;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Flats Residenciais Palm Beach;Rua Peruibe, 03;Juquey;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Fragata;Rua Benedito do Espirito Santo, 41;Juquehy;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Front Beach Juquehy;Avenida Mae Bernarda, 291;Juquehy;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Gavea Juquey;Avenida Mae Bernarda, 2292;Juquehy;11623304;São Sebastião;-23.76;-45.40972
+Condomínio Green Peace;Estrada do Cascalho, 1989;Boicucanga;11618342;São Sebastião;-23.76;-45.40972
+Condomínio Grenada;Avenida Dr. Francisco Loup, 2271;Maresias;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Gruta das Lagostas;Rua Yojiro Takaoka, 100;Toque Toque Pequeno;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Guanandi;Avenida Patriarca Antonio Jose Marques, 1201;Camburi;11619392;São Sebastião;-23.76;-45.40972
+Condomínio Hotel Residencia Quartetto;Rua Pedro Esboriol, 318;Praia de Juquey;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Hotel Residencia Vila Paradiso;Avenida Mae Bernarda, 988;Praia Juquey;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Hyperion;Alameda Santana, 509;Pontal da Cruz;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Ilhas do Juquehy;Avenida Mae Bernarda, 1586;Juquehy;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Imperial de Juquehy;Rua Bartolomeu Bueno, 250;Juquehy;11623232;São Sebastião;-23.76;-45.40972
+Condomínio Indaia;Rua Duque de Caxias, 18;Centro;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Itauna;Avenida Mae Bernarda, 597;Juquehy;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Itayuba;Avenida Mae Bernarda, 2485;Juquehy Ii;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Jardim das Azaleas;Avenida Mae Bernarda, 2314;Bairro de Juquehy;11623304;São Sebastião;-23.76;-45.40972
+Condomínio Jardim das Heliconias;Rua Abelardo de Moraes, 380;Juquehy;11623238;São Sebastião;-23.76;-45.40972
+Condomínio Jerivas;Avenida Magno Passos Bittencourt, 3687;Praia do Engenho;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Juquehy;Avenida Mae Bernarda, 1566;Juquehy;11623304;São Sebastião;-23.76;-45.40972
+Condomínio Juquehy Village;Rodovia Br 101, Km 176,8;Juquehy;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Juquehy-y-assu;Rua Iracema, 210;Juquehy;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Juquey;Avenida Mae Bernarda, 1605;Juquey;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Juquey;Rua Carmem, 81;Juquey;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Juquey Prive;Rua Juquei Sertaozinho, NAOINF;Maresias;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Juquimar;Avenida Mae Bernarda, 2380;Juquehy;11623304;São Sebastião;-23.76;-45.40972
+Condomínio Kivotos;Avenida Monte Alto, 18;De Juquey;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Las Palmas Juquehy;Avenida Mae Bernarda, 1565;Juquehy;11623304;São Sebastião;-23.76;-45.40972
+Condomínio Las Ventanas;Avenida Deble Luiza Derani, 150;Praia da Baleia;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Manaca do Una;Rua Brasilia, 355;Barra do Una;11624194;São Sebastião;-23.76;-45.40972
+Condomínio Mar Azul;Rua Davi, 20;Juquey;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Marambaia;Rua das Pontinhas, 22;Praia Deserta;11608024;São Sebastião;-23.76;-45.40972
+Condomínio Marau;Avenida Mae Bernarda, 1.560;Juquehy;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Maravista;Rua Imirim;Juquei;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Marea;Avenida Deble Luiza Derani, 1620;Baleia;11621600;São Sebastião;-23.76;-45.40972
+Condomínio Mares de Santiago;Rua da Fartura, 242;Santiago;11616503;São Sebastião;-23.76;-45.40972
+Condomínio Maresias;Rua Francisco Loup, 1897;Maresias;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Marina Piccola Juquehy;Avenida Mae Bernarda, 886;Bairro de Juquehy;11623304;São Sebastião;-23.76;-45.40972
+Condomínio Marinas do Una;Rua Itatiaia, 320;Barra do Una;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Marlim Azul;Rua Manoel de Oliveira, 70;Juquehy;11623244;São Sebastião;-23.76;-45.40972
+Condomínio Master do Camburizinho I;Rodovia Antiga Estrada Sp 55, KM 62;Camburi-maresias;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Master do Camburizinho Ii;Rodovia Antiga Estrada Sp 55, KM 62;Camburi-maresias;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Master do Camburizinho Iii;Estrada Rodagem Sp 55, 725;Pr Camburizinho;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Master do Camburizinho Iv;Estrada do Camburi, 805;Camburi-maresias;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Master do Camburizinho Vi;Estrada do Camburi;Camburi;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Master do Una;Rua Itaipava, 20;Barra do Una;11620000;São Sebastião;;
+Condomínio Mirage;Rua Manoel Raphael de Carvalho, 1614;Juquei;11600970;São Sebastião;-23.76;-45.40972
+Condomínio Mirante das Cigarras;Rua Manoel de Paula, 330;Cigarras;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Mirante do Juquei;Avenida Mae Bernarda, 3462;Juquehy;11623304;São Sebastião;-23.76;-45.40972
+Condomínio Moby Dick;Avenida Deble Luiza Derani, 2625;Praia da Baleia;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Monte Alto;Avenida Monte Alto, 320;Juquehy;11623454;São Sebastião;-23.76;-45.40972
+Condomínio Morada das Garoupas;Alameda Pitangueiras, 250;Toque-toque Pequeno;11615636;São Sebastião;-23.76;-45.40972
+Condomínio Moradas do Sul;Avenida Magno dos P. Bitencourt, 1371;Barra do Una;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Nascentes de Maresias;Rua Antonio Silverio dos Santos, S/NUM;Maresias;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Nautilus;Avenida Deble Luiza Derani, 76;Baleia;11600200;São Sebastião;-23.76;-45.40972
+Condomínio New Concept;Rua Manoel de Oliveira, 481;Juquehy;11623244;São Sebastião;-23.76;-45.40972
+Condomínio Next Week;Avenida Deble Luiza Derani, 841;Praia da Baleia;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Ocean View;Avenida Mae Bernarda, 915;Juquehy;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Ondas da Baleia;Avenida Deble Luiza Derani, 100;Praia da Baleia;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Ondas de Maresias;Avenida Doutor Francisco Loup, 1700;Maresias;11628115;São Sebastião;-23.76;-45.40972
+Condomínio Os Cedros;Rua Jose Eduardo Badejo Kazniakowski, 108;Juquei;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Ouro Velho;Rua Manoel L de Matos, 27;Centro;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Parcel de Juquehy;Avenida Benedito Izidoro de Moraes, 324;Juquehy;11623286;São Sebastião;-23.76;-45.40972
+Condomínio Parque da Cascata;Rua Iracema, 105;Juquey;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Parque do Una;Avenida Magno dos Passos Bittencourt, 1469;Barra do Una;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Patio Camburi;Estrada Camburi, 87;Camburi;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Pauba Canto Sul;Rua Braganca Paulista, 140;Pauba;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Pauba Um Vilarejo;Rua Maria Moreira do Espirito Santo, 600;Pauba;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Pernichudo;Rua Itabuna, 115;Barra do Sahy;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Perola da Baleia;Avenida Deble Luiza Derani;Praia da Baleia;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Petit Village;Rua Pedro Esboriol, 18;Praia de Juquey;11600973;São Sebastião;;
+Condomínio Ponta Cambury;Estrada Camburi, 1781;Camburi;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Ponta de Areia;Rua Geroncio Bento Pereira, 245;Praia de Juquei;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Portal da Olaria Ii;Rua Francisco da Cruz Maldonado, 800;Portal da Olaria;11604686;São Sebastião;-23.76;-45.40972
+Condomínio Portal do Cambury;Etr Bertioga Sao Sebastiao, SN;Cambury;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Porto Baleia;Rua Joaquim Manoel de Macedo, 20;Baleia;11621660;São Sebastião;-23.76;-45.40972
+Condomínio Porto Grande Ii;Avenida Africa, 256;Porto Grande;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Porto Maresias;Avenida Dr Francisco Loup, 1749;Distrito Maresias;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Porto do Sol;Rua Benicio Joao dos Santos, 196;Juquehy;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Portofino;Avenida Pescador Sebastiao Juvenal dos Santos, 91;Bairro de Camburi;11619393;São Sebastião;-23.76;-45.40972
+Condomínio Portofino Juquehy;Rua Doutor Silvio Borges, 499;Juquehy;11623430;São Sebastião;-23.76;-45.40972
+Condomínio Pousada Porto Pauba;Rua Braganca Paulista, 150;Pauba;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Pouso das Gaivotas;Rua Maria Madalena Faustino, 614;Juquey;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Puerto Escondido;Rua Papoula, 100;Camburi;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Quadra 11 - Balneario Guaeca;Rua Martim Afonso, 340;Guaeca;11614209;São Sebastião;-23.76;-45.40972
+Condomínio Quatro Estacoes;Avenida Mauricio Benedito Faustino, 685;Juquehy;11623250;São Sebastião;-23.76;-45.40972
+Condomínio Quinta Marina;Avenida Yojiro Takaoka, 205;Maresias;11620000;São Sebastião;;
+Condomínio Quinta da Mata;Rua Altino do Espirito Santo, 394;Juquehy;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Quinta de Juquehy;Rua Dionisio Benedito Faustino, 498;Juquehy;11623274;São Sebastião;-23.76;-45.40972
+Condomínio Recanto Sonhado;Rua Honorato Vicente, 390;Barequecaba;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Reserva Juquehy;Rua Rio de Janeiro, 60;Juquehy;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Reserva Mata Azul;Avenida Doutor Francisco Loup, 2100;Maresias;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Reserva Residencial Beach;Avenida Manoel Rebello Filho, 2885;Boraceia;11626180;São Sebastião;-23.76;-45.40972
+Condomínio Reserva das Embaubas;Rua Caetano Velho, 173;Juquehy;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Reserva do Guaeca;Rua do Engenho, 500;Guaeca;11614364;São Sebastião;-23.76;-45.40972
+Condomínio Residencial 'vila dos Tucanos';Avenida Francisco Loup, 2530;Maresias;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Residencial Acqua Juquehy;Rua Manoel Raphael Carvalho, 136;Juquehy;11623451;São Sebastião;-23.76;-45.40972
+Condomínio Residencial Aldeia das Maresias;Rua Marco Antonio dos Santos, 235;Maresias;11628643;São Sebastião;-23.76;-45.40972
+Condomínio Residencial Altavista;Avenida Mae Bernarda, 208;Juquehy;11623304;São Sebastião;-23.76;-45.40972
+Condomínio Residencial Altavista Ii;Rua Maria Madalena Faustino, 481;Juquehy;11623268;São Sebastião;-23.76;-45.40972
+Condomínio Residencial Ambore;Avenida Joao Luiz Faustino, 180;Juquehy;11623256;São Sebastião;-23.76;-45.40972
+Condomínio Residencial Areias de Juquehy;Rua Claudio Izidoro do Espirito Santo, 326;Juquehy;11623223;São Sebastião;-23.76;-45.40972
+Condomínio Residencial Armacao do Juquey;Avenida Mae Bernarda, 2220;Juquehy;11623304;São Sebastião;-23.76;-45.40972
+Condomínio Residencial Aroeira Maresias;Avenida Doutor Francisco Loup, 2000;Maresias;11628115;São Sebastião;-23.76;-45.40972
+Condomínio Residencial Arraial do Cabo;Estrada de Cambury, 128;Praia de Cambury;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Residencial Arraial do Meio;Estrada Sao Sebastiao Bertioga, 1258;Camburi;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Residencial Asturias;Rua Eduardo Teixeira dos Santos, 86;Juquey;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Residencial Athenas;Rua Placido Rodrigues, 156;Boicucanga;11618110;São Sebastião;-23.76;-45.40972
+Condomínio Residencial Atlantida;Rua Doutor Olavo Pazzanese, 160;Praia da Baleia;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Residencial Baleares;Avenida Deble Luiza Derani, 102;Praia da Baleia;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Residencial Bora Bora;Servidão Servidao de Passagem, 45;Praia de Boraceia;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Residencial Bosque do Una;Rua Aracatuba, 128;Barra do Una;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Residencial Cambaquara;Avenida Mae Bernarda, 3.001;Juquey;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Residencial Camburi 5;Avenida Patriarca Antonio Jose Marques, 1120;Camburi;11619392;São Sebastião;-23.76;-45.40972
+Condomínio Residencial Canto Verde;Rua Judith, 45;Juquehy;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Residencial Canto da Serra;Rua Altino do Espirito Santo, 55;Juquehy;11623277;São Sebastião;-23.76;-45.40972
+Condomínio Residencial Canto do Morro;Avenida Manoel Rebello Filho, 621;Boraceia;11626180;São Sebastião;-23.76;-45.40972
+Condomínio Residencial Canto do Rio;Rua dos Navegantes, 66;Maresias;11628225;São Sebastião;-23.76;-45.40972
+Condomínio Residencial Canto do Sol;Avenida Magno P Bittencourt, 1756;Barra do Una;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Residencial Canto dos Coqueiros;Rua Mairinque, 277;Maresias;11628652;São Sebastião;-23.76;-45.40972
+Condomínio Residencial Capitania de Maresias;Avenida Francisco Loup, 1678;Maresias;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Residencial Costa Azul;Estrada Sao Sebastiao Bertioga, 1150;Baleia;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Residencial Costa D'ouro;Estrada da Baleia, 950;Baleia;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Residencial Costa Del Mare;Avenida Doutor Francisco Loup, 2588;Maresias;11628115;São Sebastião;-23.76;-45.40972
+Condomínio Residencial Costa Norte;Avenida Doutor Manoel Hipolito do Rego, 1477;Pontal da Cruz;11606100;São Sebastião;-23.76;-45.40972
+Condomínio Residencial Costa das Ilhas;Avenida Mae Bernarda, 1992;Praia de Juquehy;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Residencial Costa do Rio;Avenida Paqueta, 81;Maresias;11628127;São Sebastião;-23.76;-45.40972
+Condomínio Residencial Escunas do Juquey;Avenida Pedro Sboriol, 135;Juquey;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Residencial Estoril;Rua Principal Joaquim Francisco de Oliveira, 455;Praia de Boicucanga;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Residencial Estrela do Cambury Ii;Rua do Sossego, 143;Camburi;11619425;São Sebastião;-23.76;-45.40972
+Condomínio Residencial Felice;Rua Ana, 16;Juquehy;11623487;São Sebastião;-23.76;-45.40972
+Condomínio Residencial Figueiras;Avenida Mae Bernarda, 1407;Juquehy;11623304;São Sebastião;-23.76;-45.40972
+Condomínio Residencial Flat Acqualina;Avenida Mae Bernarda, 1077;Juquehy;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Residencial Flat Acquarela;Avenida Mae Bernarda, 2843;Juquehy;11623304;São Sebastião;-23.76;-45.40972
+Condomínio Residencial Flat Boissucanga Beach;Rua Benjamin Manoel dos Santos, 384;Boicucanga;11618213;São Sebastião;-23.76;-45.40972
+Condomínio Residencial Flat Marbella;Avenida Mae Bernarda, 2597;Juquehy;11623304;São Sebastião;-23.76;-45.40972
+Condomínio Residencial Flat Ondas de Camburi;Rua Jose Inacio, 94;Camburi;11619416;São Sebastião;-23.76;-45.40972
+Condomínio Residencial Flat Porto Luna;Rua Benedito Izidoro de Moraes, 871;Juquey;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Residencial Flat Reserva Itayuba;Avenida Mae Bernarda, 2475;Juquehy;11623304;São Sebastião;-23.76;-45.40972
+Condomínio Residencial Flat Reserva dos Passaros;Rua Americana, 36;Juquehy;11623436;São Sebastião;-23.76;-45.40972
+Condomínio Residencial Flat Sao Paulo Iv;Estrada Estrada Municipal do Una, 990;Barra do Una;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Residencial Flat Sollar Oriba;Avenida Geroncio Bento Pereira, 581;Juquehy;11623262;São Sebastião;-23.76;-45.40972
+Condomínio Residencial Flat Spazio Juquehy;Rua Claudio Izidoro do Espirito Santo, 726;Juquey;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Residencial Flat Summer Ville;Rua Claudio Izidoro do Espirito Santo, 210;Juquehy;11600973;São Sebastião;;
+Condomínio Residencial Flat Village Du Soleil;Avenida Mae Bernarda, 432;Juquehy;11623304;São Sebastião;-23.76;-45.40972
+Condomínio Residencial Four Seasons;Rua Margot, 12;Juquey;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Residencial Galapagos;Avenida Francisco Loup, 3327;Maresias;11620000;São Sebastião;-23.792848;-45.553722
+Condomínio Residencial Garden Village;Rua do Zezito, 203;Camburi;11619380;São Sebastião;-23.76;-45.40972
+Condomínio Residencial Il Villagio;Avenida Deble Luiza Derani, 2051;Baleia;11621600;São Sebastião;-23.76;-45.40972
+Condomínio Residencial Ilha da Baleia;Avenida Debli Luiza Derani, 355;Praia da Baleia;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Residencial Ilhas de Bali;Avenida Doutor Francisco Loup, 2300;Maresias;11628115;São Sebastião;-23.76;-45.40972
+Condomínio Residencial Island View;Rua Rua Peruibe, 65;Juquey;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Residencial Islas Baleares;Rua das Maritacas, 150;Maresias;11628649;São Sebastião;-23.76;-45.40972
+Condomínio Residencial Jabuticabeira;Rua Luziana, 454;Boicucanga;11618232;São Sebastião;-23.76;-45.40972
+Condomínio Residencial Jacaranda;Rua Manoel Macedo, 170;Bairro de Juquehy;11623433;São Sebastião;-23.76;-45.40972
+Condomínio Residencial Jacarandas;Rua dos Jacarandas, 385;Pauba;11617133;São Sebastião;-23.76;-45.40972
+Condomínio Residencial Juquehy;Rua Claudio Izidoro do Espirito Santo;Praia da Baleia;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Residencial Luna Piena;Rua Claudio Izidoro do Espirito Santo, 540;Juquehy;11623223;São Sebastião;-23.76;-45.40972
+Condomínio Residencial Maresias Canto do Mar;Avenida Paqueta, 345;Maresias;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Residencial Maritimo;Rua Doutor Silvio Borges, 144;Juquehy;11623430;São Sebastião;-23.76;-45.40972
+Condomínio Residencial Mero;Rua Manoel de Oliveira, 42;Juquehy;11623244;São Sebastião;-23.76;-45.40972
+Condomínio Residencial Monte Zion;Rua Olimpio Romao Cesar, 416;Maresias;11628640;São Sebastião;-23.76;-45.40972
+Condomínio Residencial Oasis;Avenida Doutor Francisco Loup, 1189;Maresias;11628115;São Sebastião;-23.76;-45.40972
+Condomínio Residencial Ondas de Boicucanga;Estrada Beira Rio, 1253;Boicucanga;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Residencial Ondas do Camburizinho;Avenida Pescador Sebastiao Juvenal dos Santos, 674;Camburi;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Residencial Paradiso Juquehy;Avenida Benedito Izidoro de Moraes, 572;Juquehy;11623286;São Sebastião;-23.76;-45.40972
+Condomínio Residencial Paradiso do Sahy;Avenida Adelino Tavares, 57;Barra do Sahy;11622100;São Sebastião;-23.76;-45.40972
+Condomínio Residencial Passaros de Juquehy;Avenida Benedito Izidoro de Moraes, 305;Juquehy;11623286;São Sebastião;-23.76;-45.40972
+Condomínio Residencial Perola Mar;Rua Manaca, 197;Bairro de Camburi;11619383;São Sebastião;-23.76;-45.40972
+Condomínio Residencial Piemonte;Rua Francisca Romeiro Giudice, 43;Portal da Olaria;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Residencial Pontal das Marinas;Rua Joao Tarora, 51;Pontal da Cruz;11606169;São Sebastião;-23.76;-45.40972
+Condomínio Residencial Pontal do Juquey;Avenida Mae Bernarda, 2200;Juquehy;11623304;São Sebastião;-23.76;-45.40972
+Condomínio Residencial Portal da Olaria;Rua das Criancas, 793;Portal da Olaria;11604701;São Sebastião;-23.76;-45.40972
+Condomínio Residencial Portal da Olaria I;Avenida Dr.manoel Hipolito do Rego, 2771;Sao Francisco;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Residencial Portal do Sahy;Avenida Adelino Tavares, 577;Barra do Sahy;11622100;São Sebastião;-23.76;-45.40972
+Condomínio Residencial Porto Cambury;Avenida Patriarca Antonio Jose Marques, 1287;Camburi;11619392;São Sebastião;-23.76;-45.40972
+Condomínio Residencial Porto Fino;Avenida Deble Luiza Derani, 173;Baleia;11621600;São Sebastião;-23.76;-45.40972
+Condomínio Residencial Porto Grande I;Avenida Africa, 45;Porto Grande;11608230;São Sebastião;-23.76;-45.40972
+Condomínio Residencial Porto do Juquey;Avenida Mae Bernarda, 881;Juquey;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Residencial Porto do Sol;Avenida Mae Bernarda, 18;Juquey;11600970;São Sebastião;-23.76;-45.40972
+Condomínio Residencial Porto do Una;Rodovia Sao Sebastiao-bertioga, 1511;Barra do Una;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Residencial Praia do Engenho;Avenida Magno dos Passos Bittencourt, 3567;Praia do Engenho;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Residencial Punta Ballena;Rodovia Bertioga Sao Sebastiao, 900;Praia da Baleia;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Residencial Punta Del Mare;Rua Dr Olavo Pazzanese, SN;Praia da Baleia;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Residencial Recanto de Juquehy;Rua Claudio Izidoro do Espirito Santo, 165;Juquehy;11623223;São Sebastião;-23.76;-45.40972
+Condomínio Residencial Recanto do Una Vista Mar;Avenida Magno dos Passos Bittencourt;Barra do Una;11624103;São Sebastião;-23.76;-45.40972
+Condomínio Residencial Reserva Sahy;Avenida Adelino Tavares, 652;Barra do Sahy;11622100;São Sebastião;-23.76;-45.40972
+Condomínio Residencial Reserva da Mata;Avenida Adelino Tavares, 77;Barra do Sahy;11622100;São Sebastião;-23.76;-45.40972
+Condomínio Residencial Reserva da Mata 2;Rua Manoel de Oliveira, 623;Juquehy;11623244;São Sebastião;-23.76;-45.40972
+Condomínio Residencial Reserva da Mata Juquehy 1;Rua Juvenal Brueder, 96;Juquehy;11623478;São Sebastião;-23.76;-45.40972
+Condomínio Residencial Reserva do Alamo;Rua do Alamo, 133;Camburi;11619401;São Sebastião;-23.76;-45.40972
+Condomínio Residencial Salt Cambury;Rua Reginaldo Flavio Correa, 525;Camburi;11619395;São Sebastião;-23.76;-45.40972
+Condomínio Residencial Sambaqui;Rua Dionisio Benedito Faustino, 481;Juquehy;11623274;São Sebastião;-23.76;-45.40972
+Condomínio Residencial San Remo;Alameda Santana, 489;Pontal da Cruz;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Residencial Santa Clara;Rua Benedito Espirito Santo, 457;Juquey;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Residencial Saveiros do Juquey;Avenida Pedro Sboriol, 136;Juquey;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Residencial Seasons;Rua Verao, 99;Juquei;11600973;São Sebastião;;
+Condomínio Residencial Serra do Mar;Rua Dona Ana Eufrozina, 54;Juquehy;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Residencial Serra dos Sonhos;Rua Tiradentes, 120;Juquehy;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Residencial Sol Maior de Camburi;Rua Uberlandia, 212;Camburi;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Residencial Sol do Sahy;Avenida Adelino Tavares, 97;Barra do Sahy;11622100;São Sebastião;-23.76;-45.40972
+Condomínio Residencial Solar dos Franciscanos Ii;Avenida Manoel Teixeira, 456;Sao Francisco;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Residencial Sundays;Avenida da Baleia, 1000;Praia da Baleia;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Residencial Sundays Classic;Estrada da Rodagem Sp 55;Praia da Baleia;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Residencial Tangara;Rua Olimpio Faustino, 1001;Camburi;11619428;São Sebastião;-23.76;-45.40972
+Condomínio Residencial Terra Mares;Avenida Doutor Francisco Loup, 2556;Maresias;11628115;São Sebastião;-23.76;-45.40972
+Condomínio Residencial Terramar Juquehy;Rua Dionisio Benedito Faustino, 480;Juquehy;11623274;São Sebastião;-23.76;-45.40972
+Condomínio Residencial Toca das Garoupas;Rua Benedito Carlos de Almeida, 133;Juquehy;11623220;São Sebastião;-23.76;-45.40972
+Condomínio Residencial Veleiros do Juquey;Rua Pedro Esboriol, 303;Juquehy;11623271;São Sebastião;-23.76;-45.40972
+Condomínio Residencial Vila Bare I;Rua Hugo Dehn, 799;Barequecaba;11612734;São Sebastião;-23.76;-45.40972
+Condomínio Residencial Vila Brisa do Mar;Avenida Manoel Hipolito do Rego, 1930;Arrastao;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Residencial Vila Esmeralda;Rua Claudio Izidoro do Espirito Santo, 672;Bairro de Juquehy;11623223;São Sebastião;-23.76;-45.40972
+Condomínio Residencial Vila Porto Belo;Rua Tiradentes, 42;Juquehy;11600973;São Sebastião;;
+Condomínio Residencial Villa Bare Ii;Rua Hugo Dehn, 798;Barequecaba;11612734;São Sebastião;-23.76;-45.40972
+Condomínio Residencial Villa Canto Nobre;Avenida Mae Bernarda, 2811;Juquehy;11623304;São Sebastião;-23.76;-45.40972
+Condomínio Residencial Villa D'este;Rua Principal Argemiro Amancio dos Santos, 78;Juquehy;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Residencial Villa Grappa;Avenida Francisco Loup, 2613;Maresias;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Residencial Villa Maiori;Rua Doutor Silvio Borges, 200;Juquehy;11623430;São Sebastião;-23.76;-45.40972
+Condomínio Residencial Villa Salvia;Avenida Dr Francisco Loup, 493;Maresias;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Residencial Villa de Juquehy;Avenida Mae Bernarda, 190;Praia de Juquehy;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Residencial Village Splendor;Rua Manoel Macedo, 132;Juquehy;11623433;São Sebastião;-23.76;-45.40972
+Condomínio Residencial Village do Camburizinho;Avenida Pescador Sebastiao Juvenal dos Santos, 856;Camburi;11619393;São Sebastião;-23.76;-45.40972
+Condomínio Residencial Villaggio Di Bari;Rua Teotonio Serafim dos Santos, 152;Juquehy;11623253;São Sebastião;-23.76;-45.40972
+Condomínio Residencial Villaggio Di Ravenna;Avenida Mauricio Benedito Faustino, 949;Juquehy;11623250;São Sebastião;-23.76;-45.40972
+Condomínio Residencial Vista de Barequecaba;Rua Vitoria Regia, 371;Barequecaba;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Residencial dos Manacas;Rua Tupa;Camburi/maresias;11620000;São Sebastião;-23.775498;-45.652918
+Condomínio Residencias Agua Branca;Rua Marco Antonio dos Santos, 200;Maresias;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Royal Una;Avenida Magno dos Passos Bittencourt, 1445;Barra do Una;11624103;São Sebastião;-23.76;-45.40972
+Condomínio San Sebastian;Rua Fabio Cassio, 44;Porto Grande;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Santa Helena;Alameda Santana, 80;Pontal da Cruz;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Santorini;Rua Cipriano Joao dos Santos, 20;Juquehy;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Sao Francisco;Avenida Vereador Antonio Bernardino Tavares, 20;Sao Francisco;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Sao Francisco da Praia;Rua Martins do Vale, 370;Sao Francisco;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Sao Jose;Avenida Doutor Francisco Loup, 2257;Maresias;11620000;São Sebastião;-23.790331;-45.566134
+Condomínio Sete Mares;Avenida Benedito Izidoro de Moraes, 540;Praia de Juquei;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Silver Lake;Rua Benedito Hipolito de Freitas, 351;Porto Grande;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Skyrunner Flat;Avenida Joao Luiz Faustino, 580;Bairro de Juquehy;11623256;São Sebastião;-23.76;-45.40972
+Condomínio Socied.melhoramentos do Loteamento Balneario Tropical;Avenida Rebelo, 2154;Maresias;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Sol de Boicucanga;Avenida Walkir Vergani, 1070;Boicucanga;11618107;São Sebastião;-23.76;-45.40972
+Condomínio Sol de Juquehy;Rua Dona Ana Eufrasina, 691;Juquehy;11623280;São Sebastião;-23.76;-45.40972
+Condomínio Solar Maramar;Rua Honorato Vicente, 399;Barequecaba;11612728;São Sebastião;-23.76;-45.40972
+Condomínio Solar dos Franciscanos Iii;Avenida Manoel Teixeira, 496;Sao Francisco da Praia;11629520;São Sebastião;-23.76;-45.40972
+Condomínio Summer;Avenida Deble Luiza Derani, 630;Praia da Baleia;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Sun Beach Residence;Avenida Vereador Emilio Granato, 6000;Enseada;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Sun House Flat Residencial;Avenida Doutor Francisco Loup, 2500;Maresias;11628115;São Sebastião;-23.76;-45.40972
+Condomínio Sundays Boulevard;Avenida Deble Luiza Derani, 1300;Praia da Baleia;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Sundays Park;Avenida Debli Derani, 1690;Maresias;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Super Lojas Ss;Rua Sebastiao S.neves C/vit, NAOINF;Centro;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Tabas de Boraceia;Avenida Rebelo;Da Boraceia;11600200;São Sebastião;-23.76;-45.40972
+Condomínio The Captains House;Avenida Magno Passos Bitencourt, 3590;Barra do Una;11600200;São Sebastião;-23.76;-45.40972
+Condomínio The View Island;Avenida Mae Bernarda, 779;Bairro de Juquehy;11623304;São Sebastião;-23.76;-45.40972
+Condomínio Una Barra;Avenida Magno dos Passos Bittencourt, 1025;Barra do Una;11624103;São Sebastião;-23.76;-45.40972
+Condomínio Una Tropical;Avenida Magno dos Passos Bittencourt, 1439;Barra do Una;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Vampre;Avenida Mae Bernarda, 2485;Juquehy;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Verdejo;Avenida Geroncio Bento Pereira, 499;Juquehy;11623262;São Sebastião;-23.76;-45.40972
+Condomínio Vereda Juquehy;Rua Benicio Joao dos Santos, 801;Juquehy;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Via Del Mare;Rua Pescador Altino Garcez, 92;Porto Grande;11608269;São Sebastião;-23.76;-45.40972
+Condomínio Vila Aloha Maresias;Avenida Francisco Loup, 1567;Maresias;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Vila Carmel;Avenida Mae Bernarda, 2366;Juquehy;11623304;São Sebastião;-23.76;-45.40972
+Condomínio Vila Nogueira da Praia - Resort;Avenida Mae Bernarda, 461;Juquehy;11623304;São Sebastião;-23.76;-45.40972
+Condomínio Vila Sollar;Rua Joao Aniceto de Souza, 277;Sao Francisco;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Vila Turquesa;Avenida Geroncio Bento Pereira, 432;Juquehy;11623262;São Sebastião;-23.76;-45.40972
+Condomínio Vila Verde de Maresias;Avenida Francisco Loup, 1902;Maresias;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Vila das Cigarras;Rua Praia Linda, 160;Praia das Cigarras;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Vila das Orquideas;Rua Claudio Izidoro do Espirito Santo, 559;Juquehy;11623223;São Sebastião;-23.76;-45.40972
+Condomínio Vila de Camburi;Estrada do Camburi;Camburi;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Vila do Mar;Avenida Dr. Francisco Loup, 2169;Maresias;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Vila dos Ipes;Avenida Francisco Loup, 1636;Maresias;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Vilarejo de Ibiza;Rua Americana, 205;Juquehy;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Vilarejo do Engenho;Rua Magno dos P Bittencourt, 85;Barra do Una;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Vilas de Juquey;Avenida Mae Bernarda, 875;Juquey;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Villa Acqua Chiara;Avenida Mae Bernarda, 2955;Juquehy;11623304;São Sebastião;-23.76;-45.40972
+Condomínio Villa Allegra;Avenida Mae Bernarda, 253;Juquehy;11623304;São Sebastião;-23.76;-45.40972
+Condomínio Villa Angatu;Avenida Geroncio Bento Pereira, 380;Juquehy;11623262;São Sebastião;-23.76;-45.40972
+Condomínio Villa Barra Cambury;Rua Jose Inacio, 78;Camburi;11619416;São Sebastião;-23.76;-45.40972
+Condomínio Villa Capri;Avenida Mae Bernarda, 1.986;Juquehy;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Villa Del Mare;Avenida Francisco Loup, SN;Maresias;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Villa Di Napoli Camburi;Rua Reginaldo Flavio Correa, 322;Camburi;11619395;São Sebastião;-23.76;-45.40972
+Condomínio Villa Di Positano;Avenida Mae Bernarda, 493;Bairro de Juquehy;11623304;São Sebastião;-23.76;-45.40972
+Condomínio Villa Manaca;Rua do Manaca, 118;Camburi;11619383;São Sebastião;-23.76;-45.40972
+Condomínio Villa Sunset;Rua Sebastiao Romao Cezar, 629;Maresias;11628228;São Sebastião;-23.76;-45.40972
+Condomínio Villa Verano I;Avenida Mae Bernarda, 404;Juquehy;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Villa Victoria;Rua Dona Ana Eufrasina, 120;Juquehy;11623280;São Sebastião;-23.76;-45.40972
+Condomínio Villa da Barra;Avenida Bom Jesus da Barra do Una, 478;Barra do Una;11624215;São Sebastião;-23.76;-45.40972
+Condomínio Villa das Ilhas;Avenida Mae Bernarda, 217;Juquehy;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Villa de Anoman;Avenida Francisco Loup, 2400;Praia de Maresias;11620000;São Sebastião;;
+Condomínio Villa de Sicilia;Rua das Papoulas, 185;Camburi;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Villa do Mar;Avenida Doutor Francisco Loup, 2169;Maresias;11628115;São Sebastião;-23.76;-45.40972
+Condomínio Village Beach Maresias;Rua Sebastiao Romao Cezar, 508;Maresias;11628228;São Sebastião;-23.76;-45.40972
+Condomínio Village Brisa da Serra;Rua Joao Luiz Faustino, 380;Juquehy;11623256;São Sebastião;-23.76;-45.40972
+Condomínio Village Flamboyant;Avenida Doutor Francisco Loup, 2063;Maresias;11628115;São Sebastião;-23.76;-45.40972
+Condomínio Village Ilha de Mykonos;Rua Benedito do Espirito Santo, 71;Juquehy;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Village Juquehy;Rua Maria Madalena Faustino, 284;Juquehy;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Village Marina Iv;Avenida Guarda Mor Lobo Viana, 838;Centro;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Village Tropical;Rua Piau, 0362;Sao Sebastiao;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Village de San Sebastian;Avenida Deble Luiza Derani, 200;Praia da Baleia;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Village do Badejo;Viela Vi, 30;Juquehy;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Village do Guaeca;Rua Nossa Senhora da Luz, 85;Guaeca;11614350;São Sebastião;-23.76;-45.40972
+Condomínio Village do Portal;Rua do Carmo, 10;Guaeca;11614242;São Sebastião;-23.76;-45.40972
+Condomínio Villagio Areias Cantantes;Rua Maria Madalena Faustino, 531;Juquehy;11623268;São Sebastião;-23.76;-45.40972
+Condomínio Villagio Costa Smeralda;Avenida Magno Passos Bittencourt, 1999;Barra do Una;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Villagio Di Napoli;Rua Joao Luiz Faustino, 192;Juquehy;11623256;São Sebastião;-23.76;-45.40972
+Condomínio Villagio Leme;Rua Blumenau, 80;Pauba;11617139;São Sebastião;-23.76;-45.40972
+Condomínio Villagio de Maresias;Avenida Francisco Loup, 1720;Maresias;11600200;São Sebastião;-23.76;-45.40972
+Condomínio Villas de Juquehy;Rua Claudio Izidoro do Espirito Santo, 900;Juquehy;11623223;São Sebastião;-23.76;-45.40972
+Condomínio Vista Cambury;Avenida Patriarca Antonio Jose Marques, 1783;Camburi;11619392;São Sebastião;-23.76;-45.40972
+Condomínio Vista Mar Camburi;Alameda Patriarca Jose Marques, 1451;Camburi;11619434;São Sebastião;-23.76;-45.40972
+Condomínio Vitoria;Rua Joao Luiz Faustino, 345;Juquehy;11623256;São Sebastião;-23.76;-45.40972
+Condomínio Water View;Rua Vera0, 200;Juquehy;11600200;São Sebastião;-23.76;-45.40972
+Condomínio West Bali Hai;Avenida Deble Luiza Derani, 2539;Baleia;11621600;São Sebastião;-23.76;-45.40972
+Condomínio West Three Trees;Rua Doutor Silvio Borges, 471;Juquehy;11623430;São Sebastião;-23.76;-45.40972
+Condomínio West Town House;Rua Athayde Izidoro dos Santos, 408;Juquehy;11623241;São Sebastião;-23.76;-45.40972
+Condomínio West Turtles;Avenida Deble Luiza Derani, 270;Praia da Baleia;11600200;São Sebastião;-23.76;-45.40972
+Condomínio West Village;Avenida Joao Antonio dos Santos, SN;Juquey;11600200;São Sebastião;-23.76;-45.40972
+Condomínio West Whales;Avenida Deble Luiza Derani, 253;Praia da Baleia;11600200;São Sebastião;-23.76;-45.40972
+Condomínio da Praia;Avenida Patriarca Antonio Jose Marques, 1452;Camburi;11619392;São Sebastião;-23.76;-45.40972
+Condomínio da Quadra 03 Balneario Guaeca;Rua Bras Cubas, 318;Praia do Guaeca;11600200;São Sebastião;-23.76;-45.40972
+Condomínio da Quadra 04 Balneario Guaeca;Rua Bartira, 330;Praia do Guaeca;11600200;São Sebastião;-23.76;-45.40972
+Condomínio da Quadra 06 (seis), do Balneario Guaeca;Avenida Brig Jose V F Lima, SN;Praia do Guaeca;11600200;São Sebastião;-23.76;-45.40972
+Condomínio da Quadra 09 do Balneario Guaeca;Rua Min Joao A L Barros, SN;Praia de Guaeca;11600200;São Sebastião;-23.76;-45.40972
+Condomínio da Quadra 10 do Balneario Guaeca;Rua Doutor Jose Silveira Sampaio, 336;Guaeca;11614212;São Sebastião;-23.76;-45.40972
+Condomínio da Quadra 12 Balneario Guaeca;Rua Joao Francisco Lisboa, 310;Guaeca;11614206;São Sebastião;-23.76;-45.40972
+Condomínio da Quadra 13 -balneario Guaeca;Rua Henning Albert Boilesen, NAOINF;Guaeca;11600200;São Sebastião;-23.76;-45.40972
+Condomínio da Quadra-5 do Balneario Guaeca;Rua Tamandare, 321;Guaeca;11614224;São Sebastião;-23.76;-45.40972
+Condomínio das Andorinhas;Rua Francisco da Cruz Maldonado, 390;Portal da Olaria;11604686;São Sebastião;-23.76;-45.40972
+Condomínio das Ilhas;Avenida Magno dos Passos Bittencourt, 837;Barra do Una;11624103;São Sebastião;-23.76;-45.40972
+Condomínio das Mares;Avenida Deble Luiza Derani, 301;Praia das Baleias;11600200;São Sebastião;-23.76;-45.40972
+Condomínio do Conjunto Residencial Blue Bay;Avenida Mae Bernarda, 1499;Juquey;11600973;São Sebastião;;
+Condomínio do Engenho Novo;Rua Joao Antunes dos Santos, 170;Sao Sebastiao;11600200;São Sebastião;-23.76;-45.40972

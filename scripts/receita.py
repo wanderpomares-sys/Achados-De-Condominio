@@ -101,8 +101,15 @@ def le_cache(arq):
     return c
 
 def main():
-    cidades = [c.strip() for c in (sys.argv[1] if len(sys.argv) > 1 else 'Mogi das Cruzes').split(';') if c.strip()]
+    # cada item: "Cidade" ou "Cidade#sufixo#prefixos de CEP" (ex.: "São Paulo#zona-leste#03,08" gera sao-paulo-zona-leste.csv só com esses CEPs)
+    zonas = {}; cidades = []
+    for c in (sys.argv[1] if len(sys.argv) > 1 else 'Mogi das Cruzes').split(';'):
+        p = [x.strip() for x in c.split('#')]
+        if not p[0]: continue
+        cidades.append(p[0])
+        if len(p) == 3: zonas[norm(p[0])] = (p[1], tuple(x for x in p[2].split(',') if x))
     ncid = {norm(c): c for c in cidades}
+    fname = lambda cid: 'data/condominios/' + cid.replace(' ', '-') + ('-' + zonas[cid][0] if cid in zonas else '') + '.csv'
     con = duckdb.connect()
     print('Fonte:', ROOT, flush=True)
     tmp = tempfile.mkdtemp()
@@ -129,6 +136,7 @@ def main():
     por = {c: [] for c in ncid}; vistos = set()
     for base, fant, tl, lg, num, bairro, cep, mun_c, razao in rows:
         cid = cod[mun_c]
+        if cid in zonas and not re.sub(r'\D', '', cep or '').startswith(zonas[cid][1]): continue
         n = titulo(fant or razao or '')
         n = re.sub(r'^(Condominio|Cond\.?)\s', 'Condomínio ', n)
         if len(n) < 4: continue
@@ -143,14 +151,14 @@ def main():
         por[cid].append([n, end, titulo(bairro), re.sub(r'\D', '', cep or ''), ncid[cid]])
     os.makedirs('data/condominios', exist_ok=True)
     def grava(cid, lst, coords):
-        arq = 'data/condominios/' + cid.replace(' ', '-') + '.csv'
+        arq = fname(cid)
         with open(arq, 'w', newline='', encoding='utf-8') as f:
             w = csv.writer(f, delimiter=';'); w.writerow(['nome', 'endereco', 'bairro', 'cep', 'cidade', 'lat', 'lng'])
             for r, g in zip(lst, coords): w.writerow(r + list(g or ('', '')))
         return arq
     for cid, lst in sorted(por.items(), key=lambda kv: len(kv[1])):
         lst.sort(key=lambda x: x[0])
-        arq = 'data/condominios/' + cid.replace(' ', '-') + '.csv'
+        arq = fname(cid)
         cache = le_cache(arq); novos = 0
         coords = [cache.get((r[0], r[1])) for r in lst]      # o que já tinha localização é reaproveitado
         for i, r in enumerate(lst):
